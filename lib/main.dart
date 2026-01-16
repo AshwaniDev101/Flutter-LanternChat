@@ -15,8 +15,8 @@ class LanternChat extends StatelessWidget{
   Widget build(BuildContext context) {
 
     return MaterialApp(
-      home: Homepage(),
-      // home: Chatpage(),
+      // home: Homepage(),
+      home: Chatpage(),
       debugShowCheckedModeBanner: false,
     );
   }

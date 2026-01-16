@@ -1,5 +1,33 @@
 import 'package:flutter/material.dart';
 
+enum ChatpagePopupMenu {
+  newGroup,
+  viewContact,
+  search,
+  mediaLinksDocs,
+  muteNotifications,
+  disappearingMessages,
+  chatTheme,
+  more,
+}
+
+extension on ChatpagePopupMenu
+{
+  String get action{
+    return switch(this)
+    {
+      ChatpagePopupMenu.newGroup => "New Group",
+      ChatpagePopupMenu.viewContact => "View Contact",
+      ChatpagePopupMenu.search => "Search",
+      ChatpagePopupMenu.mediaLinksDocs => "Media, Links, and Docs",
+      ChatpagePopupMenu.muteNotifications => "Mute Notifications",
+      ChatpagePopupMenu.disappearingMessages => "Disappearing Messages",
+      ChatpagePopupMenu.chatTheme => "Chat Theme",
+      ChatpagePopupMenu.more => "More",
+    };
+  }
+}
+
 class Chatpage extends StatelessWidget {
   const Chatpage({super.key});
 
@@ -13,7 +41,9 @@ class Chatpage extends StatelessWidget {
           IconButton(onPressed: () {}, icon: Icon(Icons.call_outlined)),
           PopupMenuButton(
             itemBuilder: (context) {
-              return [];
+              return ChatpagePopupMenu.values.map((value){
+                return PopupMenuItem(value:value, child: Text(value.action));
+              }).toList();
             },
           ),
         ],

@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
-enum _HomepageMenuActions { newGroup, newCommunity, broadcastList, linkedDevices, starred, payments, readAll, settings }
+enum _HomepagePopupMenu { newGroup, newCommunity, broadcastList, linkedDevices, starred, payments, readAll, settings }
 
-extension on _HomepageMenuActions {
+extension on _HomepagePopupMenu {
   String get label {
     return switch (this) {
-      _HomepageMenuActions.newGroup => 'New Group',
-      _HomepageMenuActions.newCommunity => 'New Community',
-      _HomepageMenuActions.broadcastList => 'Broadcast list',
-      _HomepageMenuActions.linkedDevices => 'Linked Devices',
-      _HomepageMenuActions.starred => 'Starred',
-      _HomepageMenuActions.payments => 'Payments',
-      _HomepageMenuActions.readAll => 'Read all',
-      _HomepageMenuActions.settings => 'Settings',
+      _HomepagePopupMenu.newGroup => 'New Group',
+      _HomepagePopupMenu.newCommunity => 'New Community',
+      _HomepagePopupMenu.broadcastList => 'Broadcast list',
+      _HomepagePopupMenu.linkedDevices => 'Linked Devices',
+      _HomepagePopupMenu.starred => 'Starred',
+      _HomepagePopupMenu.payments => 'Payments',
+      _HomepagePopupMenu.readAll => 'Read all',
+      _HomepagePopupMenu.settings => 'Settings',
     };
   }
 
@@ -21,8 +21,8 @@ extension on _HomepageMenuActions {
   }
 }
 
-bool _handleAttention(_HomepageMenuActions action) {
-  if (action == _HomepageMenuActions.linkedDevices) {
+bool _handleAttention(_HomepagePopupMenu action) {
+  if (action == _HomepagePopupMenu.linkedDevices) {
     return true;
   }
   return false;
@@ -39,9 +39,9 @@ class Homepage extends StatelessWidget {
         actions: [
           IconButton(onPressed: () {}, icon: Icon(Icons.qr_code_scanner_rounded)),
           IconButton(onPressed: () {}, icon: Icon(Icons.camera_alt_outlined)),
-          PopupMenuButton<_HomepageMenuActions>(
+          PopupMenuButton<_HomepagePopupMenu>(
             itemBuilder: (context) {
-              return _HomepageMenuActions.values.map((menuAction) {
+              return _HomepagePopupMenu.values.map((menuAction) {
                 return PopupMenuItem(
                   padding: const EdgeInsets.symmetric(horizontal: 8),
                   value: menuAction,
@@ -80,23 +80,23 @@ class Homepage extends StatelessWidget {
     );
   }
 
-  void _handleMenuAction(_HomepageMenuActions value) {
+  void _handleMenuAction(_HomepagePopupMenu value) {
     switch (value) {
-      case _HomepageMenuActions.newGroup:
+      case _HomepagePopupMenu.newGroup:
         break;
-      case _HomepageMenuActions.newCommunity:
+      case _HomepagePopupMenu.newCommunity:
         break;
-      case _HomepageMenuActions.broadcastList:
+      case _HomepagePopupMenu.broadcastList:
         break;
-      case _HomepageMenuActions.linkedDevices:
+      case _HomepagePopupMenu.linkedDevices:
         break;
-      case _HomepageMenuActions.starred:
+      case _HomepagePopupMenu.starred:
         break;
-      case _HomepageMenuActions.payments:
+      case _HomepagePopupMenu.payments:
         break;
-      case _HomepageMenuActions.readAll:
+      case _HomepagePopupMenu.readAll:
         break;
-      case _HomepageMenuActions.settings:
+      case _HomepagePopupMenu.settings:
         break;
     }
   }
