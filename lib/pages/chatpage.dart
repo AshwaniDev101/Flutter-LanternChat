@@ -46,26 +46,35 @@ class Chatpage extends StatelessWidget {
           ),
         ],
       ),
-      body: ListView.builder(
-        itemCount: 10,
+      body: ListView.separated(
+
+        separatorBuilder: (context, index){
+          return SizedBox(height: 10,);
+        },
+        itemCount: 20,
+        padding: EdgeInsets.all(16),
+
         itemBuilder: (context, index) {
 
 
-          final isSelf = index%2;
+          final bool isSelf = index%2==0;
 
-          if(isSelf==0){
+          if(isSelf){
             return Row(
+
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Container(
+                  width: MediaQuery.of(context).size.width*0.7,
                   padding: EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                     color: Colors.blueGrey,
-                
+
                     border: Border.all(color: Colors.white10),
                   ),
-                
-                  child: Text('hi  how are you'),
+
+                  child: Text('hi  how are you, this is just a testing message',softWrap: true, overflow: TextOverflow.visible,),
                 ),
 
                 IconButton(onPressed: (){}, icon: Icon(Icons.subdirectory_arrow_right_outlined)),
@@ -73,19 +82,22 @@ class Chatpage extends StatelessWidget {
             );
           }else {
             return Row(
+
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
 
                 IconButton(onPressed: (){}, icon: Icon(Icons.subdirectory_arrow_right_outlined)),
                 Container(
+                  width: MediaQuery.of(context).size.width*0.7,
                   padding: EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                     color: Colors.green,
-                
+
                     border: Border.all(color: Colors.white10),
                   ),
-                
-                  child: Text('hi  how are you'),
+
+                  child: Text('Yea im fine, i know this is just a testing message',softWrap: true, overflow: TextOverflow.visible,),
                 ),
               ],
             );
