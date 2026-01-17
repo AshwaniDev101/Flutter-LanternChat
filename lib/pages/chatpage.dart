@@ -35,6 +35,7 @@ class Chatpage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _appBar(context),
+      backgroundColor: Colors.grey[200],
       body: Column(children: [_messageList(context), _textArea(context)]),
     );
   }
@@ -42,6 +43,7 @@ class Chatpage extends StatelessWidget {
   // Page App bar
   AppBar _appBar(BuildContext context) {
     return AppBar(
+      backgroundColor: Colors.blueGrey,
       title: Text("User Name "),
       actions: [
         IconButton(onPressed: () {}, icon: Icon(Icons.videocam_outlined)),
@@ -72,13 +74,15 @@ class Chatpage extends StatelessWidget {
 
           if (isSelf) {
             return Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
+
+                IconButton(onPressed: () {}, icon: Icon(Icons.subdirectory_arrow_right_outlined)),
                 Container(
                   width: MediaQuery.of(context).size.width * 0.7,
                   padding: EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20), bottomLeft: Radius.circular(20)),
                     color: Colors.blueGrey[200],
 
                     border: Border.all(color: Colors.white10),
@@ -87,19 +91,19 @@ class Chatpage extends StatelessWidget {
                   child: Text('hi  how are you, this is just a testing message', softWrap: true),
                 ),
 
-                IconButton(onPressed: () {}, icon: Icon(Icons.subdirectory_arrow_right_outlined)),
+
               ],
             );
           } else {
             return Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                IconButton(onPressed: () {}, icon: Icon(Icons.subdirectory_arrow_right_outlined)),
+
                 Container(
                   width: MediaQuery.of(context).size.width * 0.7,
                   padding: EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20), bottomRight: Radius.circular(20)),
                     color: Colors.green[200],
 
                     border: Border.all(color: Colors.white10),
@@ -107,6 +111,8 @@ class Chatpage extends StatelessWidget {
 
                   child: Text('Yea im fine, i know this is just a testing message', softWrap: true),
                 ),
+
+                IconButton(onPressed: () {}, icon: Icon(Icons.subdirectory_arrow_right_outlined)),
               ],
             );
           }
