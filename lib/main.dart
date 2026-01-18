@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:lanternchat/pages/chatpage.dart';
 import 'package:lanternchat/pages/homepage.dart';
+import 'package:lanternchat/style/themes.dart';
 
 void main()
 {
@@ -16,6 +17,9 @@ class LanternChat extends StatelessWidget{
 
     return MaterialApp(
       // home: Homepage(),
+      theme: Themes.lightThemeData,
+      themeMode: ThemeMode.light,
+      darkTheme: Themes.lightThemeData,
       home: Chatpage(),
       debugShowCheckedModeBanner: false,
     );

@@ -43,7 +43,6 @@ class Chatpage extends StatelessWidget {
   // Page App bar
   AppBar _appBar(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.blueGrey,
       title: Text("User Name "),
       actions: [
         IconButton(onPressed: () {}, icon: Icon(Icons.videocam_outlined)),
