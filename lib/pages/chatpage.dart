@@ -77,66 +77,56 @@ class Chatpage extends StatelessWidget {
         itemBuilder: (context, index) {
           final bool isSelf = index % 2 == 0;
 
-          if (isSelf) {
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(Icons.subdirectory_arrow_right_outlined, color: chatTheme.muteColor),
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.7,
-                  padding: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                      bottomLeft: Radius.circular(20),
-                    ),
-                    color: chatTheme.senderBubble,
+          return chatBubble(context, chatTheme, isSelf);
 
-                    border: Border.all(color: Colors.white10),
-                  ),
-
-                  child: Text('hi  how are you, this is just a testing message', softWrap: true),
-                ),
-              ],
-            );
-          } else {
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.7,
-                  padding: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                      bottomRight: Radius.circular(20),
-                    ),
-                    color: chatTheme.receivedBubble,
-
-                    border: Border.all(color: Colors.white10),
-                  ),
-
-                  child: Text('Yea im fine, i know this is just a testing message', softWrap: true),
-                ),
-
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(Icons.subdirectory_arrow_right_outlined, color: chatTheme.muteColor),
-                ),
-              ],
-            );
-          }
         },
       ),
     );
   }
 
-  // Area where user type there messages
+  Widget chatBubble(BuildContext context, ChatTheme chatTheme, bool isSelf) {
+    return Row(
+      mainAxisAlignment: isSelf ? MainAxisAlignment.start : MainAxisAlignment.end,
+      children: [
+
+        if(!isSelf)
+          IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.subdirectory_arrow_right_outlined, color: chatTheme.muteColor),
+          ),
+
+        Container(
+          width: MediaQuery.of(context).size.width * 0.7,
+          padding: EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+              bottomRight: isSelf ? Radius.circular(20) : Radius.circular(0),
+              bottomLeft: isSelf ? Radius.circular(0) : Radius.circular(20),
+            ),
+            color: isSelf ? chatTheme.receivedBubble : chatTheme.senderBubble,
+
+            border: Border.all(color: Colors.white10),
+          ),
+
+          child: Text(
+            isSelf
+                ? 'Yea im fine, i know this is just a testing message'
+                : 'hi  how are you, this is just a testing message',
+            softWrap: true,
+          ),
+        ),
+
+        if(isSelf)
+        IconButton(
+          onPressed: () {},
+          icon: Icon(Icons.subdirectory_arrow_right_outlined, color: chatTheme.muteColor),
+        ),
+      ],
+    );
+  }
+
   Widget _textArea(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),

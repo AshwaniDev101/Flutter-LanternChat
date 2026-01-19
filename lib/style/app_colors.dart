@@ -5,7 +5,7 @@ class AppColors {
   static const Color secondary = Color(0xFFB3D8A8);
   static const Color background = Color(0xFFFBFFE4);
 
-  static const Color muteColor = Color(0xFFE6E6E6);
+  static const Color muteColor = Color(0xFFB8B8B8);
 
   // Chat Color
   static const Color senderBubble = Color(0xFFA3D1C6);
