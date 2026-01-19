@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lanternchat/style/app_colors.dart';
+import 'package:lanternchat/style/chat_theme.dart';
 
 class Themes {
   static ThemeData get lightThemeData => ThemeData(
@@ -8,16 +9,24 @@ class Themes {
     //     seedColor: AppColors.primary
     // ),
     colorScheme: ColorScheme(
-        brightness: Brightness.light,
-        primary: AppColors.primary,
-        onPrimary: Colors.white,
-        secondary: AppColors.secondary,
-        onSecondary: Colors.white,
-        error: Colors.red,
-        onError: Colors.white,
-        surface: AppColors.background,
-        onSurface: Colors.black,
+      brightness: Brightness.light,
+      primary: AppColors.primary,
+      onPrimary: Colors.white,
+      secondary: AppColors.secondary,
+      onSecondary: Colors.white,
+      error: Colors.red,
+      onError: Colors.white,
+      surface: AppColors.background,
+      onSurface: Colors.black,
     ),
+
+    extensions: [
+      ChatTheme(
+        senderBubble: AppColors.senderBubble,
+        receivedBubble: AppColors.receivedBubble,
+        muteColor: AppColors.muteColor,
+      ),
+    ],
     appBarTheme: AppBarTheme(backgroundColor: AppColors.primary, foregroundColor: Colors.white),
   );
 }
