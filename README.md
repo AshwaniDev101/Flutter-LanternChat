@@ -1,46 +1,45 @@
 # LanternChat
 
-LanternChat is a simple, reliable one-to-one chat application built with Flutter.  
-The project focuses on clean architecture, predictable state management, and clear separation of concerns.
+LanternChat is a simple, reliable **one-to-one real-time chat application** built with **Flutter** and **Firebase**.  
+This project is designed as a **portfolio and learning project**, with an emphasis on clean architecture, predictable behavior, and professional project structure.
 
-This repository currently contains the initial project setup and baseline application structure. Core features will be implemented incrementally.
+The repository intentionally keeps the scope small to focus on correctness and clarity rather than feature overload.
 
 ---
 
 ## Project Goals
 
 - Build a dependable one-to-one chat experience
-- Maintain a clean, modular architecture
-- Prioritize correctness and predictable behavior over visual polish
-- Keep scope intentionally small and well-defined
+- Maintain a clean, modular, and readable codebase
+- Demonstrate correct Firebase integration in Flutter
+- Follow production-minded practices while remaining beginner-friendly
+- Serve as a solid portfolio project for interviews
 
 ---
 
-## Non-Goals (Initial Phase)
+## Non-Goals (Current Phase)
+
+The following are intentionally out of scope for the initial version:
 
 - Group chats
-- Media sharing
+- Media or file sharing
 - Push notifications
-- Advanced UI customization
+- Advanced animations or visual polish
+- Multi-tenant or production-scale infrastructure
 
-These are intentionally out of scope for the first iteration.
+These may be explored in future iterations.
 
 ---
 
 ## Tech Stack
 
-- Flutter
-- Dart
-- Firebase
+- **Framework**: Flutter (Dart)
+- **Backend**: Firebase
+    - Firebase Authentication
+    - Firestore / Realtime Database (for chat data)
+- **Architecture**: Feature-based, separation of concerns
+- **Tooling**:
+    - flutterfire_cli
+    - Firebase CLI
 
 ---
-
-## Getting Started
-
-This project is a standard Flutter application.
-
-To run locally:
-
-```bash
-flutter pub get
-flutter run

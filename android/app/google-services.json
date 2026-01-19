@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "352733183524",
+    "project_id": "lanternchat-app",
+    "storage_bucket": "lanternchat-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:352733183524:android:a50e7a9c51d9cd511662b1",
+        "android_client_info": {
+          "package_name": "io.github.ashwanidev101.lanternchat.lanternchat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7A9s7mJJiawq_s_pZUYO0Ia0IWR0Avns"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

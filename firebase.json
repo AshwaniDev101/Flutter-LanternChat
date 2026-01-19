@@ -1,0 +1,22 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "lanternchat-app",
+          "appId": "1:352733183524:android:a50e7a9c51d9cd511662b1",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "lanternchat-app",
+          "configurations": {
+            "android": "1:352733183524:android:a50e7a9c51d9cd511662b1",
+            "web": "1:352733183524:web:25994fa942f6500d1662b1"
+          }
+        }
+      }
+    }
+  }
+}

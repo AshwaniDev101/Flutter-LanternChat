@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lanternchat/style/chat_theme.dart';
 
-import '../style/themes.dart';
-
 // Popup Option menu for the Chat page
 enum ChatpagePopupMenu {
   newGroup,
