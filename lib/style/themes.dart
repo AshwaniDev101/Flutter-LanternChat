@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
-
-final Color appbarColors = Colors.blueGrey;
-final Color iconColors = Colors.white;
+import 'package:lanternchat/style/app_colors.dart';
 
 class Themes {
-  static final lightThemeData = ThemeData(
-      useMaterial3: true,
-
-      colorScheme: ColorScheme.fromSeed(
-        seedColor: Colors.blueGrey,
-        surface: Colors.blueGrey,
-        onSurface: Colors.white,
-      ),
-
-    
-    appBarTheme: AppBarTheme(backgroundColor: Colors.red,foregroundColor: Colors.white,)
+  static ThemeData get lightThemeData => ThemeData(
+    useMaterial3: true,
+    // colorScheme: ColorScheme.fromSeed(
+    //     seedColor: AppColors.primary
+    // ),
+    colorScheme: ColorScheme(
+        brightness: Brightness.light,
+        primary: AppColors.primary,
+        onPrimary: Colors.white,
+        secondary: AppColors.secondary,
+        onSecondary: Colors.white,
+        error: Colors.red,
+        onError: Colors.white,
+        surface: AppColors.background,
+        onSurface: Colors.black,
+    ),
+    appBarTheme: AppBarTheme(backgroundColor: AppColors.primary, foregroundColor: Colors.white),
   );
 }

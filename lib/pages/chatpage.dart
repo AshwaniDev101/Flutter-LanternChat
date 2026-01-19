@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:lanternchat/style/chat_theme.dart';
+
+import '../style/themes.dart';
 
 // Popup Option menu for the Chat page
 enum ChatpagePopupMenu {
@@ -45,7 +48,6 @@ class Chatpage extends StatelessWidget {
     return AppBar(
       title: Text("User Name "),
 
-
       actions: [
         IconButton(onPressed: () {}, icon: Icon(Icons.videocam_outlined)),
         IconButton(onPressed: () {}, icon: Icon(Icons.call_outlined)),
@@ -62,6 +64,8 @@ class Chatpage extends StatelessWidget {
 
   // This is the main chat window with all the chat messages
   Widget _messageList(BuildContext context) {
+    final chatTheme = Theme.of(context).extension<ChatTheme>()!;
+
     return Expanded(
       child: ListView.separated(
         separatorBuilder: (context, index) {
@@ -77,35 +81,42 @@ class Chatpage extends StatelessWidget {
             return Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-
-                IconButton(onPressed: () {}, icon: Icon(Icons.subdirectory_arrow_right_outlined)),
+                IconButton(
+                  onPressed: () {},
+                  icon: Icon(Icons.subdirectory_arrow_right_outlined, color: chatTheme.muteColor),
+                ),
                 Container(
                   width: MediaQuery.of(context).size.width * 0.7,
                   padding: EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20), bottomLeft: Radius.circular(20)),
-                    color: Colors.blueGrey[200],
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
+                      bottomLeft: Radius.circular(20),
+                    ),
+                    color: chatTheme.senderBubble,
 
                     border: Border.all(color: Colors.white10),
                   ),
 
                   child: Text('hi  how are you, this is just a testing message', softWrap: true),
                 ),
-
-
               ],
             );
           } else {
             return Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-
                 Container(
                   width: MediaQuery.of(context).size.width * 0.7,
                   padding: EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20), bottomRight: Radius.circular(20)),
-                    color: Colors.green[200],
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
+                      bottomRight: Radius.circular(20),
+                    ),
+                    color: chatTheme.receivedBubble,
 
                     border: Border.all(color: Colors.white10),
                   ),
@@ -113,7 +124,10 @@ class Chatpage extends StatelessWidget {
                   child: Text('Yea im fine, i know this is just a testing message', softWrap: true),
                 ),
 
-                IconButton(onPressed: () {}, icon: Icon(Icons.subdirectory_arrow_right_outlined)),
+                IconButton(
+                  onPressed: () {},
+                  icon: Icon(Icons.subdirectory_arrow_right_outlined, color: chatTheme.muteColor),
+                ),
               ],
             );
           }

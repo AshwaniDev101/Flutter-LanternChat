@@ -17,9 +17,10 @@ class LanternChat extends StatelessWidget{
 
     return MaterialApp(
       // home: Homepage(),
-      theme: Themes.lightThemeData,
       themeMode: ThemeMode.light,
       darkTheme: Themes.lightThemeData,
+      theme: Themes.lightThemeData,
+
       home: Chatpage(),
       debugShowCheckedModeBanner: false,
     );
