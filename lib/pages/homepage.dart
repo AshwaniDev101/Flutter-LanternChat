@@ -76,7 +76,7 @@ class Homepage extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: _BottomBar(),
+      bottomNavigationBar: _bottomBar(),
     );
   }
 
@@ -159,7 +159,7 @@ class Homepage extends StatelessWidget {
     );
   }
 
-  Widget _BottomBar()
+  Widget _bottomBar()
   {
     return BottomNavigationBar(
 
