@@ -1,8 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:lanternchat/pages/chatpage.dart';
-import 'package:lanternchat/pages/homepage.dart';
+import 'package:lanternchat/pages/login_page/login_page.dart';
 import 'package:lanternchat/style/themes.dart';
 
 import 'firebase_options.dart';
@@ -20,12 +19,13 @@ class LanternChat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      // home: Homepage(),
       themeMode: ThemeMode.light,
       darkTheme: Themes.lightThemeData,
       theme: Themes.lightThemeData,
 
-      home: Chatpage(),
+      // home: Chatpage(),
+      // home: Homepage(),
+      home: LoginPage(),
       debugShowCheckedModeBanner: false,
     );
   }

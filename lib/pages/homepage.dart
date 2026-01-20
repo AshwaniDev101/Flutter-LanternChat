@@ -120,15 +120,16 @@ class Homepage extends StatelessWidget {
     );
   }
 
-  Widget _card(int index)
-  {
+  Widget _card(int index) {
     return Card(
 
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(
           children: [
-            Container(width: 40,height: 40,  decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(50)),color: Colors.blue),),
+            Container(width: 40,
+              height: 40,
+              decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(50)), color: Colors.blue),),
             SizedBox(width: 10,),
             Expanded(
               child: Column(
@@ -147,7 +148,7 @@ class Homepage extends StatelessWidget {
                     children: [
                       Text("Message: $index some random long very long message"),
                       Spacer(),
-                      Icon(Icons.push_pin_rounded,size: 16,)
+                      Icon(Icons.push_pin_rounded, size: 16,)
                     ],
                   )
                 ],
@@ -159,8 +160,7 @@ class Homepage extends StatelessWidget {
     );
   }
 
-  Widget _bottomBar()
-  {
+  Widget _bottomBar() {
     return BottomNavigationBar(
 
       selectedItemColor: Colors.teal,
