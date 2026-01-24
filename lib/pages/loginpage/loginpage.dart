@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lanternchat/core/user_manager.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -9,18 +11,23 @@ class LoginPage extends StatelessWidget {
       backgroundColor: Colors.grey[100],
       body: Center(
         child: Column(
-
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-
             _appTitle('LanternChat'),
             const SizedBox(height: 60),
             Column(
               children: [
                 _signInButton(Icons.email, 'Email', Colors.deepOrange[400]!, () {}),
                 _signInButton(Icons.call, 'Phone Number', Colors.green[400]!, () {}),
-                _signInButton(Icons.person, 'Anonymous', Colors.grey[600]!, () {}),
+
+                Consumer(
+                  builder: (BuildContext context, WidgetRef ref, _) {
+                    return _signInButton(Icons.person, 'Anonymous', Colors.grey[600]!, () {
+                      ref.read(userManagerProvider).signInAnonymously();
+                    });
+                  },
+                ),
               ],
             ),
           ],
