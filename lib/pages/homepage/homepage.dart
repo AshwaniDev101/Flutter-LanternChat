@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 enum _HomepagePopupMenu { newGroup, newCommunity, broadcastList, linkedDevices, starred, payments, readAll, settings }
@@ -29,7 +30,9 @@ bool _handleAttention(_HomepagePopupMenu action) {
 }
 
 class Homepage extends StatelessWidget {
-  const Homepage({super.key});
+
+  final User user;
+  const Homepage({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +73,8 @@ class Homepage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 8),
         child: Column(
           children: [
+
+            Text(user.uid),
             _searchBar(),
             _getConversionList(),
 
