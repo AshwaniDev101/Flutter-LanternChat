@@ -19,7 +19,7 @@ class ProfilePage extends StatelessWidget {
         
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: CircleAvatar(radius: 50,),
+              child: CircleAvatar(radius: 60,),
             ),
 
             Padding(
@@ -34,10 +34,13 @@ class ProfilePage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 // crossAxisAlignment: CrossAxisAlignment.baseline,
                 children: [
-                  _rowButton(icon:Icons.message_outlined,title:'Message'),
-                  _rowButton(icon:Icons.call_outlined,title:'Audio'),
-                  _rowButton(icon:Icons.videocam_outlined,title:'Video'),
-                  _rowButton(icon:Icons.note_alt_outlined,title:'Note'),
+                  Expanded(child: _rowButton(icon:Icons.message_outlined,title:'Message')),
+                  SizedBox(width: 10,),
+                  Expanded(child: _rowButton(icon:Icons.call_outlined,title:'Audio')),
+                  SizedBox(width: 10,),
+                  Expanded(child: _rowButton(icon:Icons.videocam_outlined,title:'Video')),
+                  SizedBox(width: 10,),
+                  Expanded(child: _rowButton(icon:Icons.note_alt_outlined,title:'Note')),
                 ],
               ),
             ),
@@ -61,16 +64,16 @@ class ProfilePage extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
 
-       border: Border.all(width: 2,color: Colors.greenAccent),
+       border: Border.all(width: 2,color: Colors.grey),
         borderRadius: BorderRadius.circular(10),
 
       ),
     child: Padding(
-      padding: const EdgeInsets.all(12.0),
+      padding: const EdgeInsets.symmetric(vertical: 10),
       child: Column(
         children: [
-          Icon(icon),
-          Text(title),
+          Icon(icon,size: 24,),
+          Text(title,style: TextStyle(fontSize: 16),),
         ],
       ),
     ),
@@ -79,29 +82,36 @@ class ProfilePage extends StatelessWidget {
 
   Widget _columnButton({required IconData icon, required String title, String? subtitle, bool? showToggle}) {
 
-    return Row(
-      children: [
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: [
 
-        Icon(icon,size: 20,),
-        SizedBox(width: 20,),
+          Icon(icon,size: 24,),
+          SizedBox(width: 18,),
 
-        Column(
-          children: [
-            Text(title,style: TextStyle(fontSize: 20), ),
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title,style: TextStyle(fontSize: 18), ),
 
-            if(subtitle!=null)
-              Text(subtitle,style: TextStyle(fontSize: 14,color: Colors.grey),)
-          ],
-        ),
+                if(subtitle!=null)
+                  Text(subtitle,softWrap: true, style: TextStyle(fontSize: 14,color: Colors.grey,),)
+              ],
+            ),
+          ),
 
-        if(showToggle!=null && showToggle)
-          Switch(value: false, onChanged: (value){})
-
-
-
+          if(showToggle!=null && showToggle)
+            Switch(value: false, onChanged: (value){},)
 
 
-      ],
+
+
+
+        ],
+      ),
     );
   }
 }
