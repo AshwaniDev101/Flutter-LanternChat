@@ -1,5 +1,3 @@
-
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,22 +10,17 @@ class RootHandler extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-
-
     final authUser = ref.watch(authStatusProvider);
 
     return Scaffold(
-
-      body: switch(authUser){
-
-      AsyncLoading() => CircularProgressIndicator(),
+      body: switch (authUser) {
+        AsyncLoading() => CircularProgressIndicator(),
 
         AsyncError() => CircularProgressIndicator(),
 
-        AsyncData(value:User user) => Homepage(user: user),
+        AsyncData(value: User user) => Homepage(user: user),
 
-      _ => SizedBox(),
-
+        _ => SizedBox(),
       },
     );
   }
