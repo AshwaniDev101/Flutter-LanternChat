@@ -1,9 +1,9 @@
 # flutter pub run flutter_launcher_icons
 flutter_launcher_icons:
-  image_path: "assets/icons/main/lantern_icon.jpg"
+  image_path: "assets/icons/main/lantern_icon.png"
 
   android: "launcher_icon"
-#   image_path_android: "assets/icons/main/lantern_icon.jpg"
+#   image_path_android: "assets/icons/main/lantern_icon.png"
   min_sdk_android: 21 # android min sdk min:16, default 21
   # adaptive_icon_background: "assets/icon/background.png"
   # adaptive_icon_foreground: "assets/icon/foreground.png"
@@ -14,6 +14,6 @@ flutter_launcher_icons:
 
   web:
     generate: true
-    image_path: "assets/icons/main/lantern_icon.jpg"
+    image_path: "assets/icons/main/lantern_icon.png"
     background_color: "#hexcode"
     theme_color: "#hexcode"

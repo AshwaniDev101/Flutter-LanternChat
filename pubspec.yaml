@@ -41,7 +41,7 @@ flutter:
 
   uses-material-design: true
   assets:
-    - assets/icons/main/lantern_icon.jpg
+    - assets/icons/main/lantern_icon.png
 
 
 
