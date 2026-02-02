@@ -38,4 +38,10 @@ class UserManager {
     final user = credential.user;
     print(credential.toString());
   }
+
+
+  void userLogout()
+  {
+
+  }
 }
