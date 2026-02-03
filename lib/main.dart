@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lanternchat/pages/loginpage/loginpage.dart';
 import 'package:lanternchat/pages/profilepage/profilepage.dart';
+import 'package:lanternchat/pages/settingspage/settingspage.dart';
 import 'package:lanternchat/style/themes.dart';
 
 import 'firebase_options.dart';
@@ -27,7 +28,8 @@ class LanternChat extends StatelessWidget {
       // home: Chatpage(),
       // home: Homepage(),
       // home: LoginPage(),
-      home: ProfilePage(),
+      // home: ProfilePage(),
+      home: SettingsPage(),
       debugShowCheckedModeBanner: false,
     );
   }
