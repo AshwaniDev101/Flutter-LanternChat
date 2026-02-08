@@ -18,13 +18,13 @@ class LoginPage extends StatelessWidget {
             const SizedBox(height: 60),
             Column(
               children: [
-                _signInButton(Icons.email, 'Email', Colors.deepOrange[400]!, () {}),
-                _signInButton(Icons.call, 'Phone Number', Colors.green[400]!, () {}),
+                // _signInButton(Icons.email, 'Email', Colors.deepOrange[400]!, () {}),
+                // _signInButton(Icons.call, 'Phone Number', Colors.green[400]!, () {}),
 
                 Consumer(
                   builder: (BuildContext context, WidgetRef ref, _) {
-                    return _signInButton(Icons.person, 'Anonymous', Colors.grey[600]!, () {
-                      ref.read(userManagerProvider).signInAnonymously();
+                    return _signInButton(Icons.person, 'Google', Colors.deepOrange[400]!, () {
+                      ref.read(userManagerProvider).signInWithGoogle();
                     });
                   },
                 ),

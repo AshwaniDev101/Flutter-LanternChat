@@ -12,7 +12,20 @@
           "package_name": "io.github.ashwanidev101.lanternchat.lanternchat"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "352733183524-9jas30rj7vadf4ufj78jro37mno9qckr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "io.github.ashwanidev101.lanternchat.lanternchat",
+            "certificate_hash": "c70806357c0d90f057f03302e77f78b906a4085b"
+          }
+        },
+        {
+          "client_id": "352733183524-lpcgkaktk59qifrgk1m2glh9h494s26n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyB7A9s7mJJiawq_s_pZUYO0Ia0IWR0Avns"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "352733183524-lpcgkaktk59qifrgk1m2glh9h494s26n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

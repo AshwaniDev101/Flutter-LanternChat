@@ -6,12 +6,15 @@ import 'package:lanternchat/pages/profilepage/profilepage.dart';
 import 'package:lanternchat/pages/settingspage/settingspage.dart';
 import 'package:lanternchat/style/themes.dart';
 
+import 'core/user_manager.dart';
 import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
+  // Initialize Google Sign-In here
+  await UserManager().initializeGoogleSignIn();
   runApp(ProviderScope(child: const LanternChat()));
 }
 
@@ -27,9 +30,9 @@ class LanternChat extends StatelessWidget {
 
       // home: Chatpage(),
       // home: Homepage(),
-      // home: LoginPage(),
+      home: LoginPage(),
       // home: ProfilePage(),
-      home: SettingsPage(),
+      // home: SettingsPage(),
       debugShowCheckedModeBanner: false,
     );
   }

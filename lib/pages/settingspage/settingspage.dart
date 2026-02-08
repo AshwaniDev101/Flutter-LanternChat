@@ -51,7 +51,7 @@ class SettingsPage extends StatelessWidget {
 
               SizedBox(height: 20,),
               Text("Thanks for using this app",style: TextStyle(color: Colors.grey),),
-              Text("Drop a hello in any of my socials",style: TextStyle(color: Colors.grey),),
+              Text("Drop a hello in any of my socials", style: TextStyle(color: Colors.grey),),
 
 
             ],
