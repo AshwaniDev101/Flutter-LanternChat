@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:lanternchat/core/user_manager.dart';
+import 'package:lanternchat/core/providers/user_manager_provider.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});

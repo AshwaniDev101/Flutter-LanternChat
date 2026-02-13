@@ -7,7 +7,7 @@ import 'package:lanternchat/pages/profilepage/profilepage.dart';
 import 'package:lanternchat/pages/settingspage/settingspage.dart';
 import 'package:lanternchat/style/themes.dart';
 
-import 'core/user_manager.dart';
+import 'core/providers/user_manager_provider.dart';
 import 'firebase_options.dart';
 
 void main() async {
