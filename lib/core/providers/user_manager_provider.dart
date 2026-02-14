@@ -22,18 +22,26 @@ class UserManager {
 
   Future<User?> signInWithGoogle() async {
     try {
-      // Ensure initialization has occurred (safe to call multiple times)
-      // If not initialized in main(), you may call initializeGoogleSignIn() here
 
-      final GoogleSignInAccount googleUser = await _googleSignIn.authenticate();
+      // This triggers Google Account Picker
+      final GoogleSignInAccount? googleUser = await _googleSignIn.authenticate();
 
+      if(googleUser==null)
+        {
+          return null;
+        }
+
+      // Gets ID token. Proof this user authenticated.
       final GoogleSignInAuthentication googleAuth = googleUser.authentication;
 
-      final credential = GoogleAuthProvider.credential(
+
+      // Creates Firebase credential.
+      final OAuthCredential oAuthCredential = GoogleAuthProvider.credential(
         idToken: googleAuth.idToken,
       );
 
-      final UserCredential userCredential = await _auth.signInWithCredential(credential);
+      // Signs into Firebase using Googles oAuthCredential. And return firebase userCredential
+      final UserCredential userCredential = await _auth.signInWithCredential(oAuthCredential);
 
       return userCredential.user;
     } catch (e) {
