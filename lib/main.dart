@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:lanternchat/pages/loginpage/loginpage.dart';
 import 'package:lanternchat/pages/profilepage/profilepage.dart';
+import 'package:lanternchat/pages/root/router_provider.dart';
 import 'package:lanternchat/pages/settingspage/settingspage.dart';
 import 'package:lanternchat/style/themes.dart';
 
@@ -13,7 +14,6 @@ import 'firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
 
   // await UserManager().initializeGoogleSignIn();
   // Initialize Google Sign-In here
@@ -25,21 +25,16 @@ void main() async {
   runApp(ProviderScope(child: const LanternChat()));
 }
 
-class LanternChat extends StatelessWidget {
+class LanternChat extends ConsumerWidget {
   const LanternChat({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
+  Widget build(BuildContext context, ref) {
+    return MaterialApp.router(
+      routerConfig: ref.watch(goRouterProvider),
       themeMode: ThemeMode.light,
       darkTheme: Themes.lightThemeData,
       theme: Themes.lightThemeData,
-
-      // home: Chatpage(),
-      // home: Homepage(),
-      home: LoginPage(),
-      // home: ProfilePage(),
-      // home: SettingsPage(),
       debugShowCheckedModeBanner: false,
     );
   }

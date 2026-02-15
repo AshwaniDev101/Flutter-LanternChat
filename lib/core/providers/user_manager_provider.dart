@@ -3,9 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:lanternchat/core/providers/auth_provider.dart';
 
-
-
-
 final userManagerProvider = Provider((ref) {
   final auth = ref.watch(firebaseAuthProvider);
   return UserManager(auth);
@@ -14,31 +11,24 @@ final userManagerProvider = Provider((ref) {
 class UserManager {
   final FirebaseAuth _auth;
 
-
   UserManager(this._auth);
 
   final GoogleSignIn _googleSignIn = GoogleSignIn.instance;
 
-
   Future<User?> signInWithGoogle() async {
     try {
-
       // This triggers Google Account Picker
       final GoogleSignInAccount? googleUser = await _googleSignIn.authenticate();
 
-      if(googleUser==null)
-        {
-          return null;
-        }
+      if (googleUser == null) {
+        return null;
+      }
 
       // Gets ID token. Proof this user authenticated.
       final GoogleSignInAuthentication googleAuth = googleUser.authentication;
 
-
       // Creates Firebase credential.
-      final OAuthCredential oAuthCredential = GoogleAuthProvider.credential(
-        idToken: googleAuth.idToken,
-      );
+      final OAuthCredential oAuthCredential = GoogleAuthProvider.credential(idToken: googleAuth.idToken);
 
       // Signs into Firebase using Googles oAuthCredential. And return firebase userCredential
       final UserCredential userCredential = await _auth.signInWithCredential(oAuthCredential);
