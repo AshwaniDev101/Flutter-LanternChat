@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lanternchat/core/providers/auth_provider.dart';
+import 'package:lanternchat/core/providers/user_manager_provider.dart';
 
 class ProfilePage extends ConsumerWidget {
   const ProfilePage({super.key});
@@ -64,9 +65,15 @@ class ProfilePage extends ConsumerWidget {
               _columnButton(icon:Icons.notifications_none_outlined,title:'Notifications'),
               _columnButton(icon:Icons.star_border_outlined,title:'Starred messages'),
               _columnButton(icon:Icons.lock_outline_rounded,title:'Encryption',subtitle:"Messages and calls are end-to-end encrypted. Tap to verify"),
-              _columnButton(icon:Icons.timer,title:'Disappearing messages',subtitle:'Off'),
+              _columnButton(icon:Icons.timer_outlined,title:'Disappearing messages',subtitle:'Off'),
               _columnButton(icon:Icons.mail_lock_outlined,title:'Chat lock',subtitle: "Lock and hide this chat on this device", showToggle:true),
-              _columnButton(icon:Icons.mail_lock_outlined,title:'Advance chat privacy',subtitle: "Off",),
+              _columnButton(icon:Icons.privacy_tip_outlined,title:'Advance chat privacy',subtitle: "Off",),
+              // _columnButton(icon:Icons.logout,title:'Logout',),
+
+              ElevatedButton(onPressed: (){
+
+                ref.read(userManagerProvider).signOut();
+              }, child: Text('Logout')),
 
 
             ],
@@ -99,35 +106,41 @@ class ProfilePage extends ConsumerWidget {
 
   Widget _columnButton({required IconData icon, required String title, String? subtitle, bool? showToggle}) {
 
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        children: [
+    return Material(
 
-          Icon(icon,size: 24,),
-          SizedBox(width: 18,),
+      child: InkWell(
+        onTap: (){},
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
 
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(title,style: TextStyle(fontSize: 18), ),
+              Icon(icon,size: 24,),
+              SizedBox(width: 18,),
 
-                if(subtitle!=null)
-                  Text(subtitle,softWrap: true, style: TextStyle(fontSize: 14,color: Colors.grey,),)
-              ],
-            ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(title,style: TextStyle(fontSize: 18), ),
+
+                    if(subtitle!=null)
+                      Text(subtitle,softWrap: true, style: TextStyle(fontSize: 14,color: Colors.grey,),)
+                  ],
+                ),
+              ),
+
+              if(showToggle!=null && showToggle)
+                Switch(value: false, onChanged: (value){},)
+
+
+
+
+
+            ],
           ),
-
-          if(showToggle!=null && showToggle)
-            Switch(value: false, onChanged: (value){},)
-
-
-
-
-
-        ],
+        ),
       ),
     );
   }
