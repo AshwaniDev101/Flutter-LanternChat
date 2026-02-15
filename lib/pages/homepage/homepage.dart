@@ -31,8 +31,8 @@ bool _handleAttention(_HomepagePopupMenu action) {
 
 class Homepage extends StatelessWidget {
 
-  final User user;
-  const Homepage({super.key, required this.user});
+  // final User user;
+  const Homepage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +74,7 @@ class Homepage extends StatelessWidget {
         child: Column(
           children: [
 
-            Text(user.uid),
+            // Text(user.uid),
             _searchBar(),
             _getConversionList(),
 

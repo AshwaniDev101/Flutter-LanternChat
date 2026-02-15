@@ -1,11 +1,25 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lanternchat/core/providers/auth_provider.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends ConsumerWidget {
   const ProfilePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
+
+
+    final user = ref.watch(firebaseAuthProvider).currentUser;
+
+    if(user==null)
+      {
+        return Scaffold(
+          body:Center(
+            child: Text("Something went Wrong 404"),
+          ),
+        );
+      }
     return Scaffold(
 
       body: SafeArea(
@@ -26,7 +40,7 @@ class ProfilePage extends StatelessWidget {
 
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text("Arun",style: TextStyle(fontSize: 20),),
+                child: Text('${user.displayName}',style: TextStyle(fontSize: 20),),
               ),
 
               Padding(
