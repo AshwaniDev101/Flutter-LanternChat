@@ -29,10 +29,10 @@ bool _handleAttention(_HomepagePopupMenu action) {
   return false;
 }
 
-class Homepage extends StatelessWidget {
+class HomePage extends StatelessWidget {
 
   // final User user;
-  const Homepage({super.key});
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {

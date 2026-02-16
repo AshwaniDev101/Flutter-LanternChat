@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lanternchat/core/providers/auth_provider.dart';
-import 'package:lanternchat/pages/homepage/homepage.dart';
+import 'package:lanternchat/pages/login/username_setup_page.dart';
+import 'package:lanternchat/pages/settings/settings_page.dart';
 
-import 'package:lanternchat/pages/loginpage/loginpage.dart';
-import 'package:lanternchat/pages/profilepage/profilepage.dart';
-import 'package:lanternchat/pages/settingspage/settingspage.dart';
+import '../home/home_page.dart';
+import '../login/login_page.dart';
+import '../profile/profilepage.dart';
 
 class GoRouterRefreshStream extends ChangeNotifier {
-
   late final StreamSubscription<dynamic> _subscription;
 
   GoRouterRefreshStream(Stream<dynamic> stream) {
@@ -40,7 +40,7 @@ final goRouterProvider = Provider((ref) {
         return '/login';
       }
       if (user != null && isOnLoginPage) {
-        return '/profile';
+        return '/username_setup';
       }
 
       return null;
@@ -49,7 +49,7 @@ final goRouterProvider = Provider((ref) {
       GoRoute(
         path: '/',
         builder: (BuildContext context, GoRouterState state) {
-          return const Homepage();
+          return const HomePage();
         },
       ),
 
@@ -71,6 +71,13 @@ final goRouterProvider = Provider((ref) {
         path: '/login',
         builder: (BuildContext context, GoRouterState state) {
           return const LoginPage();
+        },
+      ),
+
+      GoRoute(
+        path: '/username_setup',
+        builder: (BuildContext context, GoRouterState state) {
+          return UsernameSetupPage();
         },
       ),
     ],
