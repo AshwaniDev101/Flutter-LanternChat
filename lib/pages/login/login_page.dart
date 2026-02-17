@@ -10,29 +10,45 @@ class LoginPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.grey[100],
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            _appTitle('LanternChat'),
-            const SizedBox(height: 60),
-            Column(
-              children: [
-                // _signInButton(Icons.email, 'Email', Colors.deepOrange[400]!, () {}),
-                // _signInButton(Icons.call, 'Phone Number', Colors.green[400]!, () {}),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
 
-                Consumer(
-                  builder: (BuildContext context, WidgetRef ref, _) {
-                    return _signInButton(Icons.person, 'Google', Colors.deepOrange[400]!, () {
-                      ref.read(userManagerProvider).signInWithGoogle();
-                    });
-                  },
-                ),
-              ],
-            ),
-          ],
-        ),
+
+            Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                  'LanternChat',
+                  // style: TextStyle(fontSize: 28, color: Colors.blueGrey[400], fontWeight: FontWeight.bold),
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .titleMedium),
+
+              SizedBox(width: 10),
+              Icon(Icons.wechat_outlined, size: 40, color: Colors.blueGrey[400]),
+            ],
+          ),
+          const SizedBox(height: 60),
+      Column(
+        children: [
+          // _signInButton(Icons.email, 'Email', Colors.deepOrange[400]!, () {}),
+          // _signInButton(Icons.call, 'Phone Number', Colors.green[400]!, () {}),
+
+          Consumer(
+            builder: (BuildContext context, WidgetRef ref, _) {
+              return _signInButton(Icons.person, 'Google', Colors.deepOrange[400]!, () {
+                ref.read(userManagerProvider).signInWithGoogle();
+              });
+            },
+          ),
+        ],
       ),
+      ],
+    ),)
+    ,
     );
   }
 
@@ -54,7 +70,7 @@ class LoginPage extends StatelessWidget {
             children: [
               Icon(iconData, color: Colors.white),
               SizedBox(width: 10),
-              Text(text, style: TextStyle(color: Colors.white)),
+              Text(text,),
             ],
           ),
         ),
@@ -62,17 +78,5 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  Widget _appTitle(String title) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          title,
-          style: TextStyle(fontSize: 28, color: Colors.blueGrey[400], fontWeight: FontWeight.bold),
-        ),
-        SizedBox(width: 10),
-        Icon(Icons.wechat_outlined, size: 40, color: Colors.blueGrey[400]),
-      ],
-    );
-  }
+
 }

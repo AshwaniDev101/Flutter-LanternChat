@@ -31,6 +31,7 @@ class LanternChat extends ConsumerWidget {
       darkTheme: Themes.lightThemeData,
       theme: Themes.lightThemeData,
       debugShowCheckedModeBanner: false,
+      title: 'Lantern Chat',
     );
   }
 }

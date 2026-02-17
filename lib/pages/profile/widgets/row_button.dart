@@ -19,7 +19,7 @@ class RowButton extends StatelessWidget {
         child: Column(
           children: [
             Icon(icon, size: 24),
-            Text(title, style: TextStyle(fontSize: 16)),
+            Text(title, style: Theme.of(context).textTheme.titleMedium),
           ],
         ),
       ),

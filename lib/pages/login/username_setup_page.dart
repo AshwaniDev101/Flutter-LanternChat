@@ -33,6 +33,7 @@ class UsernameSetupPage extends ConsumerWidget {
             children: [
 
 
+              Text('Welcome', style: Theme.of(context).textTheme.headlineLarge),
               Text('${user.displayName}'),
               Text('${user.email}'),
               Text('${user.phoneNumber}'),

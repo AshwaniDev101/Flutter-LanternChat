@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lanternchat/pages/settings/widgets/list_item.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -22,7 +23,7 @@ class SettingsPage extends StatelessWidget {
                   Column(
                     children: [
                       // User name
-                      Text("Ashwani Yadav", style: TextStyle(fontSize: 18),),
+                      Text("Ashwani Yadav", style: Theme.of(context).textTheme.titleMedium,),
                       ElevatedButton(onPressed: () {}, child: Text('status')),
                     ],
                   ),
@@ -37,21 +38,21 @@ class SettingsPage extends StatelessWidget {
               ),
               SizedBox(height: 10,),
 
-              _listItem(icon: Icons.vpn_key_outlined, title: "Account", subtitle: "Security notification, change email"),
-              _listItem(
+              ListItem(icon: Icons.vpn_key_outlined, title: "Account", subtitle: "Security notification, change email"),
+              ListItem(
                 icon: Icons.lock_outline_rounded,
                 title: "Privacy",
                 subtitle: "Block contacts, disappearing messages",
               ),
-              _listItem(icon: Icons.face, title: "Avatar", subtitle: "Create, edit, profile photo"),
-              _listItem(icon: Icons.list_alt, title: "Lists", subtitle: "Manage people and groups"),
-              _listItem(icon: Icons.chat_outlined, title: "Chats", subtitle: "Theme, wallpapers, chat history"),
-              _listItem(icon: Icons.notifications_none_outlined, title: "Notification", subtitle: "Message, group & call tones"),
-              _listItem(icon: Icons.security_update, title: "App update"),
+              ListItem(icon: Icons.face, title: "Avatar", subtitle: "Create, edit, profile photo"),
+              ListItem(icon: Icons.list_alt, title: "Lists", subtitle: "Manage people and groups"),
+              ListItem(icon: Icons.chat_outlined, title: "Chats", subtitle: "Theme, wallpapers, chat history"),
+              ListItem(icon: Icons.notifications_none_outlined, title: "Notification", subtitle: "Message, group & call tones"),
+              ListItem(icon: Icons.security_update, title: "App update"),
 
               SizedBox(height: 20,),
-              Text("Thanks for using this app",style: TextStyle(color: Colors.grey),),
-              Text("Drop a hello in any of my socials", style: TextStyle(color: Colors.grey),),
+              Text("Thanks for using this app",style: Theme.of(context).textTheme.bodySmall,),
+              Text("Drop a hello in any of my socials", style: Theme.of(context).textTheme.bodySmall,),
 
 
             ],
@@ -61,23 +62,5 @@ class SettingsPage extends StatelessWidget {
     );
   }
 
-  Widget _listItem({required IconData icon, required String title, String? subtitle}) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        children: [
-          Icon(icon, color: Colors.grey[700],),
-          SizedBox(width: 10,),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(title,style: TextStyle(color: Colors.grey[700],fontWeight: FontWeight.bold),),
-              if (subtitle != null) Text(subtitle, style: TextStyle(color: Colors.grey)),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
+
 }
