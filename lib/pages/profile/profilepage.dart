@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lanternchat/core/providers/auth_provider.dart';
 import 'package:lanternchat/core/providers/user_manager_provider.dart';
+import 'package:lanternchat/pages/profile/widgets/column_button.dart';
+import 'package:lanternchat/pages/profile/widgets/row_button.dart';
 
 class ProfilePage extends ConsumerWidget {
   const ProfilePage({super.key});
@@ -37,8 +39,8 @@ class ProfilePage extends ConsumerWidget {
                 child: Column(
                   children: [
 
-                    Text('${user.displayName}', style: TextStyle(fontSize: 20)),
-                    Text('${user.email}', style: TextStyle(fontSize: 12,)),
+                    Text('${user.displayName}', style: Theme.of(context).textTheme.titleLarge),
+                    Text('${user.email}', style: Theme.of(context).textTheme.titleSmall),
                   ],
                 ),
               ),
@@ -52,41 +54,41 @@ class ProfilePage extends ConsumerWidget {
                   // crossAxisAlignment: CrossAxisAlignment.baseline,
                   children: [
                     Expanded(
-                      child: _rowButton(icon: Icons.message_outlined, title: 'Message'),
+                      child: RowButton(icon: Icons.message_outlined, title: 'Message'),
                     ),
                     SizedBox(width: 10),
                     Expanded(
-                      child: _rowButton(icon: Icons.call_outlined, title: 'Audio'),
+                      child: RowButton(icon: Icons.call_outlined, title: 'Audio'),
                     ),
                     SizedBox(width: 10),
                     Expanded(
-                      child: _rowButton(icon: Icons.videocam_outlined, title: 'Video'),
+                      child: RowButton(icon: Icons.videocam_outlined, title: 'Video'),
                     ),
                     SizedBox(width: 10),
                     Expanded(
-                      child: _rowButton(icon: Icons.note_alt_outlined, title: 'Note'),
+                      child: RowButton(icon: Icons.note_alt_outlined, title: 'Note'),
                     ),
                   ],
                 ),
               ),
 
-              _columnButton(icon: Icons.notifications_none_outlined, title: 'Notifications'),
-              _columnButton(icon: Icons.star_border_outlined, title: 'Starred messages'),
-              _columnButton(
+              ColumnButton(icon: Icons.notifications_none_outlined, title: 'Notifications'),
+              ColumnButton(icon: Icons.star_border_outlined, title: 'Starred messages'),
+              ColumnButton(
                 icon: Icons.lock_outline_rounded,
                 title: 'Encryption',
                 subtitle: "Messages and calls are end-to-end encrypted. Tap to verify",
               ),
-              _columnButton(icon: Icons.timer_outlined, title: 'Disappearing messages', subtitle: 'Off'),
-              _columnButton(
+              ColumnButton(icon: Icons.timer_outlined, title: 'Disappearing messages', subtitle: 'Off'),
+              ColumnButton(
                 icon: Icons.mail_lock_outlined,
                 title: 'Chat lock',
                 subtitle: "Lock and hide this chat on this device",
                 showToggle: true,
               ),
-              _columnButton(icon: Icons.privacy_tip_outlined, title: 'Advance chat privacy', subtitle: "Off"),
+              ColumnButton(icon: Icons.privacy_tip_outlined, title: 'Advance chat privacy', subtitle: "Off"),
 
-              // _columnButton(icon:Icons.logout,title:'Logout',),
+              // ColumnButton(icon:Icons.logout,title:'Logout',),
               ElevatedButton(
                 onPressed: () {
                   ref.read(userManagerProvider).signOut();
@@ -100,53 +102,36 @@ class ProfilePage extends ConsumerWidget {
     );
   }
 
-  Widget _rowButton({required IconData icon, required String title}) {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(width: 2, color: Colors.grey),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        child: Column(
-          children: [
-            Icon(icon, size: 24),
-            Text(title, style: TextStyle(fontSize: 16)),
-          ],
-        ),
-      ),
-    );
-  }
 
-  Widget _columnButton({required IconData icon, required String title, String? subtitle, bool? showToggle}) {
-    return Material(
-      child: InkWell(
-        onTap: () {},
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            children: [
-              Icon(icon, size: 24),
-              SizedBox(width: 18),
-
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(title, style: TextStyle(fontSize: 18)),
-
-                    if (subtitle != null)
-                      Text(subtitle, softWrap: true, style: TextStyle(fontSize: 14, color: Colors.grey)),
-                  ],
-                ),
-              ),
-
-              if (showToggle != null && showToggle) Switch(value: false, onChanged: (value) {}),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+  // Widget ColumnButton({required IconData icon, required String title, String? subtitle, bool? showToggle}) {
+  //   return Material(
+  //     child: InkWell(
+  //       onTap: () {},
+  //       child: Padding(
+  //         padding: const EdgeInsets.all(8.0),
+  //         child: Row(
+  //           children: [
+  //             Icon(icon, size: 24),
+  //             SizedBox(width: 18),
+  //
+  //             Expanded(
+  //               child: Column(
+  //                 mainAxisAlignment: MainAxisAlignment.start,
+  //                 crossAxisAlignment: CrossAxisAlignment.start,
+  //                 children: [
+  //                   Text(title, style: Theme.of(context).textTheme.titleMedium),
+  //
+  //                   if (subtitle != null)
+  //                     Text(subtitle, softWrap: true, style: Theme.of(context).textTheme.titleSmall),
+  //                 ],
+  //               ),
+  //             ),
+  //
+  //             if (showToggle != null && showToggle) Switch(value: false, onChanged: (value) {}),
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 }
