@@ -1,15 +1,12 @@
-
 import 'package:flutter/material.dart';
 
-class TextStyles
-{
+class TextStyles {
   // TextStyles
   // Display   → Huge text (hero / splash / marketing)
   // Headline  → Big section headers
   // Title     → Card / dialog titles
   // Body      → Normal readable text
   // Label     → Buttons, small UI labels
-
 
   // === Default text Styles ===
   // Style Font    Size	Weight	Typical Use
@@ -28,8 +25,6 @@ class TextStyles
   // labelLarge    	14	500	    Button text
   // labelMedium	  12	500	    Tabs/Chips
   // labelSmall	    11	500	    Tiny labels
-  
-  static const TextTheme textTheme = TextTheme(
 
-  );
+  static const TextTheme textTheme = TextTheme();
 }

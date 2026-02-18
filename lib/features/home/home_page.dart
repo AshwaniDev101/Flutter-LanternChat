@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 enum _HomepagePopupMenu { newGroup, newCommunity, broadcastList, linkedDevices, starred, payments, readAll, settings }
@@ -30,7 +29,6 @@ bool _handleAttention(_HomepagePopupMenu action) {
 }
 
 class HomePage extends StatelessWidget {
-
   // final User user;
   const HomePage({super.key});
 
@@ -73,11 +71,9 @@ class HomePage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 8),
         child: Column(
           children: [
-
             // Text(user.uid),
             _searchBar(),
             _getConversionList(),
-
           ],
         ),
       ),
@@ -119,46 +115,42 @@ class HomePage extends StatelessWidget {
 
   Widget _getConversionList() {
     return Expanded(
-      child: ListView.builder(itemCount: 10, itemBuilder: (context, index) {
-        return _card(index);
-      }),
+      child: ListView.builder(
+        itemCount: 10,
+        itemBuilder: (context, index) {
+          return _card(index);
+        },
+      ),
     );
   }
 
   Widget _card(int index) {
     return Card(
-
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(
           children: [
-            Container(width: 40,
+            Container(
+              width: 40,
               height: 40,
-              decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(50)), color: Colors.blue),),
-            SizedBox(width: 10,),
+              decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(50)), color: Colors.blue),
+            ),
+            SizedBox(width: 10),
             Expanded(
               child: Column(
-
                 children: [
-                  Row(
-
-                    children: [
-                      Text("Name $index :"),
-                      Spacer(),
-                      Text("1/12/26"),
-                    ],
-                  ),
+                  Row(children: [Text("Name $index :"), Spacer(), Text("1/12/26")]),
 
                   Row(
                     children: [
                       Text("Message: $index some random long very long message"),
                       Spacer(),
-                      Icon(Icons.push_pin_rounded, size: 16,)
+                      Icon(Icons.push_pin_rounded, size: 16),
                     ],
-                  )
+                  ),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -167,16 +159,13 @@ class HomePage extends StatelessWidget {
 
   Widget _bottomBar() {
     return BottomNavigationBar(
-
       selectedItemColor: Colors.teal,
       unselectedItemColor: Colors.grey,
       items: [
         BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Chat'),
         BottomNavigationBarItem(icon: Icon(Icons.newspaper), label: 'Update'),
-        BottomNavigationBarItem(icon: Icon(Icons.groups,), label: 'Communities'),
-        BottomNavigationBarItem(icon: Icon(Icons.call,), label: 'Calls'),
-
-
+        BottomNavigationBarItem(icon: Icon(Icons.groups), label: 'Communities'),
+        BottomNavigationBarItem(icon: Icon(Icons.call), label: 'Calls'),
       ],
     );
   }

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 
 class RowButton extends StatelessWidget {
-
-
   final IconData icon;
   final String title;
+
   const RowButton({required this.icon, required this.title, super.key});
 
   @override

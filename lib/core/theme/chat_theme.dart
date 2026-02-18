@@ -9,8 +9,11 @@ class ChatTheme extends ThemeExtension<ChatTheme> {
 
   @override
   ThemeExtension<ChatTheme> copyWith({Color? senderBubble, Color? receivedBubble, Color? muteColor}) {
-
-    return ChatTheme(senderBubble: senderBubble??this.senderBubble, receivedBubble: receivedBubble??this.receivedBubble, muteColor: muteColor??this.muteColor);
+    return ChatTheme(
+      senderBubble: senderBubble ?? this.senderBubble,
+      receivedBubble: receivedBubble ?? this.receivedBubble,
+      muteColor: muteColor ?? this.muteColor,
+    );
   }
 
   @override

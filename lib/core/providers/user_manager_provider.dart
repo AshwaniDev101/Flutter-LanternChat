@@ -18,11 +18,7 @@ class UserManager {
   Future<User?> signInWithGoogle() async {
     try {
       // This triggers Google Account Picker
-      final GoogleSignInAccount? googleUser = await _googleSignIn.authenticate();
-
-      if (googleUser == null) {
-        return null;
-      }
+      final GoogleSignInAccount googleUser = await _googleSignIn.authenticate();
 
       // Gets ID token. Proof this user authenticated.
       final GoogleSignInAuthentication googleAuth = googleUser.authentication;

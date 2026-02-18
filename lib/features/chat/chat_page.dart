@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lanternchat/style/chat_theme.dart';
+
+import '../../core/theme/chat_theme.dart';
 
 // Popup Option menu for the Chat page
 enum ChatpagePopupMenu {
@@ -76,7 +77,6 @@ class Chatpage extends StatelessWidget {
           final bool isSelf = index % 2 == 0;
 
           return chatBubble(context, chatTheme, isSelf);
-
         },
       ),
     );
@@ -86,8 +86,7 @@ class Chatpage extends StatelessWidget {
     return Row(
       mainAxisAlignment: isSelf ? MainAxisAlignment.start : MainAxisAlignment.end,
       children: [
-
-        if(!isSelf)
+        if (!isSelf)
           IconButton(
             onPressed: () {},
             icon: Icon(Icons.subdirectory_arrow_right_outlined, color: chatTheme.muteColor),
@@ -116,11 +115,11 @@ class Chatpage extends StatelessWidget {
           ),
         ),
 
-        if(isSelf)
-        IconButton(
-          onPressed: () {},
-          icon: Icon(Icons.subdirectory_arrow_right_outlined, color: chatTheme.muteColor),
-        ),
+        if (isSelf)
+          IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.subdirectory_arrow_right_outlined, color: chatTheme.muteColor),
+          ),
       ],
     );
   }

@@ -4,12 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lanternchat/core/providers/auth_provider.dart';
-import 'package:lanternchat/pages/login/username_setup_page.dart';
-import 'package:lanternchat/pages/settings/settings_page.dart';
 
-import '../home/home_page.dart';
-import '../login/login_page.dart';
-import '../profile/profilepage.dart';
+import '../../features/home/home_page.dart';
+import '../../features/login/login_page.dart';
+import '../../features/profile/profile_page.dart';
+import '../../features/settings/settings_page.dart';
 
 class GoRouterRefreshStream extends ChangeNotifier {
   late final StreamSubscription<dynamic> _subscription;
@@ -74,12 +73,12 @@ final goRouterProvider = Provider((ref) {
         },
       ),
 
-      GoRoute(
-        path: '/username_setup',
-        builder: (BuildContext context, GoRouterState state) {
-          return UsernameSetupPage();
-        },
-      ),
+      // GoRoute(
+      //   path: '/username_setup',
+      //   builder: (BuildContext context, GoRouterState state) {
+      //     return UsernameSetupPage();
+      //   },
+      // ),
     ],
   );
 });

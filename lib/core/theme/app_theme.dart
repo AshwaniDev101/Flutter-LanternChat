@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:lanternchat/style/app_colors.dart';
-import 'package:lanternchat/style/chat_theme.dart';
+
+import 'app_colors.dart';
+import 'chat_theme.dart';
 
 class Themes {
   static ThemeData get lightThemeData => ThemeData(

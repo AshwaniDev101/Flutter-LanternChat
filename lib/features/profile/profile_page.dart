@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lanternchat/core/providers/auth_provider.dart';
 import 'package:lanternchat/core/providers/user_manager_provider.dart';
-import 'package:lanternchat/pages/profile/widgets/column_button.dart';
-import 'package:lanternchat/pages/profile/widgets/row_button.dart';
+import 'package:lanternchat/features/profile/widgets/column_button.dart';
+import 'package:lanternchat/features/profile/widgets/row_button.dart';
 
 class ProfilePage extends ConsumerWidget {
   const ProfilePage({super.key});
@@ -33,19 +33,15 @@ class ProfilePage extends ConsumerWidget {
                 ),
               ),
 
-
               Padding(
                 padding: const EdgeInsets.all(8),
                 child: Column(
                   children: [
-
                     Text('${user.displayName}', style: Theme.of(context).textTheme.titleLarge),
                     Text('${user.email}', style: Theme.of(context).textTheme.titleSmall),
                   ],
                 ),
               ),
-
-
 
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -102,7 +98,6 @@ class ProfilePage extends ConsumerWidget {
     );
   }
 
-
   // Widget ColumnButton({required IconData icon, required String title, String? subtitle, bool? showToggle}) {
   //   return Material(
   //     child: InkWell(
@@ -119,10 +114,10 @@ class ProfilePage extends ConsumerWidget {
   //                 mainAxisAlignment: MainAxisAlignment.start,
   //                 crossAxisAlignment: CrossAxisAlignment.start,
   //                 children: [
-  //                   Text(title, style: Theme.of(context).textTheme.titleMedium),
+  //                   Text(title, theme: Theme.of(context).textTheme.titleMedium),
   //
   //                   if (subtitle != null)
-  //                     Text(subtitle, softWrap: true, style: Theme.of(context).textTheme.titleSmall),
+  //                     Text(subtitle, softWrap: true, theme: Theme.of(context).textTheme.titleSmall),
   //                 ],
   //               ),
   //             ),

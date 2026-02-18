@@ -1,13 +1,12 @@
-
 import 'package:flutter/material.dart';
 
 class ColumnButton extends StatelessWidget {
-
   final IconData icon;
   final String title;
   final String? subtitle;
   final bool showToggle;
-  const ColumnButton({required this.icon, required this.title, this.subtitle, this.showToggle=false, super.key});
+
+  const ColumnButton({required this.icon, required this.title, this.subtitle, this.showToggle = false, super.key});
 
   @override
   Widget build(BuildContext context) {
