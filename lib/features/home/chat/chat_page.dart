@@ -18,7 +18,7 @@ class ChatPage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(child: const Icon(Icons.add_comment_rounded), onPressed: () {
 
-        context.go(AppRoute.selectContact);
+        context.push(AppRoute.selectContact);
       }),
     );
   }

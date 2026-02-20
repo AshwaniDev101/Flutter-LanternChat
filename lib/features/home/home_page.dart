@@ -131,9 +131,10 @@ class _HomePageState extends State<HomePage> {
       case _HomepagePopupMenu.readAll:
         break;
       case _HomepagePopupMenu.settings:
+        context.push(AppRoute.settings);
         break;
       case _HomepagePopupMenu.profile:
-        context.go(AppRoute.profile);
+        context.push(AppRoute.profile);
         break;
     }
   }

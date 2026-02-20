@@ -19,7 +19,7 @@ class NewButton extends StatelessWidget {
             Container(
               width: 40,
               height: 40,
-              decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.green),
+              decoration: BoxDecoration(shape: BoxShape.circle, color: Theme.of(context).secondaryHeaderColor),
               child: Icon(icon,size: 24,),
             ),
             SizedBox(width: 20),

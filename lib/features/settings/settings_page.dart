@@ -1,11 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lanternchat/core/providers/auth_provider.dart';
 import 'package:lanternchat/features/settings/widgets/list_item.dart';
+import 'package:lanternchat/shared/widgets/circular_image.dart';
 
-class SettingsPage extends StatelessWidget {
+class SettingsPage extends ConsumerWidget {
   const SettingsPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
+
+    final user = ref.watch(firebaseAuthProvider).currentUser;
+
+    if (user == null) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(title: Text("Settings")),
       body: SafeArea(
@@ -16,12 +28,12 @@ class SettingsPage extends StatelessWidget {
               SizedBox(height: 20),
               Row(
                 children: [
-                  CircleAvatar(radius: 40),
+                  UserAvatar(imageUrl: user.photoURL, radius: 40,),
                   SizedBox(width: 10),
                   Column(
                     children: [
                       // User name
-                      Text("Ashwani Yadav", style: Theme.of(context).textTheme.titleMedium),
+                      Text(user.displayName.toString(), style: Theme.of(context).textTheme.titleMedium),
                       ElevatedButton(onPressed: () {}, child: Text('status')),
                     ],
                   ),
@@ -30,7 +42,7 @@ class SettingsPage extends StatelessWidget {
                   IconButton(onPressed: () {}, icon: Icon(Icons.qr_code)),
                   IconButton(
                     onPressed: () {},
-                    icon: Icon(Icons.add_circle_outline_rounded, color: Colors.green),
+                    icon: Icon(Icons.add_circle_outline_rounded, color: Theme.of(context).primaryColor),
                   ),
                 ],
               ),
