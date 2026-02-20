@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lanternchat/core/rooter/router_provider.dart';
 import 'package:lanternchat/features/home/calls/calls_pages.dart';
 import 'package:lanternchat/features/home/chat/chat_page.dart';
 import 'package:lanternchat/features/home/communities/communities_page.dart';
@@ -132,7 +133,7 @@ class _HomePageState extends State<HomePage> {
       case _HomepagePopupMenu.settings:
         break;
       case _HomepagePopupMenu.profile:
-        context.go('/profile');
+        context.go(AppRoute.profile);
         break;
     }
   }

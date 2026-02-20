@@ -14,6 +14,11 @@ import '../../features/settings/settings_page.dart';
 class GoRouterRefreshStream extends ChangeNotifier {
   late final StreamSubscription<dynamic> _subscription;
 
+  /// notifyListeners() is provided by ChangeNotifier.
+  /// When the stream emits a new value, stream.listen() captures it
+  /// and triggers notifyListeners() to refresh GoRouter.
+  /// The StreamSubscription is stored so it can be properly cancelled in dispose().
+
   GoRouterRefreshStream(Stream<dynamic> stream) {
     _subscription = stream.listen((_) => notifyListeners());
   }
@@ -25,6 +30,15 @@ class GoRouterRefreshStream extends ChangeNotifier {
   }
 }
 
+class AppRoute
+{
+  static const home = '/';
+  static const login = '/login';
+  static const profile = '/profile';
+  static const settings = '/settings';
+  static const selectContact = '/select-contact';
+}
+
 final goRouterProvider = Provider((ref) {
   final auth = ref.watch(firebaseAuthProvider);
 
@@ -33,52 +47,53 @@ final goRouterProvider = Provider((ref) {
     initialLocation: '/login',
     // redirect run on every route change.
     redirect: (BuildContext context, GoRouterState state) {
-      final user = ref.watch(firebaseAuthProvider).currentUser;
-      final isOnLoginPage = state.matchedLocation == '/login';
+      final user = auth.currentUser;
+      final isOnLoginPage = state.matchedLocation == AppRoute.login;
 
       if (user == null && !isOnLoginPage) {
-        return '/login';
+        return AppRoute.login;
       }
       if (user != null && isOnLoginPage) {
-        return '/';
+        return AppRoute.home;
       }
 
       return null;
     },
     routes: <RouteBase>[
       GoRoute(
-        path: '/',
+        path: AppRoute.home,
         builder: (BuildContext context, GoRouterState state) {
           return const HomePage();
         },
       ),
 
       GoRoute(
-        path: '/profile',
+        path: AppRoute.profile,
         builder: (BuildContext context, GoRouterState state) {
           return const ProfilePage();
         },
       ),
 
       GoRoute(
-        path: '/settings',
+        path: AppRoute.settings,
         builder: (BuildContext context, GoRouterState state) {
           return const SettingsPage();
         },
       ),
 
       GoRoute(
-        path: '/login',
+        path: AppRoute.login,
         builder: (BuildContext context, GoRouterState state) {
           return const LoginPage();
         },
       ),
 
-      GoRoute(path: '/select-contact',
+      GoRoute(
+        path: AppRoute.selectContact,
         builder: (BuildContext context, GoRouterState state) {
           return const SelectContactPage();
         },
-      )
+      ),
 
       // GoRoute(
       //   path: '/username_setup',

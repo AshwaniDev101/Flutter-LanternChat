@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../core/rooter/router_provider.dart';
+
 class ChatPage extends StatelessWidget {
   const ChatPage({super.key});
 
@@ -16,7 +18,7 @@ class ChatPage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(child: const Icon(Icons.add_comment_rounded), onPressed: () {
 
-        context.go('/select-contact');
+        context.go(AppRoute.selectContact);
       }),
     );
   }
