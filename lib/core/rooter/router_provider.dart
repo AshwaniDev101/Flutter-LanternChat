@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lanternchat/core/providers/auth_provider.dart';
+import 'package:lanternchat/features/home/chat/select_contact/select_contact_page.dart';
 
 import '../../features/home/home_page.dart';
 import '../../features/login/login_page.dart';
@@ -72,6 +73,12 @@ final goRouterProvider = Provider((ref) {
           return const LoginPage();
         },
       ),
+
+      GoRoute(path: '/select-contact',
+        builder: (BuildContext context, GoRouterState state) {
+          return const SelectContactPage();
+        },
+      )
 
       // GoRoute(
       //   path: '/username_setup',

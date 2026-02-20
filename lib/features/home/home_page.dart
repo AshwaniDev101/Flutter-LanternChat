@@ -58,7 +58,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(child: const Icon(Icons.chat_outlined), onPressed: () {}),
+
       appBar: AppBar(
         title: Text('LanternChat'),
         actions: [

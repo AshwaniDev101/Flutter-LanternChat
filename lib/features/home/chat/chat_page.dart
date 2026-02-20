@@ -1,27 +1,37 @@
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class ChatPage extends StatelessWidget {
   const ChatPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        _searchBar(),
-        _getConversionList(),
-      ],
+    return Scaffold(
+      body: Column(
+        children: [
+          _searchBar(),
+          _getConversionList(),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(child: const Icon(Icons.add_comment_rounded), onPressed: () {
+
+        context.go('/select-contact');
+      }),
     );
   }
 
 
   Widget _searchBar() {
-    return TextField(
-      decoration: InputDecoration(
-        prefixIcon: Icon(Icons.search),
-        hintText: 'Search',
-        filled: true,
-        border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(40))),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: TextField(
+        decoration: InputDecoration(
+          prefixIcon: Icon(Icons.search),
+          hintText: 'Search',
+          filled: true,
+          border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(40))),
+        ),
       ),
     );
   }
