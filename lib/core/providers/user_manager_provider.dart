@@ -18,10 +18,10 @@ class UserManager {
   Future<User?> signInWithGoogle() async {
     try {
       // This triggers Google Account Picker
-      final GoogleSignInAccount googleUser = await _googleSignIn.authenticate();
+      final GoogleSignInAccount googleAccount = await _googleSignIn.authenticate();
 
       // Gets ID token. Proof this user authenticated.
-      final GoogleSignInAuthentication googleAuth = googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth = googleAccount.authentication;
 
       // Creates Firebase credential.
       final OAuthCredential oAuthCredential = GoogleAuthProvider.credential(idToken: googleAuth.idToken);

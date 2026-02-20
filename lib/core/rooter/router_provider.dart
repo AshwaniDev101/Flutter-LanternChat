@@ -39,7 +39,7 @@ final goRouterProvider = Provider((ref) {
         return '/login';
       }
       if (user != null && isOnLoginPage) {
-        return '/username_setup';
+        return '/';
       }
 
       return null;

@@ -1,5 +1,5 @@
 name: lanternchat
-description: "A simple, reliable one-to-one chat application focused on clean architecture, predictable state management, and real-time messaging."
+description: "A simple, reliable one-to-one conversation application focused on clean architecture, predictable state management, and real-time messaging."
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 

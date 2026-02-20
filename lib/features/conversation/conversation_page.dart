@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../core/theme/chat_theme.dart';
 
 // Popup Option menu for the Chat page
-enum ChatpagePopupMenu {
+enum ConversationPagePopupMenu {
   newGroup,
   viewContact,
   search,
@@ -15,23 +15,23 @@ enum ChatpagePopupMenu {
 }
 
 // extension allows additional functionality to enums
-extension on ChatpagePopupMenu {
+extension on ConversationPagePopupMenu {
   String get action {
     return switch (this) {
-      ChatpagePopupMenu.newGroup => "New Group",
-      ChatpagePopupMenu.viewContact => "View Contact",
-      ChatpagePopupMenu.search => "Search",
-      ChatpagePopupMenu.mediaLinksDocs => "Media, Links, and Docs",
-      ChatpagePopupMenu.muteNotifications => "Mute Notifications",
-      ChatpagePopupMenu.disappearingMessages => "Disappearing Messages",
-      ChatpagePopupMenu.chatTheme => "Chat Theme",
-      ChatpagePopupMenu.more => "More",
+      ConversationPagePopupMenu.newGroup => "New Group",
+      ConversationPagePopupMenu.viewContact => "View Contact",
+      ConversationPagePopupMenu.search => "Search",
+      ConversationPagePopupMenu.mediaLinksDocs => "Media, Links, and Docs",
+      ConversationPagePopupMenu.muteNotifications => "Mute Notifications",
+      ConversationPagePopupMenu.disappearingMessages => "Disappearing Messages",
+      ConversationPagePopupMenu.chatTheme => "Chat Theme",
+      ConversationPagePopupMenu.more => "More",
     };
   }
 }
 
-class Chatpage extends StatelessWidget {
-  const Chatpage({super.key});
+class ConversationPage extends StatelessWidget {
+  const ConversationPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +52,7 @@ class Chatpage extends StatelessWidget {
         IconButton(onPressed: () {}, icon: Icon(Icons.call_outlined)),
         PopupMenuButton(
           itemBuilder: (context) {
-            return ChatpagePopupMenu.values.map((value) {
+            return ConversationPagePopupMenu.values.map((value) {
               return PopupMenuItem(value: value, child: Text(value.action));
             }).toList();
           },
@@ -61,7 +61,7 @@ class Chatpage extends StatelessWidget {
     );
   }
 
-  // This is the main chat window with all the chat messages
+  // This is the main conversation window with all the conversation messages
   Widget _messageList(BuildContext context) {
     final chatTheme = Theme.of(context).extension<ChatTheme>()!;
 

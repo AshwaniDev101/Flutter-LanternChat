@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:lanternchat/features/home/calls/calls_pages.dart';
+import 'package:lanternchat/features/home/chat/chat_page.dart';
+import 'package:lanternchat/features/home/communities/communities_page.dart';
+import 'package:lanternchat/features/home/update/update_page.dart';
 
 enum _HomepagePopupMenu { newGroup, newCommunity, broadcastList, linkedDevices, starred, payments, readAll, settings }
 
@@ -28,13 +32,33 @@ bool _handleAttention(_HomepagePopupMenu action) {
   return false;
 }
 
-class HomePage extends StatelessWidget {
-  // final User user;
+
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+
+
+  int _currentIndex = 0;
+
+  final List<Widget> _pages = [
+
+    ChatPage(),
+    UpdatePage(),
+    CommunitiesPage(),
+    CallsPages(),
+
+
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(child: const Icon(Icons.chat_outlined), onPressed: () {}),
       appBar: AppBar(
         title: Text('LanternChat'),
         actions: [
@@ -67,16 +91,22 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        child: Column(
-          children: [
-            // Text(user.uid),
-            _searchBar(),
-            _getConversionList(),
-          ],
-        ),
+
+      body: IndexedStack(
+        index: _currentIndex,
+        children: _pages,
       ),
+      // body: Padding(
+      //   padding: const EdgeInsets.symmetric(horizontal: 8),
+      //   child: Column(
+      //     children: [
+      //       // Text(user.uid),
+      //       SizedBox(height: 14),
+      //       _searchBar(),
+      //       _getConversionList(),
+      //     ],
+      //   ),
+      // ),
       bottomNavigationBar: _bottomBar(),
     );
   }
@@ -102,60 +132,7 @@ class HomePage extends StatelessWidget {
     }
   }
 
-  Widget _searchBar() {
-    return TextField(
-      decoration: InputDecoration(
-        prefixIcon: Icon(Icons.search),
-        hintText: 'Search',
-        filled: true,
-        border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(40))),
-      ),
-    );
-  }
 
-  Widget _getConversionList() {
-    return Expanded(
-      child: ListView.builder(
-        itemCount: 10,
-        itemBuilder: (context, index) {
-          return _card(index);
-        },
-      ),
-    );
-  }
-
-  Widget _card(int index) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          children: [
-            Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(50)), color: Colors.blue),
-            ),
-            SizedBox(width: 10),
-            Expanded(
-              child: Column(
-                children: [
-                  Row(children: [Text("Name $index :"), Spacer(), Text("1/12/26")]),
-
-                  Row(
-                    children: [
-                      Text("Message: $index some random long very long message"),
-                      Spacer(),
-                      Icon(Icons.push_pin_rounded, size: 16),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 
   Widget _bottomBar() {
     return BottomNavigationBar(
@@ -165,8 +142,17 @@ class HomePage extends StatelessWidget {
         BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Chat'),
         BottomNavigationBarItem(icon: Icon(Icons.newspaper), label: 'Update'),
         BottomNavigationBarItem(icon: Icon(Icons.groups), label: 'Communities'),
-        BottomNavigationBarItem(icon: Icon(Icons.call), label: 'Calls'),
+        BottomNavigationBarItem(icon: Icon(Icons.call), label: 'calls'),
       ],
+
+      onTap: (index){
+
+        setState(() {
+          _currentIndex = index;
+        });
+      },
     );
   }
 }
+
+

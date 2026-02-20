@@ -44,7 +44,7 @@ class SettingsPage extends StatelessWidget {
               ),
               ListItem(icon: Icons.face, title: "Avatar", subtitle: "Create, edit, profile photo"),
               ListItem(icon: Icons.list_alt, title: "Lists", subtitle: "Manage people and groups"),
-              ListItem(icon: Icons.chat_outlined, title: "Chats", subtitle: "Theme, wallpapers, chat history"),
+              ListItem(icon: Icons.chat_outlined, title: "Chats", subtitle: "Theme, wallpapers, conversation history"),
               ListItem(
                 icon: Icons.notifications_none_outlined,
                 title: "Notification",
