@@ -4,6 +4,7 @@ import 'package:lanternchat/core/providers/auth_provider.dart';
 import 'package:lanternchat/core/providers/user_manager_provider.dart';
 import 'package:lanternchat/features/profile/widgets/column_button.dart';
 import 'package:lanternchat/features/profile/widgets/row_button.dart';
+import 'package:lanternchat/shared/widgets/circular_image.dart';
 
 class ProfilePage extends ConsumerWidget {
   const ProfilePage({super.key});
@@ -25,12 +26,8 @@ class ProfilePage extends ConsumerWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: CircleAvatar(
-                  radius: 60,
-                  backgroundImage: user.photoURL != null ? NetworkImage(user.photoURL!) : null,
 
-                  child: user.photoURL == null ? Icon(Icons.person, size: 60) : null,
-                ),
+                child: UserAvatar(radius: 60, imageUrl: user.photoURL),
               ),
 
               Padding(

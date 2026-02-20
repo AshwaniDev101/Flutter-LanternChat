@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lanternchat/features/home/calls/calls_pages.dart';
 import 'package:lanternchat/features/home/chat/chat_page.dart';
 import 'package:lanternchat/features/home/communities/communities_page.dart';
 import 'package:lanternchat/features/home/update/update_page.dart';
 
-enum _HomepagePopupMenu { newGroup, newCommunity, broadcastList, linkedDevices, starred, payments, readAll, settings }
+enum _HomepagePopupMenu { newGroup, newCommunity, broadcastList, linkedDevices, starred, payments, readAll, settings, profile }
 
 extension on _HomepagePopupMenu {
   String get label {
@@ -17,6 +18,7 @@ extension on _HomepagePopupMenu {
       _HomepagePopupMenu.payments => 'Payments',
       _HomepagePopupMenu.readAll => 'Read all',
       _HomepagePopupMenu.settings => 'Settings',
+      _HomepagePopupMenu.profile => 'Profile',
     };
   }
 
@@ -128,6 +130,9 @@ class _HomePageState extends State<HomePage> {
       case _HomepagePopupMenu.readAll:
         break;
       case _HomepagePopupMenu.settings:
+        break;
+      case _HomepagePopupMenu.profile:
+        context.go('/profile');
         break;
     }
   }
