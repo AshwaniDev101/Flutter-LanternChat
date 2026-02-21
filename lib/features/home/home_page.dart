@@ -143,6 +143,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget _bottomBar() {
     return BottomNavigationBar(
+      currentIndex: _currentIndex,
       selectedItemColor: Colors.teal,
       unselectedItemColor: Colors.grey,
       items: [

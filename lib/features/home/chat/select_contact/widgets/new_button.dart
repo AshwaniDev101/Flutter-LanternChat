@@ -13,7 +13,7 @@ class NewButton extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
+        padding: const EdgeInsets.all(8),
         child: Row(
           children: [
             Container(

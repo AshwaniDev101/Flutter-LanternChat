@@ -14,9 +14,12 @@ class SelectContactPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(title: Text('Select Contacts')),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 0),
         child: Column(
+
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+
             Column(
               children: [
                 NewButton(icon: Icons.group_add, title: 'New group', onTap: () {}),
@@ -30,12 +33,18 @@ class SelectContactPage extends ConsumerWidget {
                 NewButton(icon: Icons.groups, title: 'New Community', onTap: () {}),
               ],
             ),
-            Text('Contact on LanternChat'),
+
+            Padding(
+              padding: const EdgeInsets.all(8),
+              child: Text('Contact on LanternChat'),
+            ),
             Expanded(
               child: ListView.builder(
                 itemCount: 20,
                 itemBuilder: (context, index) {
-                  return Contact(imageUrl: dummyUser?.photoURL,name: dummyUser!.displayName.toString(), status: '');
+                  return Contact(imageUrl: dummyUser?.photoURL,name: dummyUser!.displayName.toString(), status: 'Hello im on LanternChat', onClick:(){
+
+                  });
                 },
               ),
             ),

@@ -10,11 +10,14 @@ class ChatPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          _searchBar(),
-          _getConversionList(),
-        ],
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        child: Column(
+          children: [
+            _searchBar(),
+            _getConversionList(),
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(child: const Icon(Icons.add_comment_rounded), onPressed: () {
 
