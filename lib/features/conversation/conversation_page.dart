@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/theme/chat_theme.dart';
+import '../../shared/widgets/user_avatar.dart';
 
 // Popup Option menu for the Chat page
 enum ConversationPagePopupMenu {
@@ -31,7 +33,11 @@ extension on ConversationPagePopupMenu {
 }
 
 class ConversationPage extends StatelessWidget {
-  const ConversationPage({super.key});
+
+
+  final User otherUser;
+
+  const ConversationPage({super.key, required this.otherUser});
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +51,13 @@ class ConversationPage extends StatelessWidget {
   // Page App bar
   AppBar _appBar(BuildContext context) {
     return AppBar(
-      title: Text("User Name "),
+      title: Row(
+        children: [
+          UserAvatar(imageUrl: otherUser.photoURL,radius: 20,),
+          SizedBox(width: 8,),
+          Text(otherUser.displayName.toString(),style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.white), softWrap: false,overflow: TextOverflow.ellipsis,),
+        ],
+      ),
 
       actions: [
         IconButton(onPressed: () {}, icon: Icon(Icons.videocam_outlined)),

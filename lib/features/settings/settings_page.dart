@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lanternchat/core/providers/auth_provider.dart';
 import 'package:lanternchat/features/settings/widgets/list_item.dart';
-import 'package:lanternchat/shared/widgets/circular_image.dart';
+import 'package:lanternchat/shared/widgets/user_avatar.dart';
 
 class SettingsPage extends ConsumerWidget {
   const SettingsPage({super.key});

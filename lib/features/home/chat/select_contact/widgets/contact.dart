@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../shared/widgets/circular_image.dart';
+import '../../../../../shared/widgets/user_avatar.dart';
 
 class Contact extends StatelessWidget {
 

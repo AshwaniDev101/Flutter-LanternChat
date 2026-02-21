@@ -1,9 +1,11 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lanternchat/core/providers/auth_provider.dart';
+import 'package:lanternchat/features/conversation/conversation_page.dart';
 import 'package:lanternchat/features/home/chat/select_contact/select_contact_page.dart';
 
 import '../../features/home/home_page.dart';
@@ -37,6 +39,7 @@ class AppRoute
   static const profile = '/profile';
   static const settings = '/settings';
   static const selectContact = '/select-contact';
+  static const conversation = '/chat-window';
 }
 
 final goRouterProvider = Provider((ref) {
@@ -92,6 +95,15 @@ final goRouterProvider = Provider((ref) {
         path: AppRoute.selectContact,
         builder: (BuildContext context, GoRouterState state) {
           return const SelectContactPage();
+        },
+      ),
+
+      GoRoute(
+        path: AppRoute.conversation,
+        builder: (BuildContext context, GoRouterState state) {
+
+          final otherUser = state.extra as User;
+          return ConversationPage(otherUser:otherUser);
         },
       ),
 

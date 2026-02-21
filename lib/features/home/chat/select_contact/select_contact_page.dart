@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lanternchat/core/providers/auth_provider.dart';
+import 'package:lanternchat/core/rooter/router_provider.dart';
 import 'package:lanternchat/features/home/chat/select_contact/widgets/contact.dart';
 import 'package:lanternchat/features/home/chat/select_contact/widgets/new_button.dart';
 
@@ -44,6 +47,7 @@ class SelectContactPage extends ConsumerWidget {
                 itemBuilder: (context, index) {
                   return Contact(imageUrl: dummyUser?.photoURL,name: dummyUser!.displayName.toString(), status: 'Hello im on LanternChat', onClick:(){
 
+                    context.push(AppRoute.conversation,extra: dummyUser);
                   });
                 },
               ),
