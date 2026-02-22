@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lanternchat/core/providers/user_manager_provider.dart';
 
+import '../../database/user_service.dart';
+
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
@@ -34,8 +36,14 @@ class LoginPage extends StatelessWidget {
                 // _signInButton(Icons.call, 'Phone Number', Colors.green[400]!, () {}),
                 Consumer(
                   builder: (BuildContext context, WidgetRef ref, _) {
-                    return _signInButton(Icons.person, 'Google', Colors.deepOrange[400]!, () {
-                      ref.read(userManagerProvider).signInWithGoogle();
+                    return _signInButton(Icons.person, 'Google', Colors.deepOrange[400]!, () async {
+                      final user = await ref.read(userManagerProvider).signInWithGoogle();
+
+                      if(user!=null){
+                        // Add to user user list
+                        final us = UserService();
+                        us.addAsNewUser(user);
+                      }
                     });
                   },
                 ),

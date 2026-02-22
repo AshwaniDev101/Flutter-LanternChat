@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:lanternchat/core/providers/auth_provider.dart';
+import 'package:lanternchat/database/user_service.dart';
 
 final userManagerProvider = Provider((ref) {
   final auth = ref.watch(firebaseAuthProvider);
