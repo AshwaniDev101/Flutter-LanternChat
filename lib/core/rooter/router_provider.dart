@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lanternchat/core/providers/auth_provider.dart';
 import 'package:lanternchat/features/conversation/conversation_page.dart';
 import 'package:lanternchat/features/home/chat/select_contact/select_contact_page.dart';
 
@@ -12,6 +11,7 @@ import '../../features/home/home_page.dart';
 import '../../features/login/login_page.dart';
 import '../../features/profile/profile_page.dart';
 import '../../features/settings/settings_page.dart';
+import '../providers/constant_providers.dart';
 
 class GoRouterRefreshStream extends ChangeNotifier {
   late final StreamSubscription<dynamic> _subscription;

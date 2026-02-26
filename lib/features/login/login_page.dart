@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lanternchat/core/providers/user_manager_provider.dart';
+import 'package:lanternchat/database/database_provider.dart';
 
-import '../../database/user_service.dart';
+import '../../database/firebase/user_service.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -39,10 +40,9 @@ class LoginPage extends StatelessWidget {
                     return _signInButton(Icons.person, 'Google', Colors.deepOrange[400]!, () async {
                       final user = await ref.read(userManagerProvider).signInWithGoogle();
 
-                      if(user!=null){
+                      if (user != null) {
                         // Add to user user list
-                        final us = UserService();
-                        us.addAsNewUser(user);
+                        ref.read(userServiceProvider).addAsNewUser(user);
                       }
                     });
                   },

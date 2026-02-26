@@ -8,7 +8,8 @@ extension LanternChatUser on User
   {
     return {
       'name':displayName,
-      'email':email
+      'email':email,
+      'photoURL':photoURL,
     };
   }
 }

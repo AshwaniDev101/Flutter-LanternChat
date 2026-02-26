@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:lanternchat/core/providers/auth_provider.dart';
 import 'package:lanternchat/core/providers/user_manager_provider.dart';
 import 'package:lanternchat/features/profile/widgets/column_button.dart';
 import 'package:lanternchat/features/profile/widgets/row_button.dart';
 import 'package:lanternchat/shared/widgets/user_avatar.dart';
+
+import '../../core/providers/constant_providers.dart';
 
 class ProfilePage extends ConsumerWidget {
   const ProfilePage({super.key});
