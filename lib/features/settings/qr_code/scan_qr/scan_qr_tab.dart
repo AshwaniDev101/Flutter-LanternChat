@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lanternchat/core/constants/constant_strings.dart';
 import 'package:lanternchat/core/providers/constant_providers.dart';
 import 'package:lanternchat/database/database_provider.dart';
 import 'package:lanternchat/models/app_user.dart';
@@ -17,11 +18,13 @@ class _ScanCodeTabState extends ConsumerState<ScanCodeTab> {
   late final MobileScannerController controller;
   AppUser? appUser;
 
+  bool isQrScanningCoolDown = false;
+
   @override
   void initState() {
     super.initState();
 
-    controller = MobileScannerController(detectionSpeed: DetectionSpeed.noDuplicates);
+    controller = MobileScannerController(detectionSpeed: DetectionSpeed.normal);
     controller.start();
   }
 
@@ -36,6 +39,11 @@ class _ScanCodeTabState extends ConsumerState<ScanCodeTab> {
     final userFirestoreService = ref.read(userFirestoreServiceProvider);
     final currentUser = ref.read(firebaseAuthProvider).currentUser;
 
+
+
+    // Possible states
+    // Successful QR card scan get user
+    // Unsupported QR code
     if (appUser == null || currentUser == null) {
       return Center(
         child: LayoutBuilder(
@@ -100,7 +108,6 @@ class _ScanCodeTabState extends ConsumerState<ScanCodeTab> {
                             IconButton(
                               onPressed: () {
                                 controller.toggleTorch();
-                                print("=========== Toogle torch");
                               },
                               icon: Icon(Icons.flash_off, color: Colors.white, size: 32),
                             ),
@@ -126,23 +133,40 @@ class _ScanCodeTabState extends ConsumerState<ScanCodeTab> {
 
               // fit: BoxFit.contain,
               onDetect: (BarcodeCapture capture) async {
+
+                // this is the avoid qr detection spamming Snack bar
+                if(isQrScanningCoolDown) return;
+
                 final barcode = capture.barcodes.first;
                 final String? code = barcode.rawValue;
 
                 if (code != null) {
                   print("==== Qr Detected $code");
+                  _startCooldown();
 
-                  final _appUser = await userFirestoreService.fetchUser(code);
+                  final fullCode = code.split('/');
+                  if (fullCode[0].contains(ConstantString.appName)) {
+                    appUser = await userFirestoreService.fetchUser(fullCode[1]);
 
-                  if (_appUser != null) {
-                    print("==== App User ${_appUser.name.toString()}");
+                    if (appUser == null) {
+                      showSnackBar("Couldn't find the User: $code");
+                      _startCooldown();
+
+                    } else {
+                      print("==== App User ${appUser!.name.toString()}");
+                      // appUser = _appUser;
+
+                      controller.stop();
+
+                      setState(() {});
+                    }
+                    
+                    Future.delayed(Duration(seconds: 5),(){
+                      isQrScanningCoolDown = false;
+                    });
+                  } else {
+                    showSnackBar("Invalid QR Code: $code");
                   }
-
-                  appUser = _appUser;
-
-                  controller.stop();
-
-                  setState(() {});
                 }
               },
             );
@@ -157,7 +181,7 @@ class _ScanCodeTabState extends ConsumerState<ScanCodeTab> {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: SizedBox(
-            height: 240,
+            height: 250,
             child: Stack(
               clipBehavior: Clip.none,
               alignment: AlignmentGeometry.topCenter,
@@ -182,7 +206,9 @@ class _ScanCodeTabState extends ConsumerState<ScanCodeTab> {
                                   width: 100,
                                   child: ElevatedButton(
                                     onPressed: () {
-
+                                      setState(() {
+                                        appUser = null;
+                                      });
                                     },
                                     style: ElevatedButton.styleFrom(
                                       shape: RoundedRectangleBorder(
@@ -218,10 +244,17 @@ class _ScanCodeTabState extends ConsumerState<ScanCodeTab> {
                                     child: Text("Add"),
                                   ),
                                 ),
+
+
                               ],
                             ),
                           ),
                         ),
+
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8),
+                          child: Text('Add to Connections?', style: Theme.of(context).textTheme.labelSmall,),
+                        )
                       ],
                     ),
                   ),
@@ -237,6 +270,21 @@ class _ScanCodeTabState extends ConsumerState<ScanCodeTab> {
         ),
       );
     }
+  }
+
+
+  void _startCooldown() {
+    isQrScanningCoolDown = true;
+    Future.delayed(const Duration(seconds: 5), () {
+      if (mounted) {
+        setState(() {
+          isQrScanningCoolDown = false;
+        });
+      }
+    });
+  }
+  void showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
   }
 }
 

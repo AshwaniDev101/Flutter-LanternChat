@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lanternchat/core/constants/constant_strings.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../../../core/providers/constant_providers.dart';
@@ -50,7 +51,7 @@ class ShowQrTab extends ConsumerWidget {
                         SizedBox(
                           height: 200,
                           width: 200,
-                          child: QrImageView(data: user.uid),
+                          child: QrImageView(data: "${ConstantString.appName}/${user.uid}"),
                           // child: Image.network(
                           //   'https://www.freepnglogos.com/uploads/qr-code-png/qr-code-file-bangla-mobile-code-0.png',
                           // ),
