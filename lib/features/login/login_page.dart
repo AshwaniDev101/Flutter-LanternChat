@@ -4,6 +4,7 @@ import 'package:lanternchat/core/providers/user_manager_provider.dart';
 import 'package:lanternchat/database/database_provider.dart';
 
 import '../../database/firebase/user_service.dart';
+import '../../models/app_user.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -41,8 +42,10 @@ class LoginPage extends StatelessWidget {
                       final user = await ref.read(userManagerProvider).signInWithGoogle();
 
                       if (user != null) {
+
+                        final appUser = AppUser.fromFirebaseUser(user);
                         // Add to user user list
-                        ref.read(userServiceProvider).addAsNewUser(user);
+                        ref.read(userServiceProvider).addAsNewUser(appUser: appUser);
                       }
                     });
                   },

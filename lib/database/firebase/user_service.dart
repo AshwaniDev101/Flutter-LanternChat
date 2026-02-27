@@ -1,19 +1,41 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../core/extensions/extensions.dart';
-import '../../core/providers/constant_providers.dart';
+import 'package:lanternchat/models/app_user.dart';
 
 class UserService {
   final FirebaseFirestore firestore;
 
   UserService({required this.firestore});
 
-  void addAsNewUser(User user) {
-    print("============== Trying to add user! ${user.displayName}");
+  void addAsNewUser({required AppUser appUser}) {
     final userRef = firestore.collection('users');
+    userRef.doc(appUser.uid).set(appUser.toMap());
+  }
 
-    userRef.doc(user.uid).set(user.toMap());
+  Future<AppUser?> fetchUser(String uid) async {
+    try {
+
+      print('=== Fetching user');
+      final ref = firestore.collection('users');
+
+      final snapshot = await ref.doc(uid).get();
+
+      if (!snapshot.exists) {
+        return null;
+      }
+
+      final data = snapshot.data();
+
+      if (data == null) {
+        return null;
+      }
+
+      print('=== got user ${data.toString()}');
+
+      data['uid'] = uid;
+      return AppUser.fromMap(data);
+    } catch (e) {
+      print("Error Could not get User $e");
+      return null;
+    }
   }
 }

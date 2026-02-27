@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lanternchat/database/database_provider.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
-class ScanCodeTab extends StatefulWidget {
+
+class ScanCodeTab extends ConsumerStatefulWidget {
   const ScanCodeTab({super.key});
 
   @override
-  State<ScanCodeTab> createState() => _ScanCodeTabState();
+  ConsumerState<ScanCodeTab> createState() => _ScanCodeTabState();
 }
 
-class _ScanCodeTabState extends State<ScanCodeTab> {
+class _ScanCodeTabState extends ConsumerState<ScanCodeTab> {
   late final MobileScannerController controller;
 
   @override
@@ -27,6 +30,11 @@ class _ScanCodeTabState extends State<ScanCodeTab> {
 
   @override
   Widget build(BuildContext context) {
+
+    final userService = ref.read(userServiceProvider);
+
+
+
     return Center(
       child: LayoutBuilder(
         builder: (context, constraints) {
@@ -44,13 +52,12 @@ class _ScanCodeTabState extends State<ScanCodeTab> {
 
           return MobileScanner(
             controller: controller,
-
-            // tapToFocus: true,
             scanWindow: null,
 
             overlayBuilder: (context, constraints) {
               return Stack(
                 children: [
+                  // Full Screen Camera
                   IgnorePointer(
                     child: ClipPath(
                       clipper: _CutoutClipper(scanSize),
@@ -72,6 +79,7 @@ class _ScanCodeTabState extends State<ScanCodeTab> {
                     ),
                   ),
 
+                  // Addition Button
                   Positioned(
                     bottom: 40,
                     left: 0,
@@ -83,6 +91,7 @@ class _ScanCodeTabState extends State<ScanCodeTab> {
                         // crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           IconButton(
+                            // TODO Implement Image Picker
                             onPressed: () {},
                             icon: Icon(Icons.photo_library_outlined, color: Colors.white, size: 32),
                           ),
@@ -97,6 +106,7 @@ class _ScanCodeTabState extends State<ScanCodeTab> {
                       ),
                     ),
                   ),
+
                   // White border
                   Center(
                     child: Container(
@@ -113,12 +123,23 @@ class _ScanCodeTabState extends State<ScanCodeTab> {
             },
 
             // fit: BoxFit.contain,
-            onDetect: (BarcodeCapture capture) {
+            onDetect: (BarcodeCapture capture) async {
               final barcode = capture.barcodes.first;
               final String? code = barcode.rawValue;
 
               if (code != null) {
                 print("==== Qr Detected $code");
+
+                final appUser = await userService.fetchUser(code);
+
+
+                if(appUser!=null)
+                  {
+                    print("==== App User ${appUser.name.toString()}");
+                  }
+
+
+
 
                 controller.stop();
               }

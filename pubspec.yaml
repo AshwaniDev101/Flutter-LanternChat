@@ -16,18 +16,29 @@ dependencies:
 
   # Style
   cupertino_icons: ^1.0.8
+
   # Firebase
   firebase_core: ^4.3.0
-  firebase_database: ^12.1.1
   cloud_firestore: ^6.1.1
   firebase_auth: ^6.1.3
+  # firebase_database: ^12.1.1
+
+  # Auth
+  google_sign_in: ^7.2.0
+
   # App Level
   flutter_launcher_icons: ^0.14.4
-#  flutter_riverpod: ^3.2.0
+
+  # State management
   flutter_riverpod: ^2.5.1
-  google_sign_in: ^7.2.0
+
+  # Routing
   go_router: ^17.1.0
+
+  # QR code scanning
   mobile_scanner: ^7.2.0
+
+  # QR code generation
   qr_flutter: ^4.1.0
 
 dev_dependencies:
