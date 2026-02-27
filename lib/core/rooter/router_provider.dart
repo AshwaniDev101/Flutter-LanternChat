@@ -6,11 +6,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lanternchat/features/conversation/conversation_page.dart';
 import 'package:lanternchat/features/home/chat/select_contact/select_contact_page.dart';
-import 'package:lanternchat/features/settings/widgets/qr_code.dart';
 
 import '../../features/home/home_page.dart';
 import '../../features/login/login_page.dart';
 import '../../features/profile/profile_page.dart';
+import '../../features/settings/qr_code/qr_page.dart';
 import '../../features/settings/settings_page.dart';
 import '../providers/constant_providers.dart';
 
@@ -40,7 +40,7 @@ class AppRoute {
   static const settings = '/settings';
   static const selectContact = '/select-contact';
   static const conversation = '/chat-window';
-  static const qrCode = '/qr-code';
+  static const qrCode = '/qr_code-code';
 }
 
 final goRouterProvider = Provider((ref) {
@@ -111,7 +111,7 @@ final goRouterProvider = Provider((ref) {
       GoRoute(
         path: AppRoute.qrCode,
         builder: (BuildContext context, GoRouterState state) {
-          return QrCode();
+          return QrCodePage();
         },
       ),
     ],
