@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lanternchat/features/settings/widgets/list_item.dart';
-import 'package:lanternchat/shared/widgets/user_avatar.dart';
+import 'package:lanternchat/shared/widgets/circular_user_avatar.dart';
 
 import '../../core/providers/constant_providers.dart';
 
@@ -29,7 +29,7 @@ class SettingsPage extends ConsumerWidget {
               SizedBox(height: 20),
               Row(
                 children: [
-                  UserAvatar(imageUrl: user.photoURL, radius: 40,),
+                  CircularUserAvatar(imageUrl: user.photoURL, radius: 40,),
                   SizedBox(width: 10),
                   Column(
                     children: [

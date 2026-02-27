@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lanternchat/features/conversation/conversation_page.dart';
 import 'package:lanternchat/features/home/chat/select_contact/select_contact_page.dart';
+import 'package:lanternchat/features/settings/widgets/qr_code.dart';
 
 import '../../features/home/home_page.dart';
 import '../../features/login/login_page.dart';
@@ -32,14 +33,14 @@ class GoRouterRefreshStream extends ChangeNotifier {
   }
 }
 
-class AppRoute
-{
+class AppRoute {
   static const home = '/';
   static const login = '/login';
   static const profile = '/profile';
   static const settings = '/settings';
   static const selectContact = '/select-contact';
   static const conversation = '/chat-window';
+  static const qrCode = '/qr-code';
 }
 
 final goRouterProvider = Provider((ref) {
@@ -47,7 +48,7 @@ final goRouterProvider = Provider((ref) {
 
   return GoRouter(
     refreshListenable: GoRouterRefreshStream(auth.authStateChanges()),
-    initialLocation: '/login',
+    initialLocation: AppRoute.login,
     // redirect run on every route change.
     redirect: (BuildContext context, GoRouterState state) {
       final user = auth.currentUser;
@@ -57,7 +58,8 @@ final goRouterProvider = Provider((ref) {
         return AppRoute.login;
       }
       if (user != null && isOnLoginPage) {
-        return AppRoute.home;
+        // return AppRoute.home;
+        return AppRoute.qrCode;
       }
 
       return null;
@@ -101,18 +103,17 @@ final goRouterProvider = Provider((ref) {
       GoRoute(
         path: AppRoute.conversation,
         builder: (BuildContext context, GoRouterState state) {
-
           final otherUser = state.extra as User;
-          return ConversationPage(otherUser:otherUser);
+          return ConversationPage(otherUser: otherUser);
         },
       ),
 
-      // GoRoute(
-      //   path: '/username_setup',
-      //   builder: (BuildContext context, GoRouterState state) {
-      //     return UsernameSetupPage();
-      //   },
-      // ),
+      GoRoute(
+        path: AppRoute.qrCode,
+        builder: (BuildContext context, GoRouterState state) {
+          return QrCode();
+        },
+      ),
     ],
   );
 });

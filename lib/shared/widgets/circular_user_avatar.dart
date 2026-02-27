@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class UserAvatar extends StatelessWidget {
-  final String? imageUrl;
+class CircularUserAvatar extends StatelessWidget {
+  final String?  imageUrl;
   final double radius;
   final IconData placeHolderIcon;
 
-  const UserAvatar({this.imageUrl, this.radius = 24, this.placeHolderIcon = Icons.person, super.key});
+  const CircularUserAvatar({required this.imageUrl, this.radius = 24, this.placeHolderIcon = Icons.person, super.key});
 
 
   @override

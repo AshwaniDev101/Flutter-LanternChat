@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lanternchat/core/providers/user_manager_provider.dart';
 import 'package:lanternchat/features/profile/widgets/column_button.dart';
 import 'package:lanternchat/features/profile/widgets/row_button.dart';
-import 'package:lanternchat/shared/widgets/user_avatar.dart';
+import 'package:lanternchat/shared/widgets/circular_user_avatar.dart';
 
 import '../../core/providers/constant_providers.dart';
 
@@ -28,7 +28,7 @@ class ProfilePage extends ConsumerWidget {
               Padding(
                 padding: const EdgeInsets.all(8.0),
 
-                child: UserAvatar(radius: 60, imageUrl: user.photoURL),
+                child: CircularUserAvatar(radius: 60, imageUrl: user.photoURL),
               ),
 
               Padding(

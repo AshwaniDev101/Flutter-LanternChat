@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../shared/widgets/user_avatar.dart';
+import '../../../../../shared/widgets/circular_user_avatar.dart';
 
 class Contact extends StatelessWidget {
 
@@ -19,7 +19,7 @@ class Contact extends StatelessWidget {
         padding: const EdgeInsets.all(8),
         child: Row(
           children: [
-            UserAvatar(
+            CircularUserAvatar(
               imageUrl: imageUrl,
             ),
 
