@@ -5,7 +5,7 @@ import 'firebase/conversation_service.dart';
 import 'firebase/messages_service.dart';
 import 'firebase/user_service.dart';
 
-final userServiceProvider = Provider((ref) {
+final userFirestoreServiceProvider = Provider((ref) {
   final firestore = ref.watch(firestoreProvider);
   return UserService(firestore: firestore);
 });

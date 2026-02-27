@@ -45,7 +45,7 @@ class LoginPage extends StatelessWidget {
 
                         final appUser = AppUser.fromFirebaseUser(user);
                         // Add to user user list
-                        ref.read(userServiceProvider).addAsNewUser(appUser: appUser);
+                        ref.read(userFirestoreServiceProvider).addAsNewUser(appUser: appUser);
                       }
                     });
                   },

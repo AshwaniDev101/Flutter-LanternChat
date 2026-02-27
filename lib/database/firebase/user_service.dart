@@ -38,4 +38,11 @@ class UserService {
       return null;
     }
   }
+
+  void addConnection(String myUID, AppUser connection) {
+
+    final ref = firestore.collection('users').doc(myUID).collection('connections');
+
+    ref.doc(connection.uid).set(connection.toMap());
+  }
 }
