@@ -6,6 +6,13 @@ import 'core/rooter/router_provider.dart';
 import 'core/theme/app_theme.dart';
 import 'firebase_options.dart';
 
+
+// Build a release version
+// flutter build apk --release
+
+// Install a Release version
+// adb install build/app/outputs/flutter-apk/app-release.apk
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);

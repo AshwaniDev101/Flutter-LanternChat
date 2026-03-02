@@ -34,7 +34,7 @@ class QrCodePage extends ConsumerWidget {
 
               ],
             ),
-            Expanded(child: TabBarView(children: [ ShowQrTab(),ScanCodeTab(),])),
+            Expanded(child: TabBarView(children: [ ShowQrTab(),ScanQrTab(),])),
           ],
         ),
       ),
