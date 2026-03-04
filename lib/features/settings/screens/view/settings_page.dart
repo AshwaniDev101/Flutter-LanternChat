@@ -44,7 +44,7 @@ class SettingsPage extends ConsumerWidget {
 
                   IconButton(onPressed: () {
                     // Open QR code Scanning Page
-                    context.go(AppRoute.qrCode);
+                    context.pushReplacement(AppRoute.qrCode);
                   }, icon: Icon(Icons.qr_code)),
                   IconButton(
                     onPressed: () {},

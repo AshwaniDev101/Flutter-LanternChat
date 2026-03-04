@@ -36,7 +36,7 @@ class ConnectionsPage extends ConsumerWidget {
                   icon: Icons.person_add_alt_1,
                   title: 'New contact',
                   onTap: () {
-                    context.go(AppRoute.qrCode);
+                    context.pushReplacement(AppRoute.qrCode);
                   },
                   additionalOption: (icon: Icons.qr_code, onTap: () {}),
                 ),
@@ -57,7 +57,7 @@ class ConnectionsPage extends ConsumerWidget {
                         onClick: () {
 
                           // Opening ChatWindow
-                          context.go(AppRoute.chat, extra: appUserList[index]);
+                          context.pushReplacement(AppRoute.chat, extra: appUserList[index]);
                         },
                       );
                     },
