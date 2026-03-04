@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:lanternchat/models/app_user.dart';
 
 import '../../../../core/theme/chat_theme.dart';
 import '../../../../shared/widgets/circular_user_avatar.dart';
@@ -32,12 +33,12 @@ extension on ConversationPagePopupMenu {
   }
 }
 
-class ConversationPage extends StatelessWidget {
+class ChatPage extends StatelessWidget {
 
 
-  final User otherUser;
+  final AppUser appUser;
 
-  const ConversationPage({super.key, required this.otherUser});
+  const ChatPage({super.key, required this.appUser});
 
   @override
   Widget build(BuildContext context) {
@@ -53,9 +54,9 @@ class ConversationPage extends StatelessWidget {
     return AppBar(
       title: Row(
         children: [
-          CircularUserAvatar(imageUrl: otherUser.photoURL,radius: 20,),
+          CircularUserAvatar(imageUrl: appUser.photoURL,radius: 20,),
           SizedBox(width: 8,),
-          Text(otherUser.displayName.toString(),style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.white), softWrap: false,overflow: TextOverflow.ellipsis,),
+          Text(appUser.name,style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.white), softWrap: false,overflow: TextOverflow.ellipsis,),
         ],
       ),
 

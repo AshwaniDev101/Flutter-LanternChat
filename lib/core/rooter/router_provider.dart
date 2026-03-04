@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lanternchat/features/conversation/screens/view/conversation_page.dart';
+import 'package:lanternchat/models/app_user.dart';
 
 import '../../features/connections/screens/view/connections_page.dart';
 import '../../features/home/screens/view/home_page.dart';
@@ -39,7 +40,7 @@ class AppRoute {
   static const profile = '/profile';
   static const settings = '/settings';
   static const selectContact = '/select-contact';
-  static const conversation = '/chat-window';
+  static const chat = '/chat-window';
   static const qrCode = '/qr_code-code';
 }
 
@@ -101,10 +102,10 @@ final goRouterProvider = Provider((ref) {
       ),
 
       GoRoute(
-        path: AppRoute.conversation,
+        path: AppRoute.chat,
         builder: (BuildContext context, GoRouterState state) {
-          final otherUser = state.extra as User;
-          return ConversationPage(otherUser: otherUser);
+          final otherUser = state.extra as AppUser;
+          return ChatPage(appUser: otherUser);
         },
       ),
 
