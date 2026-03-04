@@ -31,8 +31,7 @@ class AppService {
       }
 
 
-      data['uid'] = uid;
-      return AppUser.fromMap(data);
+      return AppUser.fromMap(uid, data);
     } catch (e) {
       print("Error Could not get User $e");
       return null;

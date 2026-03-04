@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:lanternchat/features/auth/auth_manager.dart';
-import 'package:lanternchat/database/database_provider.dart';
 
-import '../../../auth/data/app_service.dart';
 import '../../../../models/app_user.dart';
 import '../../../auth/provider/provider.dart';
 

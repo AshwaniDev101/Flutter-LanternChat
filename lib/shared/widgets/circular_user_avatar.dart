@@ -12,6 +12,8 @@ class CircularUserAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final hasImage = imageUrl !=null && imageUrl!.isNotEmpty;
+
+    print("### hasImage $hasImage $imageUrl");
     return CircleAvatar(
       radius: radius,
       child: ClipOval(

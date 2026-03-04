@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../models/app_user.dart';
 import '../../../../../shared/widgets/circular_user_avatar.dart';
 
 class Contact extends StatelessWidget {
-
-
-  final String? imageUrl;
-  final String name;
-  final String? status;
+  final AppUser appUser;
   final VoidCallback onClick;
-  const Contact({super.key, this.imageUrl, required this.name, required this.status, required this.onClick});
+
+  const Contact({super.key, required this.appUser, required this.onClick});
 
   @override
   Widget build(BuildContext context) {
@@ -19,19 +17,18 @@ class Contact extends StatelessWidget {
         padding: const EdgeInsets.all(8),
         child: Row(
           children: [
-            CircularUserAvatar(
-              imageUrl: imageUrl,
-            ),
+            CircularUserAvatar(imageUrl: appUser.photoURL),
 
-            SizedBox(width: 10,),
+            SizedBox(width: 10),
             Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(appUser.name, style: Theme.of(context).textTheme.titleSmall),
+                Text(appUser.email),
 
-              Text(name,style: Theme.of(context).textTheme.titleSmall,),
-              if(status!=null && status!.isNotEmpty)
-                Text(status.toString())
-            ]),
+                // if(status!=null && status!.isNotEmpty)
+              ],
+            ),
           ],
         ),
       ),

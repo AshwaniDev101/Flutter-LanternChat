@@ -2,14 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lanternchat/core/constants/constant_strings.dart';
 import 'package:lanternchat/core/providers/constant_providers.dart';
-import 'package:lanternchat/database/database_provider.dart';
 import 'package:lanternchat/models/app_user.dart';
 import 'package:lanternchat/shared/widgets/circular_user_avatar.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 import '../../../../../auth/provider/provider.dart';
-
-
 
 class ScanCodeTab extends ConsumerStatefulWidget {
   const ScanCodeTab({super.key});

@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lanternchat/models/app_user.dart';
 
-import '../../../core/providers/constant_providers.dart';
 
 
 
@@ -22,7 +20,9 @@ class ConnectionService {
     return connectionRef.snapshots().map((QuerySnapshot<Map<String, dynamic>> snapshot) {
       // List<QueryDocumentSnapshot>   ->   List<AppUser>
       return snapshot.docs.map((QueryDocumentSnapshot<Map<String, dynamic>> document) {
-        return AppUser.fromMap(document.data());
+
+        // print("==== ${document.data().toString()}");
+        return AppUser.fromMap(document.id,document.data());
       }).toList();
     });
   }

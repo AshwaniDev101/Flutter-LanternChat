@@ -8,9 +8,9 @@ class AppUser {
 
   AppUser({required this.uid, required this.name, required this.email, required this.photoURL});
 
-  factory AppUser.fromMap(Map<String, dynamic> map) {
+  factory AppUser.fromMap(String uid, Map<String, dynamic> map) {
     return AppUser(
-      uid: map['uid'] as String,
+      uid: uid,
       name: map['name'] as String,
       email: map['email'] as String,
       photoURL: map['photoURL'] as String,

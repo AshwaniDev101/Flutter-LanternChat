@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lanternchat/features/connections/screens/view/widgets/contact.dart';
@@ -15,7 +14,7 @@ class ConnectionsPage extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
     final currentUser = ref.watch(firebaseAuthProvider).currentUser;
 
-    final connectionProvider = ref.watch(connectionServiceProvider);
+    final AsyncValue<List<AppUser>> connectionStreamProvider = ref.watch(connectionsStreamProvider(currentUser!.uid));
 
     // final contactList = ref.watch()
     return Scaffold(
@@ -41,15 +40,24 @@ class ConnectionsPage extends ConsumerWidget {
 
             Padding(padding: const EdgeInsets.all(8), child: Text('Contact on LanternChat')),
             Expanded(
-              child: StreamBuilder<List<AppUser>>(
-                stream: connectionProvider.getConnections(currentUser!.uid),
-                builder: (BuildContext context, AsyncSnapshot<List<AppUser>> snapshot) {
-                  final List<AppUser> data = snapshot.data!;
+              child: connectionStreamProvider.when(
+                data: (List<AppUser> appUserList) {
+                  print("#### print first : ${appUserList.first.photoURL.toString()}");
                   return ListView.builder(
+                    itemCount: appUserList.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return Contact(name: "", status: "", onClick: () {});
+                      return Contact(appUser: appUserList[index], onClick: () {});
                     },
                   );
+                },
+                error: (e, t) {
+                  print("🔥 ERROR: $e");
+                  print("🔥 STACKTRACE: $t");
+
+                  return Center(child: Text('Error $e'));
+                },
+                loading: () {
+                  return Center(child: CircularProgressIndicator());
                 },
               ),
             ),
