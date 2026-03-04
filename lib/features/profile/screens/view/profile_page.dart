@@ -78,10 +78,10 @@ class ProfilePage extends ConsumerWidget {
               ColumnButton(
                 icon: Icons.mail_lock_outlined,
                 title: 'Chat lock',
-                subtitle: "Lock and hide this conversation on this device",
+                subtitle: "Lock and hide this chat on this device",
                 showToggle: true,
               ),
-              ColumnButton(icon: Icons.privacy_tip_outlined, title: 'Advance conversation privacy', subtitle: "Off"),
+              ColumnButton(icon: Icons.privacy_tip_outlined, title: 'Advance chat privacy', subtitle: "Off"),
 
               // ColumnButton(icon:Icons.logout,title:'Logout',),
               ElevatedButton(

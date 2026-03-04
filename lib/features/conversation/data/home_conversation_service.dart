@@ -5,9 +5,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 
 
-class ConversationService
+class HomeConversationService
 {
   final FirebaseFirestore firestore;
 
-  ConversationService({required this.firestore});
+  HomeConversationService({required this.firestore});
 }

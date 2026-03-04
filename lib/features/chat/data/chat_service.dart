@@ -8,7 +8,7 @@ import '../../../models/message.dart';
 // Track message delivery with hasPendingWrites (✔) Animate properly
 
 class ChatServiceConstants {
-  static const String conversation = 'conversation';
+  static const String conversation = 'chat';
   static const String messages = 'messages';
 }
 

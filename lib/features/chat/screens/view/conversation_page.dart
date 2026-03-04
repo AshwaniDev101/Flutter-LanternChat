@@ -74,7 +74,7 @@ class ChatPage extends StatelessWidget {
     );
   }
 
-  // This is the main conversation window with all the conversation messages
+  // This is the main chat window with all the chat messages
   Widget _messageList(BuildContext context) {
     final chatTheme = Theme.of(context).extension<ChatTheme>()!;
 

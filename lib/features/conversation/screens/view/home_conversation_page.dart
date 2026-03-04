@@ -4,8 +4,8 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../../core/rooter/router_provider.dart';
 
-class ChatPage extends StatelessWidget {
-  const ChatPage({super.key});
+class HomeConversationPage extends StatelessWidget {
+  const HomeConversationPage({super.key});
 
   @override
   Widget build(BuildContext context) {

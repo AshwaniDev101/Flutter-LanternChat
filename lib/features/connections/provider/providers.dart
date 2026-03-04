@@ -13,6 +13,7 @@ final connectionServiceProvider = Provider((ref) {
 
 
 final connectionsStreamProvider = StreamProvider.family<List<AppUser>, String>((ref, uid) {
+
   final service = ref.read(connectionServiceProvider);
   return service.getConnections(uid);
 });

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lanternchat/core/rooter/router_provider.dart';
+import 'package:lanternchat/features/conversation/screens/view/home_conversation_page.dart';
 
 import '../../../_calls/calls_pages.dart';
 import '../../../_communities/communities_page.dart';
 import '../../../_update/screens/view/update_page.dart';
-import '../../../chat/screens/view/chat_page.dart';
 
 enum _HomepagePopupMenu { newGroup, newCommunity, broadcastList, linkedDevices, starred, payments, readAll, settings, profile }
 
@@ -51,7 +51,7 @@ class _HomePageState extends State<HomePage> {
 
   final List<Widget> _pages = [
 
-    ChatPage(),
+    HomeConversationPage(),
     UpdatePage(),
     CommunitiesPage(),
     CallsPages(),

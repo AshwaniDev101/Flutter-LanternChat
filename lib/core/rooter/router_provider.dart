@@ -1,12 +1,11 @@
 import 'dart:async';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lanternchat/features/conversation/screens/view/conversation_page.dart';
 import 'package:lanternchat/models/app_user.dart';
 
+import '../../features/chat/screens/view/conversation_page.dart';
 import '../../features/connections/screens/view/connections_page.dart';
 import '../../features/home/screens/view/home_page.dart';
 import '../../features/login/screens/view/login_page.dart';
@@ -40,7 +39,7 @@ class AppRoute {
   static const profile = '/profile';
   static const settings = '/settings';
   static const selectContact = '/select-contact';
-  static const chat = '/chat-window';
+  static const chat = '/conversation-window';
   static const qrCode = '/qr_code-code';
 }
 
