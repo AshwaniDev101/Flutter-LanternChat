@@ -4,14 +4,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lanternchat/features/conversation/conversation_page.dart';
-import 'package:lanternchat/features/home/chat/select_contact/select_contact_page.dart';
+import 'package:lanternchat/features/conversation/screens/view/conversation_page.dart';
 
-import '../../features/home/home_page.dart';
-import '../../features/login/login_page.dart';
-import '../../features/profile/profile_page.dart';
-import '../../features/settings/qr_code/qr_page.dart';
-import '../../features/settings/settings_page.dart';
+import '../../features/connections/screens/view/connections_page.dart';
+import '../../features/home/screens/view/home_page.dart';
+import '../../features/login/screens/view/login_page.dart';
+import '../../features/profile/screens/view/profile_page.dart';
+import '../../features/qr_code/screens/view/qr_page.dart';
+import '../../features/settings/screens/view/settings_page.dart';
 import '../providers/constant_providers.dart';
 
 class GoRouterRefreshStream extends ChangeNotifier {
@@ -58,8 +58,8 @@ final goRouterProvider = Provider((ref) {
         return AppRoute.login;
       }
       if (user != null && isOnLoginPage) {
-        // return AppRoute.home;
-        return AppRoute.qrCode;
+        return AppRoute.home;
+        // return AppRoute.qrCode;
       }
 
       return null;
@@ -96,7 +96,7 @@ final goRouterProvider = Provider((ref) {
       GoRoute(
         path: AppRoute.selectContact,
         builder: (BuildContext context, GoRouterState state) {
-          return const SelectContactPage();
+          return const ConnectionsPage();
         },
       ),
 

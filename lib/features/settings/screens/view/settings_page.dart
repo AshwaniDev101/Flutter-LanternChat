@@ -1,0 +1,82 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:lanternchat/core/rooter/router_provider.dart';
+import 'package:lanternchat/features/settings/screens/view/widgets/list_item.dart';
+import 'package:lanternchat/shared/widgets/circular_user_avatar.dart';
+
+import '../../../../core/providers/constant_providers.dart';
+
+class SettingsPage extends ConsumerWidget {
+  const SettingsPage({super.key});
+
+  @override
+  Widget build(BuildContext context, ref) {
+
+    final user = ref.watch(firebaseAuthProvider).currentUser;
+
+    if (user == null) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    return Scaffold(
+      appBar: AppBar(title: Text("Settings")),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              SizedBox(height: 20),
+              Row(
+                children: [
+                  CircularUserAvatar(imageUrl: user.photoURL, radius: 40,),
+                  SizedBox(width: 10),
+                  Column(
+                    children: [
+                      // User name
+                      Text(user.displayName.toString(), style: Theme.of(context).textTheme.titleMedium),
+                      ElevatedButton(onPressed: () {}, child: Text('status')),
+                    ],
+                  ),
+                  Spacer(),
+
+                  IconButton(onPressed: () {
+                    // Open QR code Scanning Page
+                    context.go(AppRoute.qrCode);
+                  }, icon: Icon(Icons.qr_code)),
+                  IconButton(
+                    onPressed: () {},
+                    icon: Icon(Icons.add_circle_outline_rounded, color: Theme.of(context).primaryColor),
+                  ),
+                ],
+              ),
+              SizedBox(height: 10),
+
+              ListItem(icon: Icons.vpn_key_outlined, title: "Account", subtitle: "Security notification, change email"),
+              ListItem(
+                icon: Icons.lock_outline_rounded,
+                title: "Privacy",
+                subtitle: "Block contacts, disappearing messages",
+              ),
+              ListItem(icon: Icons.face, title: "Avatar", subtitle: "Create, edit, profile photo"),
+              ListItem(icon: Icons.list_alt, title: "Lists", subtitle: "Manage people and groups"),
+              ListItem(icon: Icons.chat_outlined, title: "Chats", subtitle: "Theme, wallpapers, conversation history"),
+              ListItem(
+                icon: Icons.notifications_none_outlined,
+                title: "Notification",
+                subtitle: "Message, group & call tones",
+              ),
+              ListItem(icon: Icons.security_update, title: "App _update"),
+
+              SizedBox(height: 20),
+              Text("Thanks for using this app", style: Theme.of(context).textTheme.bodySmall),
+              Text("Drop a hello in any of my socials", style: Theme.of(context).textTheme.bodySmall),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
