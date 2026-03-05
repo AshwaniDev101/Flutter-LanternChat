@@ -1,8 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lanternchat/features/chat/provider/provider.dart';
 import 'package:lanternchat/models/app_user.dart';
 
 import '../../../../core/theme/chat_theme.dart';
+import '../../../../models/message.dart';
 import '../../../../shared/widgets/circular_user_avatar.dart';
 
 // Popup Option menu for the Chat page
@@ -33,19 +36,54 @@ extension on ConversationPagePopupMenu {
   }
 }
 
-class ChatPage extends StatelessWidget {
-
-
+class ChatPage extends ConsumerWidget {
   final AppUser appUser;
 
   const ChatPage({super.key, required this.appUser});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
+    String conversationId = '';
+    final chatStream = ref.watch(chatStreamProvider(conversationId));
+
+    final chatTheme = Theme.of(context).extension<ChatTheme>()!;
     return Scaffold(
       appBar: _appBar(context),
       backgroundColor: Colors.grey[200],
-      body: Column(children: [_messageList(context), _textArea(context)]),
+      body: Column(
+        children: [
+
+
+          Expanded(
+            child: chatStream.when(
+              data: (List<Message> messages) {
+                return ListView.separated(
+                  separatorBuilder: (context, index) {
+                    return SizedBox(height: 10);
+                  },
+                  itemCount: 20,
+                  padding: EdgeInsets.all(16),
+
+                  itemBuilder: (context, index) {
+                    final bool isSelf = index % 2 == 0;
+
+                    return chatBubble(context, chatTheme, isSelf);
+                  },
+                );
+              },
+              error: (e, t) {
+                print("Error $e, $t");
+                return Center(child: Text("Error $e"));
+              },
+              loading: () {
+                return Center(child: CircularProgressIndicator());
+              },
+            ),
+          ),
+
+          _textArea(context),
+        ],
+      ),
     );
   }
 
@@ -54,9 +92,14 @@ class ChatPage extends StatelessWidget {
     return AppBar(
       title: Row(
         children: [
-          CircularUserAvatar(imageUrl: appUser.photoURL,radius: 20,),
-          SizedBox(width: 8,),
-          Text(appUser.name,style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.white), softWrap: false,overflow: TextOverflow.ellipsis,),
+          CircularUserAvatar(imageUrl: appUser.photoURL, radius: 20),
+          SizedBox(width: 8),
+          Text(
+            appUser.name,
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.white),
+            softWrap: false,
+            overflow: TextOverflow.ellipsis,
+          ),
         ],
       ),
 
@@ -75,25 +118,25 @@ class ChatPage extends StatelessWidget {
   }
 
   // This is the main chat window with all the chat messages
-  Widget _messageList(BuildContext context) {
-    final chatTheme = Theme.of(context).extension<ChatTheme>()!;
-
-    return Expanded(
-      child: ListView.separated(
-        separatorBuilder: (context, index) {
-          return SizedBox(height: 10);
-        },
-        itemCount: 20,
-        padding: EdgeInsets.all(16),
-
-        itemBuilder: (context, index) {
-          final bool isSelf = index % 2 == 0;
-
-          return chatBubble(context, chatTheme, isSelf);
-        },
-      ),
-    );
-  }
+  // Widget _messageList(BuildContext context) {
+  //   final chatTheme = Theme.of(context).extension<ChatTheme>()!;
+  //
+  //   return Expanded(
+  //     child: ListView.separated(
+  //       separatorBuilder: (context, index) {
+  //         return SizedBox(height: 10);
+  //       },
+  //       itemCount: 20,
+  //       padding: EdgeInsets.all(16),
+  //
+  //       itemBuilder: (context, index) {
+  //         final bool isSelf = index % 2 == 0;
+  //
+  //         return chatBubble(context, chatTheme, isSelf);
+  //       },
+  //     ),
+  //   );
+  // }
 
   Widget chatBubble(BuildContext context, ChatTheme chatTheme, bool isSelf) {
     return Row(

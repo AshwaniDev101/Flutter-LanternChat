@@ -18,7 +18,7 @@ class ChatService {
   ChatService({required this.firestore});
 
   Stream<List<Message>> chatStream(String conversationID) {
-    final messagesRef = getMessageReference(conversationID);
+    final messagesRef = _getMessageReference(conversationID);
 
     return messagesRef.snapshots().map((QuerySnapshot<Map<String, dynamic>> snapshot) {
       return snapshot.docs.map((QueryDocumentSnapshot<Map<String, dynamic>> documents) {
@@ -28,30 +28,30 @@ class ChatService {
   }
 
   void addChatString(String conversationID, Message message) {
-    final messagesRef = getMessageReference(conversationID);
+    final messagesRef = _getMessageReference(conversationID);
 
     messagesRef.add(message.toMap());
   }
 
   void deleteChat(String conversationID, String messageID) {
-    final singleMessagesRef = getMessageReference(conversationID).doc(messageID);
+    final singleMessagesRef = _getMessageReference(conversationID).doc(messageID);
 
     singleMessagesRef.delete();
   }
 
   void editChat(String conversationID, String messageID, Message updatedMessage) {
-    final singleMessagesRef = getMessageReference(conversationID).doc(messageID);
+    final singleMessagesRef = _getMessageReference(conversationID).doc(messageID);
 
     singleMessagesRef.update(updatedMessage.toMap());
   }
 
   void forwardChat(String conversationID, Message message, AppUser appUser) {
-    final messagesRef = getMessageReference(conversationID);
+    final messagesRef = _getMessageReference(conversationID);
 
     messagesRef.add(message.toMap());
   }
 
-  CollectionReference<Map<String, dynamic>> getMessageReference(String conversationID) {
+  CollectionReference<Map<String, dynamic>> _getMessageReference(String conversationID) {
     return firestore
         .collection(ChatServiceConstants.conversation)
         .doc(conversationID)
