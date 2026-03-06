@@ -2,23 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lanternchat/core/rooter/router_provider.dart';
-import 'package:lanternchat/features/connections/screens/view/widgets/contact.dart';
-import 'package:lanternchat/features/connections/screens/view/widgets/new_button.dart';
+import 'package:lanternchat/features/contact/screens/view/widgets/contact_tile.dart';
+import 'package:lanternchat/features/contact/screens/view/widgets/new_button.dart';
 
 import '../../../../../core/providers/constant_providers.dart';
 import '../../../../models/users/app_user.dart';
 import '../../provider/providers.dart';
 
-class ConnectionsPage extends ConsumerWidget {
-  const ConnectionsPage({super.key});
+class ContactPage extends ConsumerWidget {
+  const ContactPage({super.key});
 
   @override
   Widget build(BuildContext context, ref) {
     final currentUser = ref.watch(firebaseAuthProvider).currentUser;
 
-    final AsyncValue<List<AppUser>> connectionStreamProvider = ref.watch(connectionsStreamProvider(currentUser!.uid));
+    final AsyncValue<List<AppUser>> connectionStreamProvider = ref.watch(contactStreamProvider(currentUser!.uid));
 
-    // final contactList = ref.watch()
+
     return Scaffold(
       appBar: AppBar(title: Text('Select Contacts')),
       body: Padding(
@@ -50,7 +50,7 @@ class ConnectionsPage extends ConsumerWidget {
                   return ListView.builder(
                     itemCount: appUserList.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return Contact(
+                      return ContactTile(
                         appUser: appUserList[index],
                         onClick: () {
 

@@ -62,6 +62,7 @@ class Message {
     this.reactions = const {},
   });
 
+
   Map<String, dynamic> toMap() {
     return {
       _Field.messageId: messageId,

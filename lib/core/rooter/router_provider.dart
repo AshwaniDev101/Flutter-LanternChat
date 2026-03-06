@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lanternchat/models/users/app_user.dart';
+import 'package:lanternchat/models/users/contact.dart';
 
-import '../../features/chat/screens/view/conversation_page.dart';
-import '../../features/connections/screens/view/connections_page.dart';
+import '../../features/chat/screens/view/chat_page.dart';
+import '../../features/contact/screens/view/contact_page.dart';
 import '../../features/home/screens/view/home_page.dart';
 import '../../features/login/screens/view/login_page.dart';
 import '../../features/profile/screens/view/profile_page.dart';
@@ -96,15 +96,15 @@ final goRouterProvider = Provider((ref) {
       GoRoute(
         path: AppRoute.selectContact,
         builder: (BuildContext context, GoRouterState state) {
-          return const ConnectionsPage();
+          return const ContactPage();
         },
       ),
 
       GoRoute(
         path: AppRoute.chat,
         builder: (BuildContext context, GoRouterState state) {
-          final otherUser = state.extra as AppUser;
-          return ChatPage(appUser: otherUser);
+          final otherUser = state.extra as Contact;
+          return ChatPage(contact: otherUser);
         },
       ),
 

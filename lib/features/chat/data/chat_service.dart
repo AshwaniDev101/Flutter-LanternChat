@@ -8,7 +8,7 @@ import '../../../models/messages/message.dart';
 // Track message delivery with hasPendingWrites (✔) Animate properly
 
 class ChatServiceConstants {
-  static const String conversation = 'chat';
+  static const String conversation = 'conversation';
   static const String messages = 'messages';
 }
 
@@ -27,7 +27,7 @@ class ChatService {
     });
   }
 
-  void addChatString(String conversationID, Message message) {
+  void addChatString(String? conversationID, Message message) {
     final messagesRef = _getMessageReference(conversationID);
 
     messagesRef.add(message.toMap());
@@ -51,7 +51,19 @@ class ChatService {
     messagesRef.add(message.toMap());
   }
 
-  CollectionReference<Map<String, dynamic>> _getMessageReference(String conversationID) {
+  CollectionReference<Map<String, dynamic>> _getMessageReference(String? conversationID) {
+    if (conversationID == null || conversationID.isEmpty) {
+      // Create a new conversationID
+      final convRef = firestore.collection(ChatServiceConstants.conversation).doc();
+
+      final convID = convRef.id;
+
+      return firestore
+          .collection(ChatServiceConstants.conversation)
+          .doc(convID)
+          .collection(ChatServiceConstants.messages);
+    }
+
     return firestore
         .collection(ChatServiceConstants.conversation)
         .doc(conversationID)

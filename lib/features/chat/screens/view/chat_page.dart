@@ -1,14 +1,19 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lanternchat/core/providers/constant_providers.dart';
+import 'package:lanternchat/features/chat/data/chat_service.dart';
 import 'package:lanternchat/features/chat/provider/provider.dart';
-import 'package:lanternchat/models/users/app_user.dart';
+import 'package:lanternchat/models/messages/enums/message_type.dart';
 
 import '../../../../core/theme/chat_theme.dart';
 import '../../../../models/messages/message.dart';
+import '../../../../models/users/contact.dart';
 import '../../../../shared/widgets/circular_user_avatar.dart';
 
 // Popup Option menu for the Chat page
-enum ConversationPagePopupMenu {
+enum ChatPagePopupMenu {
   newGroup,
   viewContact,
   search,
@@ -20,30 +25,33 @@ enum ConversationPagePopupMenu {
 }
 
 // extension allows additional functionality to enums
-extension on ConversationPagePopupMenu {
+extension on ChatPagePopupMenu {
   String get action {
     return switch (this) {
-      ConversationPagePopupMenu.newGroup => "New Group",
-      ConversationPagePopupMenu.viewContact => "View Contact",
-      ConversationPagePopupMenu.search => "Search",
-      ConversationPagePopupMenu.mediaLinksDocs => "Media, Links, and Docs",
-      ConversationPagePopupMenu.muteNotifications => "Mute Notifications",
-      ConversationPagePopupMenu.disappearingMessages => "Disappearing Messages",
-      ConversationPagePopupMenu.chatTheme => "Chat Theme",
-      ConversationPagePopupMenu.more => "More",
+      ChatPagePopupMenu.newGroup => "New Group",
+      ChatPagePopupMenu.viewContact => "View Contact",
+      ChatPagePopupMenu.search => "Search",
+      ChatPagePopupMenu.mediaLinksDocs => "Media, Links, and Docs",
+      ChatPagePopupMenu.muteNotifications => "Mute Notifications",
+      ChatPagePopupMenu.disappearingMessages => "Disappearing Messages",
+      ChatPagePopupMenu.chatTheme => "Chat Theme",
+      ChatPagePopupMenu.more => "More",
     };
   }
 }
 
 class ChatPage extends ConsumerWidget {
-  final AppUser appUser;
+  final Contact contact;
+  final TextEditingController textEditingController = TextEditingController();
 
-  const ChatPage({super.key, required this.appUser});
+  ChatPage({super.key, required this.contact});
 
   @override
   Widget build(BuildContext context, ref) {
     String conversationId = '';
     final chatStream = ref.watch(chatStreamProvider(conversationId));
+    final chatService = ref.watch(chatServiceProvider);
+    final currentUser = ref.watch(firebaseAuthProvider).currentUser!;
 
     final chatTheme = Theme.of(context).extension<ChatTheme>()!;
     return Scaffold(
@@ -51,8 +59,6 @@ class ChatPage extends ConsumerWidget {
       backgroundColor: Colors.grey[200],
       body: Column(
         children: [
-
-
           Expanded(
             child: chatStream.when(
               data: (List<Message> messages) {
@@ -80,7 +86,7 @@ class ChatPage extends ConsumerWidget {
             ),
           ),
 
-          _textArea(context),
+          _textArea(context, chatService, currentUser),
         ],
       ),
     );
@@ -91,10 +97,10 @@ class ChatPage extends ConsumerWidget {
     return AppBar(
       title: Row(
         children: [
-          CircularUserAvatar(imageUrl: appUser.photoURL, radius: 20),
+          CircularUserAvatar(imageUrl: contact.photoURL, radius: 20),
           SizedBox(width: 8),
           Text(
-            appUser.name,
+            contact.name,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.white),
             softWrap: false,
             overflow: TextOverflow.ellipsis,
@@ -107,7 +113,7 @@ class ChatPage extends ConsumerWidget {
         IconButton(onPressed: () {}, icon: Icon(Icons.call_outlined)),
         PopupMenuButton(
           itemBuilder: (context) {
-            return ConversationPagePopupMenu.values.map((value) {
+            return ChatPagePopupMenu.values.map((value) {
               return PopupMenuItem(value: value, child: Text(value.action));
             }).toList();
           },
@@ -179,13 +185,14 @@ class ChatPage extends ConsumerWidget {
     );
   }
 
-  Widget _textArea(BuildContext context) {
+  Widget _textArea(BuildContext context, ChatService chatService, User currentUser) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
         children: [
           Expanded(
             child: TextField(
+              controller: textEditingController,
               decoration: InputDecoration(
                 prefixIcon: IconButton(onPressed: () {}, icon: Icon(Icons.emoji_emotions_outlined)),
 
@@ -202,7 +209,23 @@ class ChatPage extends ConsumerWidget {
             ),
           ),
 
-          IconButton(onPressed: () {}, icon: Icon(Icons.mic)),
+          textEditingController.value.toString().isEmpty
+              ? IconButton(onPressed: () {}, icon: Icon(Icons.mic))
+              : IconButton(
+                  onPressed: () {
+                    final text = textEditingController.value.toString();
+
+                    final message = Message(
+                      messageId: '',
+                      senderId: currentUser.uid.toString(),
+                      messageType: MessageType.text,
+                      createdAt: Timestamp.now(),
+                      text: text,
+                    );
+                    chatService.addChatString(contact.conversationId, message);
+                  },
+                  icon: Icon(Icons.send),
+                ),
         ],
       ),
     );

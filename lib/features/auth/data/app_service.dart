@@ -40,7 +40,7 @@ class AppService {
 
   void addConnection(String myUID, AppUser connection) {
 
-    final ref = userRef.doc(myUID).collection('connections');
+    final ref = userRef.doc(myUID).collection('contact');
 
     ref.doc(connection.uid).set(connection.toMap());
   }

@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import '../../../../../models/users/app_user.dart';
 import '../../../../../shared/widgets/circular_user_avatar.dart';
 
-class Contact extends StatelessWidget {
+class ContactTile extends StatelessWidget {
   final AppUser appUser;
   final VoidCallback onClick;
 
-  const Contact({super.key, required this.appUser, required this.onClick});
+  const ContactTile({super.key, required this.appUser, required this.onClick});
 
   @override
   Widget build(BuildContext context) {

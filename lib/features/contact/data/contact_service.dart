@@ -4,15 +4,15 @@ import 'package:lanternchat/models/users/app_user.dart';
 
 
 
-class ConnectionService {
+class ContactService {
   final FirebaseFirestore firestore;
 
   late final userRef = firestore.collection('users');
 
-  ConnectionService({required this.firestore});
+  ContactService({required this.firestore});
 
   Stream<List<AppUser>> getConnections(String uid) {
-    final connectionRef = userRef.doc(uid).collection('connections');
+    final connectionRef = userRef.doc(uid).collection('contact');
 
     // Stream<A>  →  Stream<B>
     //  Converting  'Stream<QuerySnapshot<Map<String, dynamic>>>'
