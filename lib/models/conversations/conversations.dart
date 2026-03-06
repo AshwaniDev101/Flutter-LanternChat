@@ -7,7 +7,7 @@ import '../messages/message.dart';
 enum ConversationsType { group, solo }
 
 class _Field {
-  static const String conversationsId = 'conversationsId';
+  static const String conversationId = 'conversationId';
   static const String conversationsType = 'conversationsType';
   static const String hostId = 'hostId';
   static const String createdAt = 'createdAt';
@@ -20,7 +20,7 @@ class _Field {
 }
 
 class Conversations {
-  final String conversationsId;
+  final String conversationId;
   final ConversationsType conversationsType;
   final String hostId;
   final Timestamp createdAt;
@@ -32,7 +32,7 @@ class Conversations {
   final GroupInfo? groupInfo;
 
   Conversations({
-    required this.conversationsId,
+    required this.conversationId,
     required this.conversationsType,
     required this.hostId,
     required this.createdAt,
@@ -46,7 +46,7 @@ class Conversations {
 
   Map<String, dynamic> toMap() {
     return {
-      _Field.conversationsId: conversationsId,
+      _Field.conversationId: conversationId,
       _Field.conversationsType: conversationsType.name,
       _Field.hostId: hostId,
       _Field.createdAt: createdAt,
@@ -61,7 +61,7 @@ class Conversations {
 
   factory Conversations.fromMap(Map<String, dynamic> map) {
     return Conversations(
-      conversationsId: map[_Field.conversationsId] ?? '',
+      conversationId: map[_Field.conversationId] ?? '',
       conversationsType: ConversationsType.values.asNameMap()[map[_Field.conversationsType]] ?? ConversationsType.solo,
       hostId: map[_Field.hostId] ?? '',
       createdAt: map[_Field.createdAt] ?? Timestamp.now(),
