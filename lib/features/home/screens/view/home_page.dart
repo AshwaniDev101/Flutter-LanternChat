@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lanternchat/core/rooter/router_provider.dart';
+import 'package:lanternchat/core/router/router_provider.dart';
 import 'package:lanternchat/features/conversation/screens/view/home_conversation_page.dart';
 
 import '../../../_calls/calls_pages.dart';

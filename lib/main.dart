@@ -2,10 +2,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'core/rooter/router_provider.dart';
+import 'core/router/router_provider.dart';
 import 'core/theme/app_theme.dart';
 import 'firebase_options.dart';
-
 
 // Build a release version
 // flutter build apk --release

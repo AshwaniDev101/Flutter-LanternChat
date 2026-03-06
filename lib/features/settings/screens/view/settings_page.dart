@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lanternchat/core/rooter/router_provider.dart';
+import 'package:lanternchat/core/router/router_provider.dart';
 import 'package:lanternchat/features/settings/screens/view/widgets/list_item.dart';
 import 'package:lanternchat/shared/widgets/circular_user_avatar.dart';
 

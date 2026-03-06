@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../../core/rooter/router_provider.dart';
+import '../../../../../core/router/router_provider.dart';
 
 class HomeConversationPage extends StatelessWidget {
   const HomeConversationPage({super.key});
