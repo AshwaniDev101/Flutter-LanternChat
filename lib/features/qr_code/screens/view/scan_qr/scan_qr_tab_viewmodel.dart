@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:lanternchat/models/app_user.dart';
+import 'package:lanternchat/models/users/app_user.dart';
 
 final scanStateQrNotifier = AutoDisposeNotifierProvider<QrNotifier, ScanState>(QrNotifier.new);
 

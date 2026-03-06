@@ -104,7 +104,7 @@ class _HomePageState extends State<HomePage> {
       //   padding: const EdgeInsets.symmetric(horizontal: 8),
       //   child: Column(
       //     children: [
-      //       // Text(user.uid),
+      //       // Text(users.uid),
       //       SizedBox(height: 14),
       //       _searchBar(),
       //       _getConversionList(),

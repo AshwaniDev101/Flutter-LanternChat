@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lanternchat/core/constants/constant_strings.dart';
 import 'package:lanternchat/core/providers/constant_providers.dart';
-import 'package:lanternchat/models/app_user.dart';
+import 'package:lanternchat/models/users/app_user.dart';
 import 'package:lanternchat/shared/widgets/circular_user_avatar.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
@@ -41,7 +41,7 @@ class _ScanCodeTabState extends ConsumerState<ScanCodeTab> {
     final currentUser = ref.read(firebaseAuthProvider).currentUser;
 
     // Possible states
-    // Successful QR card scan get user
+    // Successful QR card scan get users
     // Unsupported QR code
     if (appUser == null || currentUser == null) {
       return Center(

@@ -1,11 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lanternchat/features/chat/provider/provider.dart';
-import 'package:lanternchat/models/app_user.dart';
+import 'package:lanternchat/models/users/app_user.dart';
 
 import '../../../../core/theme/chat_theme.dart';
-import '../../../../models/message.dart';
+import '../../../../models/messages/message.dart';
 import '../../../../shared/widgets/circular_user_avatar.dart';
 
 // Popup Option menu for the Chat page

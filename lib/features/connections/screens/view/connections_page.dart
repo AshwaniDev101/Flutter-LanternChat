@@ -6,7 +6,7 @@ import 'package:lanternchat/features/connections/screens/view/widgets/contact.da
 import 'package:lanternchat/features/connections/screens/view/widgets/new_button.dart';
 
 import '../../../../../core/providers/constant_providers.dart';
-import '../../../../../models/app_user.dart';
+import '../../../../models/users/app_user.dart';
 import '../../provider/providers.dart';
 
 class ConnectionsPage extends ConsumerWidget {

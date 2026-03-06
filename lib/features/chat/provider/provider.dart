@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:lanternchat/models/message.dart';
+import 'package:lanternchat/models/messages/message.dart';
 
 import '../../../core/providers/constant_providers.dart';
 import '../data/chat_service.dart';

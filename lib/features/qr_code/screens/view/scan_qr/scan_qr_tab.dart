@@ -7,7 +7,7 @@ import 'package:lanternchat/features/qr_code/screens/view/scan_qr/widget/shaded_
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 import '../../../../../core/constants/constant_strings.dart';
-import '../../../../../models/app_user.dart';
+import '../../../../../models/users/app_user.dart';
 import '../../../../auth/provider/provider.dart';
 
 class ScanQrTab extends ConsumerStatefulWidget {
@@ -94,7 +94,7 @@ class _ScanQrTabState extends ConsumerState<ScanQrTab> {
                   final AppUser? foundAppUser = await userFirestoreProvider.fetchUser(fullCode[1]);
 
                   if (foundAppUser != null) {
-                    // print("==== Fetched user ${foundAppUser.name.toString()}");
+                    // print("==== Fetched users ${foundAppUser.name.toString()}");
                     ref.read(scanStateQrNotifier.notifier).userFound(foundAppUser);
                     controller.stop();
                   } else {

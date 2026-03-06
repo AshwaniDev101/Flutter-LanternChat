@@ -14,7 +14,7 @@ class AuthManager {
       // This triggers Google Account Picker
       final GoogleSignInAccount googleAccount = await _googleSignIn.authenticate();
 
-      // Gets ID token. Proof this user authenticated.
+      // Gets ID token. Proof this users authenticated.
       final GoogleSignInAuthentication googleAuth = googleAccount.authentication;
 
       // Creates Firebase credential.

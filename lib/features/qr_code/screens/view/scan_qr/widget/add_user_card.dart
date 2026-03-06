@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../../models/app_user.dart';
+import '../../../../../../models/users/app_user.dart';
 import '../../../../../../shared/widgets/circular_user_avatar.dart';
 
 

@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:lanternchat/models/app_user.dart';
+import 'package:lanternchat/models/users/app_user.dart';
 
 
 

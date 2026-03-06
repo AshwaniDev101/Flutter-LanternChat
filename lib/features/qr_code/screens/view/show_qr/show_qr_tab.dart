@@ -16,7 +16,7 @@ class ShowQrTab extends ConsumerWidget {
     final user = ref.watch(firebaseAuthProvider).currentUser;
 
     if (user == null) {
-      return Center(child: Text('Something Went Wrong user is null'));
+      return Center(child: Text('Something Went Wrong users is null'));
     }
 
     return Center(

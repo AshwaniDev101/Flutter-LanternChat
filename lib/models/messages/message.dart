@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-enum MessageType { text, image, file }
+import 'edit_history.dart';
+import 'enums/message_type.dart';
+import 'message_media.dart';
+import 'reply_to.dart';
 
 enum ReactionType { thumbs, heart, laugh, wow, tears, fire, lol, namaste }
-
-// enum MessageStatus { sending, sent, failed }
 
 class _Field {
   static const String messageId = 'messageId';
@@ -23,115 +24,6 @@ class _Field {
   static const String editHistory = 'editHistory';
 
   static const String text = 'text';
-
-  // MessageMedia
-  static const String url = 'url';
-  static const String thumbnail = 'thumbnail';
-  static const String fileSize = 'fileSize';
-  static const String mimeType = 'mimeType';
-
-  // EditHistory
-  static const String previewText = 'previousText';
-  static const String editedBy = 'editedBy';
-
-  // Thumbnail
-  static const String width = 'width';
-  static const String height = 'height';
-}
-
-class Thumbnail {
-  final String url;
-  final int width;
-  final int height;
-
-  Thumbnail({required this.url, required this.width, required this.height});
-
-  Map<String, dynamic> toMap() {
-    return {_Field.url: url, _Field.width: width, _Field.height: height};
-  }
-
-  factory Thumbnail.fromMap(Map<String, dynamic> map) {
-    return Thumbnail(
-      url: map[_Field.url] ?? '',
-      width: (map[_Field.width] ?? 0).toInt(),
-      height: (map[_Field.height] ?? 0).toInt(),
-    );
-  }
-}
-
-class MessageMedia {
-  final String url;
-  final Thumbnail? thumbnail;
-  final int? fileSize;
-  final String? mimeType;
-
-  MessageMedia({required this.url, this.thumbnail, this.fileSize, this.mimeType});
-
-  Map<String, dynamic> toMap() {
-    return {
-      _Field.url: url,
-      _Field.thumbnail: thumbnail?.toMap(),
-      _Field.fileSize: fileSize,
-      _Field.mimeType: mimeType,
-    };
-  }
-
-  factory MessageMedia.fromMap(Map<String, dynamic> map) {
-    final thumbnailMap = map[_Field.thumbnail] as Map<String, dynamic>?;
-    return MessageMedia(
-      url: map[_Field.url] ?? '',
-      thumbnail: thumbnailMap != null ? Thumbnail.fromMap(thumbnailMap) : null,
-      fileSize: map[_Field.fileSize]?.toInt(),
-      mimeType: map[_Field.mimeType],
-    );
-  }
-}
-
-class EditHistory {
-  final String previousText;
-  final Timestamp editedAt;
-  final String editedBy;
-
-  EditHistory({required this.previousText, required this.editedAt, required this.editedBy});
-
-  Map<String, dynamic> toMap() {
-    return {_Field.previewText: previousText, _Field.editedAt: editedAt, _Field.editedBy: editedBy};
-  }
-
-  factory EditHistory.fromMap(Map<String, dynamic> map) {
-    return EditHistory(
-      previousText: map[_Field.previewText] ?? '',
-      editedAt: map[_Field.editedAt] ?? Timestamp.now(),
-      editedBy: map[_Field.editedBy] ?? '',
-    );
-  }
-}
-
-class ReplyTo {
-  final String messageId;
-  final String senderId;
-  final MessageType messageType;
-  final String text;
-
-  ReplyTo({required this.messageId, required this.senderId, required this.text, required this.messageType});
-
-  Map<String, dynamic> toMap() {
-    return {
-      _Field.messageId: messageId,
-      _Field.senderId: senderId,
-      _Field.messageType: messageType.name,
-      _Field.text: text,
-    };
-  }
-
-  factory ReplyTo.fromMap(Map<String, dynamic> map) {
-    return ReplyTo(
-      messageId: map[_Field.messageId] ?? '',
-      senderId: map[_Field.senderId] ?? '',
-      messageType: MessageType.values.asNameMap()[map[_Field.messageType]] ?? MessageType.text,
-      text: map[_Field.text] ?? '',
-    );
-  }
 }
 
 class Message {

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../../../models/app_user.dart';
-import '../../../models/message.dart';
+import '../../../models/users/app_user.dart';
+import '../../../models/messages/message.dart';
 
 //  ================== Note Keep in mind =================
 // Use docChanges change only what needed keep the app fast
