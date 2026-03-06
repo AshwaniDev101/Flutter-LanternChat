@@ -1,4 +1,3 @@
-
 class _Field {
   static const String uid = 'uid';
   static const String conversationId = 'conversationId';
@@ -16,7 +15,10 @@ class Contact {
   final String photoURL;
   final String? note;
 
-  Contact({
+  // empty contact is required by qr code scanner
+  static const empty = Contact(uid: '', conversationId: '', name: '', email: '', photoURL: '');
+
+  const Contact({
     required this.uid,
     required this.conversationId,
     required this.name,
@@ -24,6 +26,11 @@ class Contact {
     required this.photoURL,
     this.note,
   });
+
+  // Check if this contact is not empty
+  bool isNotEmpty() {
+    return uid.isNotEmpty || conversationId.isNotEmpty || name.isNotEmpty || email.isNotEmpty || photoURL.isNotEmpty;
+  }
 
   factory Contact.fromMap(Map<String, dynamic> map) {
     return Contact(

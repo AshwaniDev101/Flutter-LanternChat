@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -44,7 +45,8 @@ class AppRoute {
 }
 
 final goRouterProvider = Provider((ref) {
-  final auth = ref.watch(firebaseAuthProvider);
+  final FirebaseAuth auth = ref.watch(firebaseAuthProvider);
+  // final AsyncValue<User?> auth = ref.watch(authStatusProvider);
 
   return GoRouter(
     refreshListenable: GoRouterRefreshStream(auth.authStateChanges()),

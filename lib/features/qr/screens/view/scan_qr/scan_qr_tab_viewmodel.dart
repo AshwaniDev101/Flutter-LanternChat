@@ -2,23 +2,22 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lanternchat/models/users/app_user.dart';
-
-final scanStateQrNotifier = AutoDisposeNotifierProvider<QrNotifier, ScanState>(QrNotifier.new);
+import 'package:lanternchat/models/users/contact.dart';
 
 class ScanState {
-  final AppUser? appUser;
+  final Contact contact;
 
-  // final bool isUserFound;
+  final bool isUserFound;
   final bool isCoolDown;
 
   // const ScanState({this.isUserFound = false, this.isQrScanningCoolDown = false, this.appUser});
-  const ScanState({this.isCoolDown = false, this.appUser});
+  const ScanState({this.isUserFound = false, this.isCoolDown = false, this.contact = Contact.empty});
 
-  ScanState copyWith({bool? isUserFound, bool? isCoolDown, AppUser? appUser}) {
+  ScanState copyWith({bool? isUserFound, bool? isCoolDown, Contact? contact}) {
     return ScanState(
-      // isUserFound: isUserFound ?? this.isUserFound,
+      isUserFound: isUserFound ?? this.isUserFound,
       isCoolDown: isCoolDown ?? this.isCoolDown,
-      appUser: appUser,
+      contact: contact ?? this.contact,
     );
   }
 }
@@ -30,9 +29,12 @@ class QrNotifier extends AutoDisposeNotifier<ScanState> {
     return ScanState();
   }
 
+  void userFound(bool isUserFound) {
+    state = state.copyWith(isUserFound: isUserFound);
+  }
 
-  void userFound(AppUser? appUser) {
-    state = state.copyWith(appUser: appUser);
+  void setContact(Contact contact) {
+    state = state.copyWith(contact: contact);
   }
 
   void setCoolDown(bool isCoolDown) {

@@ -13,11 +13,8 @@ class ProfilePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final user = ref.watch(firebaseAuthProvider).currentUser;
+    final user = ref.watch(currentUserProvider);
 
-    if (user == null) {
-      return Scaffold(body: Center(child: Text("Something went Wrong 404")));
-    }
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -36,8 +33,8 @@ class ProfilePage extends ConsumerWidget {
                 padding: const EdgeInsets.all(8),
                 child: Column(
                   children: [
-                    Text('${user.displayName}', style: Theme.of(context).textTheme.titleLarge),
-                    Text('${user.email}', style: Theme.of(context).textTheme.titleSmall),
+                    Text(user.name, style: Theme.of(context).textTheme.titleLarge),
+                    Text(user.email, style: Theme.of(context).textTheme.titleSmall),
                   ],
                 ),
               ),

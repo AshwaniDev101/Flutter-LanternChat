@@ -6,6 +6,7 @@ import 'package:lanternchat/core/providers/constant_providers.dart';
 import 'package:lanternchat/features/chat/data/chat_service.dart';
 import 'package:lanternchat/features/chat/provider/provider.dart';
 import 'package:lanternchat/models/messages/enums/message_type.dart';
+import 'package:lanternchat/models/users/app_user.dart';
 
 import '../../../../core/theme/chat_theme.dart';
 import '../../../../models/messages/message.dart';
@@ -51,7 +52,8 @@ class ChatPage extends ConsumerWidget {
     String conversationId = '';
     final chatStream = ref.watch(chatStreamProvider(conversationId));
     final chatService = ref.watch(chatServiceProvider);
-    final currentUser = ref.watch(firebaseAuthProvider).currentUser!;
+    // final currentUser = ref.watch(firebaseAuthProvider).currentUser!;
+    final currentUser = ref.watch(currentUserProvider);
 
     final chatTheme = Theme.of(context).extension<ChatTheme>()!;
     return Scaffold(
@@ -185,7 +187,7 @@ class ChatPage extends ConsumerWidget {
     );
   }
 
-  Widget _textArea(BuildContext context, ChatService chatService, User currentUser) {
+  Widget _textArea(BuildContext context, ChatService chatService, AppUser currentUser) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(

@@ -1,4 +1,3 @@
-
 // For Connection DB
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -11,9 +10,10 @@ final contactServiceProvider = Provider((ref) {
   return ContactService(firestore: firestore);
 });
 
-
-final contactStreamProvider = StreamProvider.family<List<AppUser>, String>((ref, uid) {
+final contactStreamProvider = StreamProvider<List<AppUser>>((ref) {
+  // final currentUser = ref.watch(firebaseAuthProvider).currentUser;
+  final currentUser = ref.watch(currentUserProvider);
 
   final service = ref.read(contactServiceProvider);
-  return service.getConnections(uid);
+  return service.getContacts(uid: currentUser.uid);
 });

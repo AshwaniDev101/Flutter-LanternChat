@@ -14,34 +14,5 @@ class AppService {
     userRef.doc(appUser.uid).set(appUser.toMap());
   }
 
-  Future<AppUser?> fetchUser(String uid) async {
-    try {
 
-
-      final snapshot = await userRef.doc(uid).get();
-
-      if (!snapshot.exists) {
-        return null;
-      }
-
-      final data = snapshot.data();
-
-      if (data == null) {
-        return null;
-      }
-
-
-      return AppUser.fromMap(uid, data);
-    } catch (e) {
-      print("Error Could not get User $e");
-      return null;
-    }
-  }
-
-  void addConnection(String myUID, AppUser connection) {
-
-    final ref = userRef.doc(myUID).collection('contact');
-
-    ref.doc(connection.uid).set(connection.toMap());
-  }
 }

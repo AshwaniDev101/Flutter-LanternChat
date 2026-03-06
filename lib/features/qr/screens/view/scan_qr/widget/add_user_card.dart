@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:lanternchat/models/users/contact.dart';
 
-import '../../../../../../models/users/app_user.dart';
 import '../../../../../../shared/widgets/circular_user_avatar.dart';
 
-
 class FoundUserCard extends StatelessWidget {
-  final AppUser appUser;
+  final Contact contact;
   final VoidCallback onCancel;
   final VoidCallback onAdd;
 
-  const FoundUserCard({required this.appUser, required this.onCancel, required this.onAdd, super.key});
+  const FoundUserCard({required this.contact, required this.onCancel, required this.onAdd, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +30,9 @@ class FoundUserCard extends StatelessWidget {
                   child: Column(
                     children: [
                       SizedBox(height: 8),
-                      Text(appUser.name, style: Theme.of(context).textTheme.titleLarge),
+                      Text(contact.name, style: Theme.of(context).textTheme.titleLarge),
                       SizedBox(height: 8),
-                      Text(appUser.email, style: Theme.of(context).textTheme.bodyMedium),
+                      Text(contact.email, style: Theme.of(context).textTheme.bodyMedium),
 
                       Padding(
                         padding: const EdgeInsets.only(top: 20),
@@ -93,7 +92,7 @@ class FoundUserCard extends StatelessWidget {
 
               Positioned(
                 top: -avtarRadius,
-                child: CircularUserAvatar(imageUrl: appUser.photoURL, radius: avtarRadius),
+                child: CircularUserAvatar(imageUrl: contact.photoURL, radius: avtarRadius),
               ),
             ],
           ),

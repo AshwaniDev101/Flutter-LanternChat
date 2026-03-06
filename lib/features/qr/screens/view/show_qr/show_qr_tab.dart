@@ -13,11 +13,8 @@ class ShowQrTab extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
     final avtarRadius = 40.0;
 
-    final user = ref.watch(firebaseAuthProvider).currentUser;
-
-    if (user == null) {
-      return Center(child: Text('Something Went Wrong users is null'));
-    }
+    // final user = ref.watch(firebaseAuthProvider).currentUser;
+    final user = ref.watch(currentUserProvider);
 
     return Center(
       child: Column(
@@ -35,7 +32,7 @@ class ShowQrTab extends ConsumerWidget {
                     child: Column(
                       children: [
                         // SizedBox(height: avtarRadius,),
-                        Text(user.displayName.toString(), style: Theme.of(context).textTheme.titleMedium),
+                        Text(user.name, style: Theme.of(context).textTheme.titleMedium),
                         Text("LanternChat Contact", style: Theme.of(context).textTheme.bodySmall),
                         SizedBox(
                           height: 200,

@@ -14,9 +14,9 @@ class ContactPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final currentUser = ref.watch(firebaseAuthProvider).currentUser;
+    // final currentUser = ref.watch(firebaseAuthProvider).currentUser;
 
-    final AsyncValue<List<AppUser>> connectionStreamProvider = ref.watch(contactStreamProvider(currentUser!.uid));
+    final AsyncValue<List<AppUser>> connectionStreamProvider = ref.watch(contactStreamProvider);
 
 
     return Scaffold(

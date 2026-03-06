@@ -12,14 +12,7 @@ class SettingsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-
-    final user = ref.watch(firebaseAuthProvider).currentUser;
-
-    if (user == null) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
-    }
+    final user = ref.watch(currentUserProvider);
 
     return Scaffold(
       appBar: AppBar(title: Text("Settings")),
@@ -31,21 +24,24 @@ class SettingsPage extends ConsumerWidget {
               SizedBox(height: 20),
               Row(
                 children: [
-                  CircularUserAvatar(imageUrl: user.photoURL, radius: 40,),
+                  CircularUserAvatar(imageUrl: user.photoURL, radius: 40),
                   SizedBox(width: 10),
                   Column(
                     children: [
                       // User name
-                      Text(user.displayName.toString(), style: Theme.of(context).textTheme.titleMedium),
+                      Text(user.name, style: Theme.of(context).textTheme.titleMedium),
                       ElevatedButton(onPressed: () {}, child: Text('status')),
                     ],
                   ),
                   Spacer(),
 
-                  IconButton(onPressed: () {
-                    // Open QR code Scanning Page
-                    context.pushReplacement(AppRoute.qrCode);
-                  }, icon: Icon(Icons.qr_code)),
+                  IconButton(
+                    onPressed: () {
+                      // Open QR code Scanning Page
+                      context.pushReplacement(AppRoute.qrCode);
+                    },
+                    icon: Icon(Icons.qr_code),
+                  ),
                   IconButton(
                     onPressed: () {},
                     icon: Icon(Icons.add_circle_outline_rounded, color: Theme.of(context).primaryColor),
