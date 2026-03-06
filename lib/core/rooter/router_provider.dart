@@ -10,7 +10,7 @@ import '../../features/connections/screens/view/connections_page.dart';
 import '../../features/home/screens/view/home_page.dart';
 import '../../features/login/screens/view/login_page.dart';
 import '../../features/profile/screens/view/profile_page.dart';
-import '../../features/qr_code/screens/view/qr_page.dart';
+import '../../features/qr/screens/view/qr_page.dart';
 import '../../features/settings/screens/view/settings_page.dart';
 import '../providers/constant_providers.dart';
 
@@ -40,7 +40,7 @@ class AppRoute {
   static const settings = '/settings';
   static const selectContact = '/select-contact';
   static const chat = '/conversation-window';
-  static const qrCode = '/qr_code-code';
+  static const qrCode = '/qr-code';
 }
 
 final goRouterProvider = Provider((ref) {
