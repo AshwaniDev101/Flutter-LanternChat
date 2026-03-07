@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:lanternchat/models/users/app_user.dart';
 
-class AppService {
+class FireStoreService {
   final FirebaseFirestore firestore;
 
-  AppService({required this.firestore});
+  FireStoreService({required this.firestore});
 
   late final userRef = firestore.collection('users');
 

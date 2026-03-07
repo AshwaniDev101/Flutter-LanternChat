@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/providers/constant_providers.dart';
 import '../../../models/users/app_user.dart';
+import '../../auth/provider/provider.dart';
 import '../data/contact_service.dart';
 
 final contactServiceProvider = Provider((ref) {

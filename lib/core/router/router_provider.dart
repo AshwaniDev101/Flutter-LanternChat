@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lanternchat/models/users/contact.dart';
 
+import '../../features/auth/provider/provider.dart';
 import '../../features/chat/screens/view/chat_page.dart';
 import '../../features/contact/screens/view/contact_page.dart';
 import '../../features/home/screens/view/home_page.dart';

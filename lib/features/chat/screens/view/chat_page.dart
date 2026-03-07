@@ -12,6 +12,7 @@ import '../../../../core/theme/chat_theme.dart';
 import '../../../../models/messages/message.dart';
 import '../../../../models/users/contact.dart';
 import '../../../../shared/widgets/circular_user_avatar.dart';
+import '../../../auth/provider/provider.dart';
 
 // Popup Option menu for the Chat page
 enum ChatPagePopupMenu {

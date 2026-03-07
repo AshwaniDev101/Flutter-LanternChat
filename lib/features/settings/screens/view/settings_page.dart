@@ -6,6 +6,7 @@ import 'package:lanternchat/features/settings/screens/view/widgets/list_item.dar
 import 'package:lanternchat/shared/widgets/circular_user_avatar.dart';
 
 import '../../../../core/providers/constant_providers.dart';
+import '../../../auth/provider/provider.dart';
 
 class SettingsPage extends ConsumerWidget {
   const SettingsPage({super.key});

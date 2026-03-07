@@ -5,6 +5,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../../../../core/providers/constant_providers.dart';
 import '../../../../../shared/widgets/circular_user_avatar.dart';
+import '../../../../auth/provider/provider.dart';
 
 class ShowQrTab extends ConsumerWidget {
   const ShowQrTab({super.key});
