@@ -10,7 +10,7 @@ import '../../features/auth/provider/auth_provider.dart';
 import '../../features/chat/screens/view/chat_page.dart';
 import '../../features/contact/screens/view/contact_page.dart';
 import '../../features/home/screens/view/home_page.dart';
-import '../../features/login/screens/view/login_page.dart';
+import '../../features/auth/screens/view/auth_page.dart';
 import '../../features/profile/screens/view/profile_page.dart';
 import '../../features/qr/screens/view/qr_page.dart';
 import '../../features/settings/screens/view/settings_page.dart';
@@ -91,7 +91,7 @@ final goRouterProvider = Provider((ref) {
       GoRoute(
         path: AppRoute.login,
         builder: (BuildContext context, GoRouterState state) {
-          return const LoginPage();
+          return const AuthPage();
         },
       ),
 

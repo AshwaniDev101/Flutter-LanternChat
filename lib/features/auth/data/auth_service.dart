@@ -2,10 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 
-class AuthManager {
+class AuthService {
   final FirebaseAuth _auth;
 
-  AuthManager(this._auth);
+  AuthService(this._auth);
 
   final GoogleSignIn _googleSignIn = GoogleSignIn.instance;
 

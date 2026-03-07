@@ -3,10 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/firestore/provider/firestore_provider.dart';
 import '../../../../models/users/app_user.dart';
-import '../../../auth/provider/auth_provider.dart';
+import '../../provider/auth_provider.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+class AuthPage extends StatelessWidget {
+  const AuthPage({super.key});
 
   @override
   Widget build(BuildContext context) {

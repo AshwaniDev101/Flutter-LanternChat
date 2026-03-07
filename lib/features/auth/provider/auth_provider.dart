@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../models/users/app_user.dart';
-import '../auth_manager.dart';
+import '../data/auth_service.dart';
 
 final firebaseAuthProvider = Provider<FirebaseAuth>((ref) {
   return FirebaseAuth.instance;
@@ -26,5 +26,5 @@ final authStatusProvider = StreamProvider<User?>((ref) {
 
 final authManagerProvider = Provider((ref) {
   final auth = ref.watch(firebaseAuthProvider);
-  return AuthManager(auth);
+  return AuthService(auth);
 });
