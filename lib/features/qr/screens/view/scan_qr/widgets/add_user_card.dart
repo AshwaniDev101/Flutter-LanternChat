@@ -3,12 +3,12 @@ import 'package:lanternchat/models/users/contact.dart';
 
 import '../../../../../../shared/widgets/circular_user_avatar.dart';
 
-class FoundUserCard extends StatelessWidget {
+class UserContactCard extends StatelessWidget {
   final Contact contact;
   final VoidCallback onCancel;
   final VoidCallback onAdd;
 
-  const FoundUserCard({required this.contact, required this.onCancel, required this.onAdd, super.key});
+  const UserContactCard({required this.contact, required this.onCancel, required this.onAdd, super.key});
 
   @override
   Widget build(BuildContext context) {

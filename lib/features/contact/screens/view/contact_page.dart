@@ -5,9 +5,8 @@ import 'package:lanternchat/core/router/router_provider.dart';
 import 'package:lanternchat/features/contact/screens/view/widgets/contact_tile.dart';
 import 'package:lanternchat/features/contact/screens/view/widgets/new_button.dart';
 
-import '../../../../../core/providers/constant_providers.dart';
 import '../../../../models/users/app_user.dart';
-import '../../provider/providers.dart';
+import '../../provider/contact_providers.dart';
 
 class ContactPage extends ConsumerWidget {
   const ContactPage({super.key});
@@ -17,7 +16,6 @@ class ContactPage extends ConsumerWidget {
     // final currentUser = ref.watch(firebaseAuthProvider).currentUser;
 
     final AsyncValue<List<AppUser>> connectionStreamProvider = ref.watch(contactStreamProvider);
-
 
     return Scaffold(
       appBar: AppBar(title: Text('Select Contacts')),
@@ -53,7 +51,6 @@ class ContactPage extends ConsumerWidget {
                       return ContactTile(
                         appUser: appUserList[index],
                         onClick: () {
-
                           // Opening ChatWindow
                           context.pushReplacement(AppRoute.chat, extra: appUserList[index]);
                         },

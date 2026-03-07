@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../core/firestore/provider/provider.dart';
+import '../../../../core/firestore/provider/firestore_provider.dart';
 import '../../../../models/users/app_user.dart';
-import '../../../auth/provider/provider.dart';
+import '../../../auth/provider/auth_provider.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -44,7 +44,7 @@ class LoginPage extends StatelessWidget {
 
                         final appUser = AppUser.fromFirebaseUser(user);
                         // Add to user user list
-                        ref.read(appServiceProvider).addAsNewUser(appUser: appUser);
+                        ref.read(firestoreServiceProvider).addAsNewUser(appUser: appUser);
                       }
                     });
                   },

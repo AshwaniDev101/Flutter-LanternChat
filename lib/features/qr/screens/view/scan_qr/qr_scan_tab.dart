@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:lanternchat/core/providers/constant_providers.dart';
-import 'package:lanternchat/features/contact/provider/providers.dart';
-import 'package:lanternchat/features/qr/screens/view/scan_qr/scan_qr_tab_viewmodel.dart';
-import 'package:lanternchat/features/qr/screens/view/scan_qr/widget/add_user_card.dart';
-import 'package:lanternchat/features/qr/screens/view/scan_qr/widget/shaded_overlay.dart';
+import 'package:lanternchat/features/contact/provider/contact_providers.dart';
+import 'package:lanternchat/features/qr/screens/view/scan_qr/widgets/add_user_card.dart';
+import 'package:lanternchat/features/qr/screens/view/scan_qr/widgets/shaded_overlay.dart';
 import 'package:lanternchat/models/users/contact.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 import '../../../../../core/constants/constant_strings.dart';
-import '../../../../../models/users/app_user.dart';
-import '../../../../auth/provider/provider.dart';
+import '../../../../auth/provider/auth_provider.dart';
 import '../../../provider/provider.dart';
 
 class ScanQrTab extends ConsumerStatefulWidget {
@@ -39,21 +36,21 @@ class _ScanQrTabState extends ConsumerState<ScanQrTab> {
   @override
   Widget build(BuildContext context) {
     final currentUser = ref.watch(currentUserProvider);
-    final userFirestoreProvider = ref.watch(appServiceProvider);
+    // final userFirestoreProvider = ref.watch(appServiceProvider);
     final contactService = ref.watch(contactServiceProvider);
 
-    final scanStateProvider = ref.watch(scanStateQrNotifier);
+    final scanStateProvider = ref.watch(qrScanStateNotifier);
 
     // When Some User is found show the Card
     if (scanStateProvider.isUserFound) {
-      return FoundUserCard(
+      return UserContactCard(
         contact: scanStateProvider.contact,
         onCancel: () {
-          ref.read(scanStateQrNotifier.notifier).userFound(false);
+          ref.read(qrScanStateNotifier.notifier).userFound(false);
         },
         onAdd: () {
           contactService.addContact(uid: currentUser.uid, contact: scanStateProvider.contact);
-          ref.read(scanStateQrNotifier.notifier).userFound(false);
+          ref.read(qrScanStateNotifier.notifier).userFound(false);
         },
       );
     }
@@ -85,7 +82,7 @@ class _ScanQrTabState extends ConsumerState<ScanQrTab> {
               // We have code
               if (code != null && code.isNotEmpty) {
                 // print("==== Qr Detected $code");
-                ref.read(scanStateQrNotifier.notifier).startCooldown();
+                ref.read(qrScanStateNotifier.notifier).startCooldown();
 
                 // Separating the appName (fullCode[0]) and userID (fullCode[1])
                 final fullCode = code.split('/');
@@ -98,8 +95,8 @@ class _ScanQrTabState extends ConsumerState<ScanQrTab> {
 
                   if (contact != null) {
                     // print("==== Fetched users ${foundAppUser.name.toString()}");
-                    ref.read(scanStateQrNotifier.notifier).setContact(contact);
-                    ref.read(scanStateQrNotifier.notifier).userFound(true);
+                    ref.read(qrScanStateNotifier.notifier).setContact(contact);
+                    ref.read(qrScanStateNotifier.notifier).userFound(true);
                     controller.stop();
                   } else {
                     showSnackBar("User Not Found: $code");

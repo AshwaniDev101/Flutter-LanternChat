@@ -8,11 +8,7 @@ class FireStoreService {
 
   late final userRef = firestore.collection('users');
 
-
   void addAsNewUser({required AppUser appUser}) {
-
     userRef.doc(appUser.uid).set(appUser.toMap());
   }
-
-
 }

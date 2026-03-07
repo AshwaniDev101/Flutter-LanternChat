@@ -5,8 +5,7 @@ import 'package:lanternchat/features/profile/screens/view/widgets/column_button.
 import 'package:lanternchat/features/profile/screens/view/widgets/row_button.dart';
 import 'package:lanternchat/shared/widgets/circular_user_avatar.dart';
 
-import '../../../../core/providers/constant_providers.dart';
-import '../../../auth/provider/provider.dart';
+import '../../../auth/provider/auth_provider.dart';
 
 class ProfilePage extends ConsumerWidget {
   const ProfilePage({super.key});

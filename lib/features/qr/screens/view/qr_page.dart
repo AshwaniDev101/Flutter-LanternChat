@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:lanternchat/features/qr/screens/view/scan_qr/scan_qr_tab.dart';
+import 'package:lanternchat/features/qr/screens/view/scan_qr/qr_scan_tab.dart';
 import 'package:lanternchat/features/qr/screens/view/show_qr/show_qr_tab.dart';
 class QrCodePage extends ConsumerWidget {
   const QrCodePage({super.key});
@@ -18,7 +18,7 @@ class QrCodePage extends ConsumerWidget {
       body: DefaultTabController(
         length: 2,
         // initialIndex: 1,
-        // A scrollable widget MUST know its size in the non-scroll direction.
+        // A scrollable widgets MUST know its size in the non-scroll direction.
         child: Column(
           children: [
             TabBar(

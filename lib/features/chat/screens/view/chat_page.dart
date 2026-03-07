@@ -1,10 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:lanternchat/core/providers/constant_providers.dart';
 import 'package:lanternchat/features/chat/data/chat_service.dart';
-import 'package:lanternchat/features/chat/provider/provider.dart';
+import 'package:lanternchat/features/chat/provider/chat_provider.dart';
 import 'package:lanternchat/models/messages/enums/message_type.dart';
 import 'package:lanternchat/models/users/app_user.dart';
 
@@ -12,7 +10,7 @@ import '../../../../core/theme/chat_theme.dart';
 import '../../../../models/messages/message.dart';
 import '../../../../models/users/contact.dart';
 import '../../../../shared/widgets/circular_user_avatar.dart';
-import '../../../auth/provider/provider.dart';
+import '../../../auth/provider/auth_provider.dart';
 
 // Popup Option menu for the Chat page
 enum ChatPagePopupMenu {

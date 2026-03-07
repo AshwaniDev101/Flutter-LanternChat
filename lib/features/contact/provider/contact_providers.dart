@@ -1,9 +1,9 @@
 // For Connection DB
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../core/providers/constant_providers.dart';
+import '../../../core/firestore/provider/firestore_provider.dart';
 import '../../../models/users/app_user.dart';
-import '../../auth/provider/provider.dart';
+import '../../auth/provider/auth_provider.dart';
 import '../data/contact_service.dart';
 
 final contactServiceProvider = Provider((ref) {

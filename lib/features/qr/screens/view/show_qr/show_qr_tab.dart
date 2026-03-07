@@ -3,9 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lanternchat/core/constants/constant_strings.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-import '../../../../../core/providers/constant_providers.dart';
 import '../../../../../shared/widgets/circular_user_avatar.dart';
-import '../../../../auth/provider/provider.dart';
+import '../../../../auth/provider/auth_provider.dart';
 
 class ShowQrTab extends ConsumerWidget {
   const ShowQrTab({super.key});

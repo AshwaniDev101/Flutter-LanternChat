@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lanternchat/models/users/contact.dart';
 
-import '../../features/auth/provider/provider.dart';
+import '../../features/auth/provider/auth_provider.dart';
 import '../../features/chat/screens/view/chat_page.dart';
 import '../../features/contact/screens/view/contact_page.dart';
 import '../../features/home/screens/view/home_page.dart';
@@ -14,7 +14,6 @@ import '../../features/login/screens/view/login_page.dart';
 import '../../features/profile/screens/view/profile_page.dart';
 import '../../features/qr/screens/view/qr_page.dart';
 import '../../features/settings/screens/view/settings_page.dart';
-import '../providers/constant_providers.dart';
 
 class GoRouterRefreshStream extends ChangeNotifier {
   late final StreamSubscription<dynamic> _subscription;
