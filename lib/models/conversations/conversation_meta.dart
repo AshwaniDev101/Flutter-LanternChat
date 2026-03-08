@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'enums/conversation_type.dart';
 import 'group_info.dart';
 import 'participant.dart';
 import '../messages/message.dart';
 
-enum ConversationsType { group, solo }
+
 
 class _Field {
   static const String conversationId = 'conversationId';
@@ -19,9 +20,9 @@ class _Field {
   static const String groupInfo = 'groupInfo';
 }
 
-class Conversations {
+class ConversationMeta {
   final String conversationId;
-  final ConversationsType conversationsType;
+  final ConversationType conversationsType;
   final String hostId;
   final Timestamp createdAt;
   final Timestamp lastUpdate;
@@ -31,7 +32,7 @@ class Conversations {
   final int messageCount;
   final GroupInfo? groupInfo;
 
-  Conversations({
+  ConversationMeta({
     required this.conversationId,
     required this.conversationsType,
     required this.hostId,
@@ -59,10 +60,10 @@ class Conversations {
     };
   }
 
-  factory Conversations.fromMap(Map<String, dynamic> map) {
-    return Conversations(
+  factory ConversationMeta.fromMap(Map<String, dynamic> map) {
+    return ConversationMeta(
       conversationId: map[_Field.conversationId] ?? '',
-      conversationsType: ConversationsType.values.asNameMap()[map[_Field.conversationsType]] ?? ConversationsType.solo,
+      conversationsType: ConversationType.values.asNameMap()[map[_Field.conversationsType]] ?? ConversationType.solo,
       hostId: map[_Field.hostId] ?? '',
       createdAt: map[_Field.createdAt] ?? Timestamp.now(),
       lastUpdate: map[_Field.lastUpdate] ?? Timestamp.now(),

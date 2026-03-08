@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:lanternchat/models/conversations/conversation.dart';
+import 'package:lanternchat/models/conversations/enums/conversation_type.dart';
 
 import 'edit_history.dart';
 import 'enums/message_type.dart';
@@ -62,7 +64,6 @@ class Message {
     this.reactions = const {},
   });
 
-
   Map<String, dynamic> toMap() {
     return {
       _Field.messageId: messageId,
@@ -103,5 +104,18 @@ class Message {
         (key, value) => MapEntry(key, ReactionType.values.asNameMap()[value] ?? ReactionType.thumbs),
       ),
     );
+  }
+
+  Map<String, dynamic> toSummary(String conversationId,) {
+    final conv = Conversation(
+      id: conversationId,
+      memberIds: [senderId,],
+      lastMessagePreview: text.toString(),
+      lastSenderId: senderId,
+      lastMessageTime: createdAt,
+      type: ConversationType.solo,
+    );
+
+    return conv.toMap();
   }
 }

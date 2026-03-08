@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lanternchat/core/router/router_provider.dart';
-import 'package:lanternchat/features/conversation/screens/view/home_conversation_page.dart';
+import 'package:lanternchat/features/conversation/screens/view/conversation_page.dart';
 
 import '../../../_calls/calls_pages.dart';
 import '../../../_communities/communities_page.dart';
@@ -51,7 +51,7 @@ class _HomePageState extends State<HomePage> {
 
   final List<Widget> _pages = [
 
-    HomeConversationPage(),
+    ConversationPage(),
     UpdatePage(),
     CommunitiesPage(),
     CallsPages(),

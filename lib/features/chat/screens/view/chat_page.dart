@@ -196,7 +196,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
                       text: text,
                     );
 
-                    chatService.addChatString(widget.contact.conversationId, message);
+                    chatService.sendMessage(widget.contact.conversationId, message);
 
                     textEditingController.clear();
                   },
