@@ -10,6 +10,8 @@ class _Field {
   static const String memberIds = 'memberIds';
   static const String lastMessagePreview = 'lastMessagePreview';
   static const String lastSenderId = 'lastSenderId';
+  static const String lastSenderName = 'lastSenderName';
+  static const String lastSenderPhotoUrl = 'lastSenderPhotoUrl';
   static const String lastMessageTime = 'lastMessageTime';
   static const String type = 'type';
 }
@@ -20,6 +22,8 @@ class Conversation {
 
   final String lastMessagePreview;
   final String lastSenderId;
+  final String lastSenderName;
+  final String lastSenderPhotoUrl;
   final Timestamp lastMessageTime;
 
   final ConversationType type;
@@ -29,6 +33,8 @@ class Conversation {
     required this.memberIds,
     required this.lastMessagePreview,
     required this.lastSenderId,
+    required this.lastSenderName,
+    required this.lastSenderPhotoUrl,
     required this.lastMessageTime,
     required this.type,
   });
@@ -36,9 +42,11 @@ class Conversation {
   factory Conversation.summary({required Contact contact, required Message message}) {
     return Conversation(
       id: contact.conversationId,
-      memberIds: [contact.conversationId],
+      memberIds: [contact.uid, message.senderId],
       lastMessagePreview: message.text.toString(),
       lastSenderId: message.senderId,
+      lastSenderName: message.senderId == contact.uid ? '${contact.name} (You)' : contact.name,
+      lastSenderPhotoUrl: contact.photoURL,
       lastMessageTime: message.createdAt,
       type: ConversationType.solo,
     );
@@ -50,6 +58,8 @@ class Conversation {
       _Field.memberIds: memberIds,
       _Field.lastMessagePreview: lastMessagePreview,
       _Field.lastSenderId: lastSenderId,
+      _Field.lastSenderName: lastSenderName,
+      _Field.lastSenderPhotoUrl: lastSenderPhotoUrl,
       _Field.lastMessageTime: lastMessageTime,
       _Field.type: type.name,
     };
@@ -61,6 +71,8 @@ class Conversation {
       memberIds: List<String>.from(map[_Field.memberIds] ?? []),
       lastMessagePreview: map[_Field.lastMessagePreview] ?? '',
       lastSenderId: map[_Field.lastSenderId] ?? '',
+      lastSenderName: map[_Field.lastSenderName] ?? '',
+      lastSenderPhotoUrl: map[_Field.lastSenderPhotoUrl] ?? '',
       lastMessageTime: map[_Field.lastMessageTime] ?? Timestamp.now(),
       type: ConversationType.values.asNameMap()[map[_Field.type]] ?? ConversationType.solo,
     );

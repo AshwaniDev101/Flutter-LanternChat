@@ -41,6 +41,9 @@ dependencies:
   # QR code generation
   qr_flutter: ^4.1.0
 
+  # DateTime formate 02/02/2026
+  intl: ^0.20.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
