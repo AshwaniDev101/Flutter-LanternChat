@@ -32,9 +32,11 @@ class ContactPage extends ConsumerWidget {
                   icon: Icons.person_add_alt_1,
                   title: 'New contact',
                   onTap: () {
-                    context.pushReplacement(AppRoute.qrCode);
+
                   },
-                  additionalOption: (icon: Icons.qr_code, onTap: () {}),
+                  additionalOption: (icon: Icons.qr_code, onTap: () {
+                    context.pushReplacement(AppRoute.qrCode);
+                  }),
                 ),
                 NewButton(icon: Icons.groups, title: 'New Community', onTap: () {}),
               ],

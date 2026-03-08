@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:lanternchat/features/profile/screens/view/widgets/column_button.dart';
 import 'package:lanternchat/features/profile/screens/view/widgets/row_button.dart';
 import 'package:lanternchat/shared/widgets/circular_user_avatar.dart';
 
+import '../../../../core/router/router_provider.dart';
 import '../../../auth/provider/auth_provider.dart';
 
 class ProfilePage extends ConsumerWidget {
@@ -30,10 +32,23 @@ class ProfilePage extends ConsumerWidget {
 
               Padding(
                 padding: const EdgeInsets.all(8),
-                child: Column(
+                child: Stack(
+                  alignment: Alignment.center,
                   children: [
-                    Text(user.name, style: Theme.of(context).textTheme.titleLarge),
-                    Text(user.email, style: Theme.of(context).textTheme.titleSmall),
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(user.name, style: Theme.of(context).textTheme.titleLarge),
+                        Text(user.email, style: Theme.of(context).textTheme.titleSmall),
+                      ],
+                    ),
+
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: IconButton(onPressed: (){
+                        context.push(AppRoute.qrCode);
+                      }, icon: Icon(Icons.qr_code,color: Colors.grey[500],size: 32,)),
+                    )
                   ],
                 ),
               ),
