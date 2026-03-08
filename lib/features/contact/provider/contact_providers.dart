@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/firestore/provider/firestore_provider.dart';
 import '../../../models/users/app_user.dart';
+import '../../../models/users/contact.dart';
 import '../../auth/provider/auth_provider.dart';
 import '../data/contact_service.dart';
 
@@ -11,7 +12,7 @@ final contactServiceProvider = Provider((ref) {
   return ContactService(firestore: firestore);
 });
 
-final contactStreamProvider = StreamProvider<List<AppUser>>((ref) {
+final contactStreamProvider = StreamProvider<List<Contact>>((ref) {
   // final currentUser = ref.watch(firebaseAuthProvider).currentUser;
   final currentUser = ref.watch(currentUserProvider);
 

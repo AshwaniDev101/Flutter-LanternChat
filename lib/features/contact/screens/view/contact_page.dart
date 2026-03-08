@@ -6,6 +6,7 @@ import 'package:lanternchat/features/contact/screens/view/widgets/contact_tile.d
 import 'package:lanternchat/features/contact/screens/view/widgets/new_button.dart';
 
 import '../../../../models/users/app_user.dart';
+import '../../../../models/users/contact.dart';
 import '../../provider/contact_providers.dart';
 
 class ContactPage extends ConsumerWidget {
@@ -15,7 +16,7 @@ class ContactPage extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
     // final currentUser = ref.watch(firebaseAuthProvider).currentUser;
 
-    final AsyncValue<List<AppUser>> connectionStreamProvider = ref.watch(contactStreamProvider);
+    final AsyncValue<List<Contact>> connectionStreamProvider = ref.watch(contactStreamProvider);
 
     return Scaffold(
       appBar: AppBar(title: Text('Select Contacts')),
@@ -45,16 +46,16 @@ class ContactPage extends ConsumerWidget {
             Padding(padding: const EdgeInsets.all(8), child: Text('Contact on LanternChat')),
             Expanded(
               child: connectionStreamProvider.when(
-                data: (List<AppUser> appUserList) {
+                data: (List<Contact> contacts) {
                   // print("#### print first : ${appUserList.first.photoURL.toString()}");
                   return ListView.builder(
-                    itemCount: appUserList.length,
+                    itemCount: contacts.length,
                     itemBuilder: (BuildContext context, int index) {
                       return ContactTile(
-                        appUser: appUserList[index],
+                        contact: contacts[index],
                         onClick: () {
                           // Opening ChatWindow
-                          context.pushReplacement(AppRoute.chat, extra: appUserList[index]);
+                          context.pushReplacement(AppRoute.chat, extra: contacts[index]);
                         },
                       );
                     },

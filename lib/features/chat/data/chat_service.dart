@@ -10,6 +10,7 @@ import '../../../models/messages/message.dart';
 class ChatServiceConstants {
   static const String conversation = 'conversation';
   static const String messages = 'messages';
+  static const String createdAt = 'createdAt';
 }
 
 class ChatService {
@@ -20,7 +21,8 @@ class ChatService {
   Stream<List<Message>> chatStream(String conversationID) {
     final messagesRef = _getMessageReference(conversationID);
 
-    return messagesRef.snapshots().map((QuerySnapshot<Map<String, dynamic>> snapshot) {
+
+    return messagesRef.orderBy(ChatServiceConstants.createdAt, descending: false).snapshots().map((QuerySnapshot<Map<String, dynamic>> snapshot) {
       return snapshot.docs.map((QueryDocumentSnapshot<Map<String, dynamic>> documents) {
         return Message.fromMap(documents.data());
       }).toList();

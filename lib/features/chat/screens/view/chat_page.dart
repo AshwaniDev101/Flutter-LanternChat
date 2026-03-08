@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lanternchat/features/chat/data/chat_service.dart';
 import 'package:lanternchat/features/chat/provider/chat_provider.dart';
+import 'package:lanternchat/features/chat/screens/view/widgets/chat_bubble.dart';
 import 'package:lanternchat/models/messages/enums/message_type.dart';
 import 'package:lanternchat/models/users/app_user.dart';
 
@@ -40,21 +41,45 @@ extension on ChatPagePopupMenu {
   }
 }
 
-class ChatPage extends ConsumerWidget {
+class ChatPage extends ConsumerStatefulWidget {
   final Contact contact;
-  final TextEditingController textEditingController = TextEditingController();
 
-  ChatPage({super.key, required this.contact});
+  const ChatPage({super.key, required this.contact});
 
   @override
-  Widget build(BuildContext context, ref) {
-    String conversationId = '';
-    final chatStream = ref.watch(chatStreamProvider(conversationId));
+  ConsumerState<ChatPage> createState() => _ChatPageState();
+}
+
+class _ChatPageState extends ConsumerState<ChatPage> {
+  final TextEditingController textEditingController = TextEditingController();
+
+  // final ScrollController _scrollController = ScrollController();
+
+  // @override
+  // void dispose() {
+  //   textEditingController.dispose();
+  //   _scrollController.dispose();
+  //   super.dispose();
+  // }
+  //
+  // void _scrollToBottom({bool animate = true}) {
+  //   if (!_scrollController.hasClients) return;
+  //   final position = 0.0; // because reverse: true
+  //   if (animate) {
+  //     _scrollController.animateTo(position, duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
+  //   } else {
+  //     _scrollController.jumpTo(position);
+  //   }
+  // }
+
+  @override
+  Widget build(BuildContext context) {
+    // String conversationId = '';
+    final chatStream = ref.watch(chatStreamProvider(widget.contact.conversationId));
     final chatService = ref.watch(chatServiceProvider);
     // final currentUser = ref.watch(firebaseAuthProvider).currentUser!;
     final currentUser = ref.watch(currentUserProvider);
 
-    final chatTheme = Theme.of(context).extension<ChatTheme>()!;
     return Scaffold(
       appBar: _appBar(context),
       backgroundColor: Colors.grey[200],
@@ -63,17 +88,19 @@ class ChatPage extends ConsumerWidget {
           Expanded(
             child: chatStream.when(
               data: (List<Message> messages) {
+                // WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
                 return ListView.separated(
+                  reverse: true,
                   separatorBuilder: (context, index) {
                     return SizedBox(height: 10);
                   },
-                  itemCount: 20,
+                  itemCount: messages.length,
                   padding: EdgeInsets.all(16),
 
                   itemBuilder: (context, index) {
-                    final bool isSelf = index % 2 == 0;
-
-                    return chatBubble(context, chatTheme, isSelf);
+                    //// When reverse: true, index 0 = newest message
+                    final message = messages[messages.length - 1 - index];
+                    return ChatBubble(message: message);
                   },
                 );
               },
@@ -98,10 +125,10 @@ class ChatPage extends ConsumerWidget {
     return AppBar(
       title: Row(
         children: [
-          CircularUserAvatar(imageUrl: contact.photoURL, radius: 20),
+          CircularUserAvatar(imageUrl: widget.contact.photoURL, radius: 20),
           SizedBox(width: 8),
           Text(
-            contact.name,
+            widget.contact.name,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.white),
             softWrap: false,
             overflow: TextOverflow.ellipsis,
@@ -123,70 +150,12 @@ class ChatPage extends ConsumerWidget {
     );
   }
 
-  // This is the main chat window with all the chat messages
-  // Widget _messageList(BuildContext context) {
-  //   final chatTheme = Theme.of(context).extension<ChatTheme>()!;
-  //
-  //   return Expanded(
-  //     child: ListView.separated(
-  //       separatorBuilder: (context, index) {
-  //         return SizedBox(height: 10);
-  //       },
-  //       itemCount: 20,
-  //       padding: EdgeInsets.all(16),
-  //
-  //       itemBuilder: (context, index) {
-  //         final bool isSelf = index % 2 == 0;
-  //
-  //         return chatBubble(context, chatTheme, isSelf);
-  //       },
-  //     ),
-  //   );
-  // }
-
-  Widget chatBubble(BuildContext context, ChatTheme chatTheme, bool isSelf) {
-    return Row(
-      mainAxisAlignment: isSelf ? MainAxisAlignment.start : MainAxisAlignment.end,
-      children: [
-        if (!isSelf)
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.subdirectory_arrow_right_outlined, color: chatTheme.muteColor),
-          ),
-
-        Container(
-          width: MediaQuery.of(context).size.width * 0.7,
-          padding: EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
-              bottomRight: isSelf ? Radius.circular(20) : Radius.circular(0),
-              bottomLeft: isSelf ? Radius.circular(0) : Radius.circular(20),
-            ),
-            color: isSelf ? chatTheme.receivedBubble : chatTheme.senderBubble,
-
-            border: Border.all(color: Colors.white10),
-          ),
-
-          child: Text(
-            isSelf
-                ? 'Yea im fine, i know this is just a testing message'
-                : 'hi  how are you, this is just a testing message',
-            softWrap: true,
-          ),
-        ),
-
-        if (isSelf)
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.subdirectory_arrow_right_outlined, color: chatTheme.muteColor),
-          ),
-      ],
-    );
-  }
-
   Widget _textArea(BuildContext context, ChatService chatService, AppUser currentUser) {
+    final keyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
+    final hasText = textEditingController.text.trim().isNotEmpty;
+
+    final showSend = keyboardOpen && hasText;
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
@@ -194,6 +163,7 @@ class ChatPage extends ConsumerWidget {
           Expanded(
             child: TextField(
               controller: textEditingController,
+              onChanged: (_) => setState(() {}),
               decoration: InputDecoration(
                 prefixIcon: IconButton(onPressed: () {}, icon: Icon(Icons.emoji_emotions_outlined)),
 
@@ -210,23 +180,28 @@ class ChatPage extends ConsumerWidget {
             ),
           ),
 
-          textEditingController.value.toString().isEmpty
-              ? IconButton(onPressed: () {}, icon: Icon(Icons.mic))
-              : IconButton(
+          showSend
+              ? IconButton(
+                  icon: Icon(Icons.send),
                   onPressed: () {
-                    final text = textEditingController.value.toString();
+                    final text = textEditingController.text.trim();
+
+                    if (text.isEmpty) return;
 
                     final message = Message(
                       messageId: '',
-                      senderId: currentUser.uid.toString(),
+                      senderId: currentUser.uid,
                       messageType: MessageType.text,
                       createdAt: Timestamp.now(),
                       text: text,
                     );
-                    chatService.addChatString(contact.conversationId, message);
+
+                    chatService.addChatString(widget.contact.conversationId, message);
+
+                    textEditingController.clear();
                   },
-                  icon: Icon(Icons.send),
-                ),
+                )
+              : IconButton(icon: Icon(Icons.mic), onPressed: () {}),
         ],
       ),
     );

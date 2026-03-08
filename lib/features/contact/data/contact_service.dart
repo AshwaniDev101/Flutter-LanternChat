@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:lanternchat/models/users/app_user.dart';
 import 'package:lanternchat/models/users/contact.dart';
 
 class _Field {
@@ -15,7 +14,7 @@ class ContactService {
 
   ContactService({required this.firestore});
 
-  Stream<List<AppUser>> getContacts({required String uid}) {
+  Stream<List<Contact>> getContacts({required String uid}) {
     final connectionRef = userRef.doc(uid).collection(_Field.contact);
 
     // Stream<A>  →  Stream<B>
@@ -25,7 +24,7 @@ class ContactService {
       // List<QueryDocumentSnapshot>   ->   List<AppUser>
       return snapshot.docs.map((QueryDocumentSnapshot<Map<String, dynamic>> document) {
         // print("==== ${document.data().toString()}");
-        return AppUser.fromMap(document.id, document.data());
+        return Contact.fromMap(document.data());
       }).toList();
     });
   }
