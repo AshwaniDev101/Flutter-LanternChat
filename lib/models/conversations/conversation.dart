@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:lanternchat/models/messages/message.dart';
+import 'package:lanternchat/models/users/contact.dart';
 
 import 'conversation_meta.dart';
 import 'enums/conversation_type.dart';
@@ -30,6 +32,17 @@ class Conversation {
     required this.lastMessageTime,
     required this.type,
   });
+
+  factory Conversation.summary({required Contact contact, required Message message}) {
+    return Conversation(
+      id: contact.conversationId,
+      memberIds: [contact.conversationId],
+      lastMessagePreview: message.text.toString(),
+      lastSenderId: message.senderId,
+      lastMessageTime: message.createdAt,
+      type: ConversationType.solo,
+    );
+  }
 
   Map<String, dynamic> toMap() {
     return {

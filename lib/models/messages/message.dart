@@ -106,16 +106,16 @@ class Message {
     );
   }
 
-  Map<String, dynamic> toSummary(String conversationId,) {
-    final conv = Conversation(
-      id: conversationId,
-      memberIds: [senderId,],
-      lastMessagePreview: text.toString(),
-      lastSenderId: senderId,
-      lastMessageTime: createdAt,
-      type: ConversationType.solo,
-    );
-
-    return conv.toMap();
-  }
+  // Map<String, dynamic> toSummary(String conversationId,) {
+  //   final conv = Conversation(
+  //     id: conversationId,
+  //     memberIds: [senderId,],
+  //     lastMessagePreview: text.toString(),
+  //     lastSenderId: senderId,
+  //     lastMessageTime: createdAt,
+  //     type: ConversationType.solo,
+  //   );
+  //
+  //   return conv.toMap();
+  // }
 }

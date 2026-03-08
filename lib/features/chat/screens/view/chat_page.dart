@@ -161,23 +161,31 @@ class _ChatPageState extends ConsumerState<ChatPage> {
       child: Row(
         children: [
           Expanded(
-            child: TextField(
-              controller: textEditingController,
-              onChanged: (_) => setState(() {}),
-              decoration: InputDecoration(
-                prefixIcon: IconButton(onPressed: () {}, icon: Icon(Icons.emoji_emotions_outlined)),
-
-                suffixIcon: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+              child:Container(
+                padding: EdgeInsets.symmetric(horizontal: 12),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(40),
+                  border: Border.all(color: Colors.grey),
+                ),
+                child: Row(
                   children: [
+                    IconButton(onPressed: () {}, icon: Icon(Icons.emoji_emotions_outlined)),
+                    Expanded(
+                      child: TextField(
+                        controller: textEditingController,
+                        onChanged: (_) => setState(() {}),
+                        style: TextStyle(color: Colors.black),
+                        decoration: InputDecoration(
+                          hintText: "Type a message",
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
                     IconButton(onPressed: () {}, icon: Icon(Icons.attachment)),
                     IconButton(onPressed: () {}, icon: Icon(Icons.camera_alt_outlined)),
                   ],
                 ),
-
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(40)),
-              ),
-            ),
+              )
           ),
 
           showSend
@@ -196,7 +204,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
                       text: text,
                     );
 
-                    chatService.sendMessage(widget.contact.conversationId, message);
+                    chatService.sendMessageTo(contact:widget.contact, message:message);
 
                     textEditingController.clear();
                   },
