@@ -8,7 +8,7 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 
 import '../../../../../core/constants/constant_strings.dart';
 import '../../../../auth/provider/auth_provider.dart';
-import '../../../provider/provider.dart';
+import '../../../provider/qr_provider.dart';
 
 class ScanQrTab extends ConsumerStatefulWidget {
   const ScanQrTab({super.key});
@@ -49,7 +49,7 @@ class _ScanQrTabState extends ConsumerState<ScanQrTab> {
           ref.read(qrScanStateNotifier.notifier).userFound(false);
         },
         onAdd: () {
-          contactService.addContact(uid: currentUser.uid, contact: scanStateProvider.contact);
+          contactService.addContact(thisContact: currentUser.toContact(), newContact: scanStateProvider.contact);
           ref.read(qrScanStateNotifier.notifier).userFound(false);
         },
       );

@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:lanternchat/models/users/contact.dart';
 
 class _Field {
   static const String uid = 'uid';
@@ -29,6 +30,16 @@ class AppUser {
     );
   }
 
+  Contact toContact() {
+    return Contact(
+      uid: uid,
+      conversationId: '',
+      name: name,
+      email: email,
+      photoURL: photoURL,
+    );
+  }
+
   Map<String, dynamic> toMap() {
     return {
       _Field.uid: uid,
@@ -46,4 +57,6 @@ class AppUser {
       photoURL: user.photoURL.toString(),
     );
   }
+
+
 }

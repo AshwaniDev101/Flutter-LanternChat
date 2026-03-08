@@ -4,7 +4,8 @@ import 'package:lanternchat/models/users/contact.dart';
 
 class _Field {
   static const String users = 'users';
-  static const String contact = 'conversationsType';
+  static const String contact = 'contacts';
+  static const String conversationId = 'conversationId'; // make sure this String match class 'Contact' 'conversationId'
 }
 
 class ContactService {
@@ -29,10 +30,31 @@ class ContactService {
     });
   }
 
-  void addContact({required String uid, required Contact contact}) {
-    final ref = userRef.doc(uid).collection(_Field.contact);
+  Future<void> addContact({required Contact thisContact, required Contact newContact}) async {
+    final batch = firestore.batch();
 
-    ref.doc(contact.uid).set(contact.toMap());
+    final conversationId = firestore.collection('conversations').doc().id;
+    // This Contact list Operation
+    // Stores new users contact to my own Contact list
+    final thisUserContactRef = userRef.doc(thisContact.uid).collection(_Field.contact);
+    // Extracting Map of new Contact
+    final newContactMap = newContact.toMap();
+    // Adding 'conversationId' to new contact map
+    newContactMap[_Field.conversationId] = conversationId;
+    // Storing the new contact in my own contact list
+    batch.set(thisUserContactRef.doc(newContact.uid), newContactMap);
+
+    // New Contact list Operation
+    // Stores my contact on New users contact list
+    final newUserContactRef = userRef.doc(newContact.uid).collection(_Field.contact);
+    // Extracting my own Contact map
+    final thisContactMap = thisContact.toMap();
+    //  Adding 'conversationId' to my contact map
+    thisContactMap[_Field.conversationId] = conversationId;
+    // Storing my contact in new users contact list
+    batch.set(newUserContactRef.doc(thisContact.uid), thisContactMap);
+
+    await batch.commit();
   }
 
   Future<Contact?> fetchUser(String uid) async {

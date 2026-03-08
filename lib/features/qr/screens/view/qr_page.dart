@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lanternchat/features/qr/screens/view/scan_qr/qr_scan_tab.dart';
-import 'package:lanternchat/features/qr/screens/view/show_qr/show_qr_tab.dart';
+import 'package:lanternchat/features/qr/screens/view/show_qr/qr_show_tab.dart';
 class QrCodePage extends ConsumerWidget {
   const QrCodePage({super.key});
 
