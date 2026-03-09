@@ -53,24 +53,6 @@ class ChatPage extends ConsumerStatefulWidget {
 class _ChatPageState extends ConsumerState<ChatPage> {
   final TextEditingController textEditingController = TextEditingController();
 
-  // final ScrollController _scrollController = ScrollController();
-
-  // @override
-  // void dispose() {
-  //   textEditingController.dispose();
-  //   _scrollController.dispose();
-  //   super.dispose();
-  // }
-  //
-  // void _scrollToBottom({bool animate = true}) {
-  //   if (!_scrollController.hasClients) return;
-  //   final position = 0.0; // because reverse: true
-  //   if (animate) {
-  //     _scrollController.animateTo(position, duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
-  //   } else {
-  //     _scrollController.jumpTo(position);
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -123,6 +105,8 @@ class _ChatPageState extends ConsumerState<ChatPage> {
   // Page App bar
   AppBar _appBar(BuildContext context) {
     return AppBar(
+      // leadingWidth: 40, // reduces default 56 width
+      titleSpacing: 4,   // removes extra gap before title
       title: Row(
         children: [
           CircularUserAvatar(imageUrl: widget.contact.photoURL, radius: 20),
@@ -137,8 +121,8 @@ class _ChatPageState extends ConsumerState<ChatPage> {
       ),
 
       actions: [
-        IconButton(onPressed: () {}, icon: Icon(Icons.videocam_outlined)),
-        IconButton(onPressed: () {}, icon: Icon(Icons.call_outlined)),
+        // IconButton(onPressed: () {}, icon: Icon(Icons.videocam_outlined)),
+        // IconButton(onPressed: () {}, icon: Icon(Icons.call_outlined)),
         PopupMenuButton(
           itemBuilder: (context) {
             return ChatPagePopupMenu.values.map((value) {

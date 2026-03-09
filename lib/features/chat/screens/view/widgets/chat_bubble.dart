@@ -9,53 +9,55 @@ import '../../../../../models/users/app_user.dart';
 class ChatBubble extends ConsumerWidget {
   final Message message;
 
-
   const ChatBubble({required this.message, super.key});
 
   @override
-  Widget build(BuildContext context, ref) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final chatTheme = Theme.of(context).extension<ChatTheme>()!;
     final currentUser = ref.watch(currentUserProvider);
 
-    return Row(
+    final isMine = message.senderId == currentUser.uid;
 
-      mainAxisAlignment: isMyMessage(currentUser) ? MainAxisAlignment.end : MainAxisAlignment.start,
-      children: [
-        // if (message.senderId != currentUser.uid)
-        //   IconButton(
-        //     onPressed: () {},
-        //     icon: Icon(Icons.subdirectory_arrow_right_outlined, color: chatTheme.muteColor),
-        //   ),
-
-        Container(
-          width: MediaQuery.of(context).size.width * 0.7,
-          padding: EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
-              bottomRight: isMyMessage(currentUser) ? Radius.circular(0) :  Radius.circular(20),
-              bottomLeft: isMyMessage(currentUser) ? Radius.circular(20) : Radius.circular(0),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+      child: Row(
+        mainAxisAlignment:
+        isMine ? MainAxisAlignment.end : MainAxisAlignment.start,
+        children: [
+          ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: MediaQuery.of(context).size.width * 0.72,
             ),
-            color: isMyMessage(currentUser) ? chatTheme.senderBubble: chatTheme.receivedBubble,
-
-            border: Border.all(color: Colors.white10),
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                vertical: 10,
+                horizontal: 14,
+              ),
+              decoration: BoxDecoration(
+                color: isMine
+                    ? chatTheme.senderBubble
+                    : chatTheme.receivedBubble,
+                borderRadius: BorderRadius.only(
+                  topLeft: const Radius.circular(18),
+                  topRight: const Radius.circular(18),
+                  bottomLeft:
+                  isMine ? const Radius.circular(18) : Radius.zero,
+                  bottomRight:
+                  isMine ? Radius.zero : const Radius.circular(18),
+                ),
+              ),
+              child: Text(
+                message.text ?? "",
+                style: TextStyle(
+                  fontSize: 15,
+                  height: 1.35,
+                  color: isMine ? Colors.black87 : Colors.black87,
+                ),
+              ),
+            ),
           ),
-
-          child: Text(message.text.toString(), softWrap: true),
-        ),
-
-        // if (message.senderId == currentUser.uid)
-        //   IconButton(
-        //     onPressed: () {},
-        //     icon: Icon(Icons.subdirectory_arrow_right_outlined, color: chatTheme.muteColor),
-        //   ),
-      ],
+        ],
+      ),
     );
-  }
-
-  bool isMyMessage(AppUser currentUser)
-  {
-    return message.senderId == currentUser.uid;
   }
 }
