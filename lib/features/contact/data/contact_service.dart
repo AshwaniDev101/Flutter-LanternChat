@@ -14,7 +14,7 @@ class ContactService {
 
   ContactService({required this.firestore});
 
-  Stream<List<Contact>> getContacts({required String uid}) {
+  Stream<List<Contact>> watchContacts({required String uid}) {
     final connectionRef = userRef.doc(uid).collection(_Field.contact);
 
     // Stream<A>  →  Stream<B>

@@ -17,5 +17,5 @@ final contactStreamProvider = StreamProvider<List<Contact>>((ref) {
   final currentUser = ref.watch(currentUserProvider);
 
   final service = ref.read(contactServiceProvider);
-  return service.getContacts(uid: currentUser.uid);
+  return service.watchContacts(uid: currentUser.uid);
 });

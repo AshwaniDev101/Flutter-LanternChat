@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:lanternchat/models/conversations/conversation_meta.dart';
-
+import 'package:lanternchat/features/conversation/util/conversation_stream_utils.dart';
+import 'package:lanternchat/features/contact/provider/contact_providers.dart';
+import 'package:lanternchat/models/conversations/conversations_tile.dart';
 import '../../../core/firestore/provider/firestore_provider.dart';
-import '../../../models/conversations/conversation.dart';
 import '../data/conversation_service.dart';
 
 final conversationServiceProvider = Provider((ref) {
@@ -10,6 +10,16 @@ final conversationServiceProvider = Provider((ref) {
   return ConversationService(firestore: firestore);
 });
 
-final conversationSteamProvider = StreamProvider.family<List<Conversation>, String>((ref, uid) {
-  return ref.watch(conversationServiceProvider).conversationStream(uid);
+// final conversationSteamProvider = StreamProvider.family<List<Conversation>, String>((ref, String memberIds) {
+//   return ref.watch(conversationServiceProvider).conversationStream(memberIds);
+// });
+//
+
+final conversationContactMergeSteamProvider = StreamProvider.family<List<ConversationsTile>, String>((ref, currentUid) {
+  // currentUid is to filter where 'memberIds'
+  final contactsStream = ref.watch(contactServiceProvider).watchContacts(uid: currentUid);
+  // currentUid is need to fetch user contact list
+  final conversationsStream = ref.watch(conversationServiceProvider).conversationStream(memberId: currentUid);
+
+  return ConversationStreamUtils.conversationsTileStream(contactsStream, conversationsStream);
 });

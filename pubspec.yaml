@@ -44,6 +44,9 @@ dependencies:
   # DateTime formate 02/02/2026
   intl: ^0.20.2
 
+  # For combining Streams
+  rxdart: ^0.28.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -13,9 +13,9 @@ class ConversationService {
 
   ConversationService({required this.firestore});
 
-  Stream<List<Conversation>> conversationStream(String currentUserId) {
+  Stream<List<Conversation>> conversationStream({required String memberId}) {
     return _getConversationsRef()
-        .where(_ServiceConstants.memberIds, arrayContains: currentUserId)
+        .where(_ServiceConstants.memberIds, arrayContains: memberId)
         .orderBy(_ServiceConstants.lastMessageTime, descending: true)
         .snapshots()
         .map((QuerySnapshot<Map<String, dynamic>> snapshot) {
