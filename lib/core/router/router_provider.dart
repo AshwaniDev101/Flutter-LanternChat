@@ -36,7 +36,7 @@ class GoRouterRefreshStream extends ChangeNotifier {
 
 class AppRoute {
   static const home = '/';
-  static const login = '/login';
+  static const auth = '/login';
   static const profile = '/profile';
   static const settings = '/settings';
   static const selectContact = '/select-contact';
@@ -50,14 +50,14 @@ final goRouterProvider = Provider((ref) {
 
   return GoRouter(
     refreshListenable: GoRouterRefreshStream(auth.authStateChanges()),
-    initialLocation: AppRoute.login,
+    initialLocation: AppRoute.auth,
     // redirect run on every route change.
     redirect: (BuildContext context, GoRouterState state) {
       final user = auth.currentUser;
-      final isOnLoginPage = state.matchedLocation == AppRoute.login;
+      final isOnLoginPage = state.matchedLocation == AppRoute.auth;
 
       if (user == null && !isOnLoginPage) {
-        return AppRoute.login;
+        return AppRoute.auth;
       }
       if (user != null && isOnLoginPage) {
         return AppRoute.home;
@@ -89,7 +89,7 @@ final goRouterProvider = Provider((ref) {
       ),
 
       GoRoute(
-        path: AppRoute.login,
+        path: AppRoute.auth,
         builder: (BuildContext context, GoRouterState state) {
           return const AuthPage();
         },

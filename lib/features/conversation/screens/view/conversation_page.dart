@@ -52,43 +52,92 @@ class ConversationPage extends ConsumerWidget {
 
   Widget _searchBar() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: TextField(
-        decoration: InputDecoration(
-          prefixIcon: Icon(Icons.search),
-          hintText: 'Search',
-          filled: true,
-          border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(40))),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      child: SizedBox(
+        height: 42,
+        child: TextField(
+          decoration: InputDecoration(
+            hintText: 'Search',
+            hintStyle: TextStyle(color: Colors.grey.shade500),
+            prefixIcon: Icon(Icons.search, size: 20, color: Colors.grey),
+
+            filled: true,
+            fillColor: Colors.white,
+
+            contentPadding: EdgeInsets.symmetric(vertical: 0),
+
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(30),
+              borderSide: BorderSide(
+                color: Colors.grey.shade300,
+                width: 1,
+              ),
+            ),
+
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(30),
+              borderSide: BorderSide(
+                color: Colors.grey.shade300,
+                width: 1,
+              ),
+            ),
+
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(30),
+              borderSide: BorderSide(
+                color: Colors.grey.shade400,
+                width: 1,
+              ),
+            ),
+          ),
         ),
       ),
     );
   }
 
-  Widget _getConversionList(List<ConversationsTile> conversationList) {
+  Widget _getConversionList(List<ConversationsTile> conversationTileList) {
     return Expanded(
       child: ListView.builder(
-        itemCount: conversationList.length,
+        itemCount: conversationTileList.length,
         itemBuilder: (context, index) {
-          return _card(conversationList[index]);
+          return _Card(tile:conversationTileList[index]);
         },
       ),
     );
   }
 
-  Widget _card(ConversationsTile tile) {
-    return Card(
+
+}
+
+
+class _Card extends StatelessWidget {
+
+  final ConversationsTile tile;
+
+  const _Card({required this.tile, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: (){
+
+        context.push(AppRoute.chat,extra: tile.contact);
+      },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(
           children: [
-            CircularUserAvatar(imageUrl: tile.contact.photoURL),
+            Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: CircularUserAvatar(imageUrl: tile.contact.photoURL),
+            ),
             SizedBox(width: 10),
             Expanded(
               child: Column(
                 children: [
                   Row(
                     children: [
-                      Text(tile.contact.name),
+                      Text(tile.contact.name,style: Theme.of(context).textTheme.titleSmall,),
                       Spacer(),
                       Text(TimerFormateHelper.formatMessageDate(tile.conversation.lastMessageTime)),
                     ],
@@ -96,7 +145,7 @@ class ConversationPage extends ConsumerWidget {
 
                   Row(
                     children: [
-                      Text(tile.conversation.lastMessagePreview),
+                      Text(tile.conversation.lastMessagePreview, style: Theme.of(context).textTheme.bodyMedium,),
                       Spacer(),
                       Icon(Icons.push_pin_rounded, size: 16),
                     ],
@@ -110,3 +159,4 @@ class ConversationPage extends ConsumerWidget {
     );
   }
 }
+

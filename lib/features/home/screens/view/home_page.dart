@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lanternchat/core/router/router_provider.dart';
+import 'package:lanternchat/core/theme/app_colors.dart';
 import 'package:lanternchat/features/conversation/screens/view/conversation_page.dart';
 
 import '../../../_calls/calls_pages.dart';
@@ -145,8 +146,8 @@ class _HomePageState extends State<HomePage> {
   Widget _bottomBar() {
     return BottomNavigationBar(
       currentIndex: _currentIndex,
-      selectedItemColor: Colors.teal,
-      unselectedItemColor: Colors.grey,
+      selectedItemColor: AppColors.primary,
+      unselectedItemColor: AppColors.muteColor,
       items: [
         BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Chat'),
         BottomNavigationBarItem(icon: Icon(Icons.newspaper), label: 'Update'),

@@ -62,7 +62,8 @@ flutter:
 
   uses-material-design: true
   assets:
-    - assets/icons/main/lantern_icon.png
+    - assets/icons/buttons/
+    - assets/icons/main/
 
 
 

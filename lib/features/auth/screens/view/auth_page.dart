@@ -1,83 +1,86 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lanternchat/features/auth/screens/view/widgets/sign_in_button.dart';
 
 import '../../../../core/firestore/provider/firestore_provider.dart';
 import '../../../../models/users/app_user.dart';
 import '../../provider/auth_provider.dart';
 
-class AuthPage extends StatelessWidget {
+class AuthPage extends ConsumerWidget {
   const AuthPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      // backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  'LanternChat',
-                  // style: TextStyle(fontSize: 28, color: Colors.blueGrey[400], fontWeight: FontWeight.bold),
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
+            // Icon(Icons.wechat_outlined, size: 40, color: Colors.blueGrey[400]),
 
-                SizedBox(width: 10),
-                Icon(Icons.wechat_outlined, size: 40, color: Colors.blueGrey[400]),
-              ],
+            Image.asset(
+              'assets/icons/main/lantern_icon.png',
+              width: 52,
+              height: 52,
+              fit: BoxFit.contain,
             ),
-            const SizedBox(height: 60),
-            Column(
-              children: [
-                // _signInButton(Icons.email, 'Email', Colors.deepOrange[400]!, () {}),
-                // _signInButton(Icons.call, 'Phone Number', Colors.green[400]!, () {}),
-                Consumer(
-                  builder: (BuildContext context, WidgetRef ref, _) {
-                    return _signInButton(Icons.person, 'Google', Colors.deepOrange[400]!, () async {
+            SizedBox(height: 20,),
+
+            Text(
+              'Welcome to LanternChat',
+              // style: TextStyle(fontSize: 28, color: Colors.blueGrey[400], fontWeight: FontWeight.bold),
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+
+            Text(
+              'Discover people with passions like yours.',
+              // style: TextStyle(fontSize: 28, color: Colors.blueGrey[400], fontWeight: FontWeight.bold),
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.grey[500]),
+            ),
+            const SizedBox(height: 40),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Column(
+                children: [
+                  SignInButton(
+                    imageUrl: 'assets/icons/buttons/google.png',
+                    text: 'Continue with Google',
+                    textColor: Colors.black,
+                    backgroundColor: Colors.grey[100]!,
+                    callback: () async {
                       final user = await ref.read(authManagerProvider).signInWithGoogle();
 
                       if (user != null) {
-
                         final appUser = AppUser.fromFirebaseUser(user);
                         // Add to user user list
                         ref.read(firestoreServiceProvider).addAsNewUser(appUser: appUser);
                       }
-                    });
-                  },
-                ),
-              ],
+                    },
+                  ),
+
+
+                  SignInButton(
+                    imageUrl: 'assets/icons/buttons/person.png',
+                    text: 'Email & Password',
+                    textColor: Colors.black,
+                    backgroundColor: Colors.grey[100]!,
+                    callback: () async {
+                      final user = await ref.read(authManagerProvider).signInWithGoogle();
+
+                      if (user != null) {
+                        final appUser = AppUser.fromFirebaseUser(user);
+                        // Add to user user list
+                        ref.read(firestoreServiceProvider).addAsNewUser(appUser: appUser);
+                      }
+                    },
+                  ),
+                ],
+              ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget _signInButton(IconData iconData, String text, Color backgroundColor, void Function() callback) {
-    return Padding(
-      padding: const EdgeInsets.all(4.0),
-      child: ElevatedButton(
-        onPressed: callback,
-
-        style: ElevatedButton.styleFrom(
-          backgroundColor: backgroundColor,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        ),
-        child: SizedBox(
-          width: 140,
-          height: 50,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(iconData, color: Colors.white),
-              SizedBox(width: 10),
-              Text(text),
-            ],
-          ),
         ),
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'app_colors.dart';
 import 'chat_theme.dart';
@@ -18,7 +19,7 @@ class Themes {
       error: Colors.red,
       onError: Colors.white,
       surface: AppColors.background,
-      onSurface: Colors.black,
+      onSurface: Colors.black87,
     ),
 
     extensions: [
@@ -28,6 +29,14 @@ class Themes {
         muteColor: AppColors.muteColor,
       ),
     ],
-    appBarTheme: AppBarTheme(backgroundColor: AppColors.primary, foregroundColor: Colors.white),
+    appBarTheme: AppBarTheme(
+      backgroundColor: AppColors.primary,
+      foregroundColor: Colors.white,
+      systemOverlayStyle: SystemUiOverlayStyle(
+        statusBarColor: AppColors.statusBar, // background of status bar
+        statusBarIconBrightness: Brightness.light, // Android icons
+        statusBarBrightness: Brightness.dark, // iOS icons
+      ),
+    ),
   );
 }
