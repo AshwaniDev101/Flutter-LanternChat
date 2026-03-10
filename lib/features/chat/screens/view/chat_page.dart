@@ -7,7 +7,6 @@ import 'package:lanternchat/features/chat/screens/view/widgets/chat_bubble.dart'
 import 'package:lanternchat/models/messages/enums/message_type.dart';
 import 'package:lanternchat/models/users/app_user.dart';
 
-import '../../../../core/theme/chat_theme.dart';
 import '../../../../models/messages/message.dart';
 import '../../../../models/users/contact.dart';
 import '../../../../shared/widgets/circular_user_avatar.dart';

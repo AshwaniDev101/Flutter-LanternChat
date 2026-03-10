@@ -26,6 +26,28 @@ void main() async {
   runApp(ProviderScope(child: const LanternChat()));
 }
 
+// Todo implement paging
+// Introduce paging
+//User scrolls up
+//         │
+//         ▼
+// ScrollController detects threshold
+//         │
+//         ▼
+// loadOlderMessages()
+//         │
+//         ▼
+// Firestore query (startAfterDocument)
+//         │
+//         ▼
+// pagination stream emits messages
+//         │
+//         ▼
+// Rx.merge combines streams
+//         │
+//         ▼
+// StreamBuilder rebuilds UI
+
 class LanternChat extends ConsumerWidget {
   const LanternChat({super.key});
 
