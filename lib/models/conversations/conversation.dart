@@ -2,9 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:lanternchat/models/messages/message.dart';
 import 'package:lanternchat/models/users/contact.dart';
 
-import 'conversation_meta.dart';
-import 'enums/conversation_type.dart';
-
 class _Field {
   static const String id = 'id';
   static const String memberIds = 'memberIds';

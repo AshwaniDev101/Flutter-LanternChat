@@ -1,11 +1,11 @@
 import 'package:rxdart/rxdart.dart';
 
 import '../../../../models/conversations/conversation.dart';
-import '../../../../models/conversations/conversations_tile.dart';
+import '../../../../models/conversations/conversation_tile.dart';
 import '../../../../models/users/contact.dart';
 
 class ConversationStreamUtils {
-  static Stream<List<ConversationsTile>> conversationsTileStream(
+  static Stream<List<ConversationTile>> conversationsTileStream(
     Stream<List<Contact>> contactsStream,
     Stream<List<Conversation>> conversationsStream,
   ) {
@@ -16,7 +16,7 @@ class ConversationStreamUtils {
       return contacts.map((contact) {
         final conversation = conversations.firstWhere((conversation) => conversation.id == contact.conversationId);
 
-        return ConversationsTile(contact: contact, conversation: conversation);
+        return ConversationTile(contact: contact, conversation: conversation);
       }).toList();
     });
   }

@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lanternchat/core/helpers/timer_formate_helper.dart';
 import 'package:lanternchat/features/auth/provider/auth_provider.dart';
-import 'package:lanternchat/models/conversations/conversations_tile.dart';
+import 'package:lanternchat/models/conversations/conversation_tile.dart';
 
 import '../../../../../core/router/router_provider.dart';
 import '../../../../shared/widgets/circular_user_avatar.dart';
@@ -95,7 +95,7 @@ class ConversationPage extends ConsumerWidget {
     );
   }
 
-  Widget _getConversionList(List<ConversationsTile> conversationTileList) {
+  Widget _getConversionList(List<ConversationTile> conversationTileList) {
     return Expanded(
       child: ListView.builder(
         itemCount: conversationTileList.length,
@@ -112,9 +112,9 @@ class ConversationPage extends ConsumerWidget {
 
 class _Card extends StatelessWidget {
 
-  final ConversationsTile tile;
+  final ConversationTile tile;
 
-  const _Card({required this.tile, super.key});
+  const _Card({required this.tile});
 
   @override
   Widget build(BuildContext context) {

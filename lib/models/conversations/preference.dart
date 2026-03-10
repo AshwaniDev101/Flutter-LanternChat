@@ -10,19 +10,13 @@ class _Field {
   static const String deletedAt = 'deletedAt';
   static const String joinedAt = 'joinedAt';
 
-  static const String conversationId = 'conversationId';
   static const String conversationsType = 'conversationsType';
   static const String hostId = 'hostId';
   static const String createdAt = 'createdAt';
-  static const String lastUpdate = 'lastUpdate';
-  static const String lastMessage = 'lastMessage';
-  static const String memberIds = 'memberIds';
-  static const String participants = 'participants';
-  static const String messageCount = 'messageCount';
   static const String groupInfo = 'groupInfo';
 }
 
-class ConversationPreference {
+class Preference {
   final ConversationType conversationsType;
   final String hostId;
 
@@ -36,7 +30,7 @@ class ConversationPreference {
 
   final GroupInfo? groupInfo;
 
-  ConversationPreference({
+  Preference({
     required this.conversationsType,
     required this.hostId,
 
@@ -68,8 +62,8 @@ class ConversationPreference {
     };
   }
 
-  factory ConversationPreference.fromMap(Map<String, dynamic> map) {
-    return ConversationPreference(
+  factory Preference.fromMap(Map<String, dynamic> map) {
+    return Preference(
       conversationsType: ConversationType.values.asNameMap()[map[_Field.conversationsType]] ?? ConversationType.solo,
 
       hostId: map[_Field.hostId] ?? '',

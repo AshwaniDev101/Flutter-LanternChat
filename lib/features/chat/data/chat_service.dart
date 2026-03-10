@@ -1,9 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:lanternchat/models/conversations/conversation_meta.dart';
-import 'package:lanternchat/models/conversations/enums/conversation_type.dart';
 
 import '../../../models/conversations/conversation.dart';
-import '../../../models/users/app_user.dart';
 import '../../../models/messages/message.dart';
 import '../../../models/users/contact.dart';
 
@@ -15,7 +12,6 @@ class _ServiceConstants {
   static const String conversations = 'conversations';
   static const String messages = 'messages';
   static const String createdAt = 'createdAt';
-
 }
 
 class ChatService {
@@ -24,8 +20,10 @@ class ChatService {
   ChatService({required this.firestore});
 
   Stream<List<Message>> chatStream(String conversationId) {
-
-    final convDoc = firestore.collection(_ServiceConstants.conversations).doc(conversationId).collection(_ServiceConstants.messages);
+    final convDoc = firestore
+        .collection(_ServiceConstants.conversations)
+        .doc(conversationId)
+        .collection(_ServiceConstants.messages);
 
     return convDoc.orderBy(_ServiceConstants.createdAt, descending: false).snapshots().map((
       QuerySnapshot<Map<String, dynamic>> snapshot,
@@ -44,7 +42,7 @@ class ChatService {
 
     final convDoc = firestore.collection(_ServiceConstants.conversations).doc(contact.conversationId);
 
-    batch.set(convDoc, Conversation.summary(contact:contact,message: message).toMap());
+    batch.set(convDoc, Conversation.summary(contact: contact, message: message).toMap());
 
     convDoc.collection(_ServiceConstants.messages).add(message.toMap());
 
