@@ -21,4 +21,17 @@ class TimerFormateHelper {
       return formatter.format(date);
     }
   }
+
+  static String formatTimestampTime(Timestamp timestamp) {
+    final date = timestamp.toDate();
+
+    final hour = date.hour.toString().padLeft(2, '0');
+    final minute = date.minute.toString().padLeft(2, '0');
+    final second = date.second.toString().padLeft(2, '0');
+
+    final millisecond =
+    (date.microsecond ~/ 1000).toString().padLeft(3, '0'); // convert micro → milli
+
+    return "$hour:$minute:$second.$millisecond";
+  }
 }

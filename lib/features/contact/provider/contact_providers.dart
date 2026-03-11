@@ -1,7 +1,7 @@
 // For Connection DB
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../core/firestore/provider/firestore_provider.dart';
+import '../../../core/firebase/provider/firebase_providers.dart';
 import '../../../models/users/app_user.dart';
 import '../../../models/users/contact.dart';
 import '../../auth/provider/auth_provider.dart';

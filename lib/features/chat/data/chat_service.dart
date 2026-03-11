@@ -69,13 +69,13 @@ class ChatService {
   // }
   //
   // CollectionReference<Map<String, dynamic>> _getMessagesReference({required String conversationId}) {
-  //   return firestore
+  //   return firebase
   //       .collection(_ServiceConstants.conversations)
   //       .doc(conversationId)
   //       .collection(_ServiceConstants.messages);
   // }
   //
   // DocumentReference<Map<String, dynamic>> _getConversationsRef({required String conversationId}) {
-  //   return firestore.collection(_ServiceConstants.conversations).doc(conversationId);
+  //   return firebase.collection(_ServiceConstants.conversations).doc(conversationId);
   // }
 }

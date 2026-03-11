@@ -1,16 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:lanternchat/features/chat/data/chat_service.dart';
 import 'package:lanternchat/features/chat/provider/chat_provider.dart';
 import 'package:lanternchat/features/chat/screens/view/widgets/chat_bubble.dart';
-import 'package:lanternchat/models/messages/enums/message_type.dart';
-import 'package:lanternchat/models/users/app_user.dart';
+import 'package:lanternchat/features/chat/screens/view/widgets/text_area.dart';
+import 'package:lanternchat/features/chat/screens/view/widgets/typing_indicator.dart';
 
 import '../../../../models/messages/message.dart';
 import '../../../../models/users/contact.dart';
 import '../../../../shared/widgets/circular_user_avatar.dart';
-import '../../../auth/provider/auth_provider.dart';
 
 // Popup Option menu for the Chat page
 enum ChatPagePopupMenu {
@@ -40,26 +37,17 @@ extension on ChatPagePopupMenu {
   }
 }
 
-class ChatPage extends ConsumerStatefulWidget {
+class ChatPage extends ConsumerWidget {
   final Contact contact;
 
   const ChatPage({super.key, required this.contact});
 
   @override
-  ConsumerState<ChatPage> createState() => _ChatPageState();
-}
-
-class _ChatPageState extends ConsumerState<ChatPage> {
-  final TextEditingController textEditingController = TextEditingController();
-
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     // String conversationId = '';
-    final chatStream = ref.watch(chatStreamProvider(widget.contact.conversationId));
-    final chatService = ref.watch(chatServiceProvider);
-    // final currentUser = ref.watch(firebaseAuthProvider).currentUser!;
-    final currentUser = ref.watch(currentUserProvider);
+    final chatStream = ref.watch(chatStreamProvider(contact.conversationId));
+    // final chatService = ref.watch(chatServiceProvider);
+    // final currentUser = ref.watch(currentUserProvider);
 
     return Scaffold(
       appBar: _appBar(context),
@@ -95,7 +83,9 @@ class _ChatPageState extends ConsumerState<ChatPage> {
             ),
           ),
 
-          _textArea(context, chatService, currentUser),
+          TypingIndicator(contact: contact),
+          TextArea(contact: contact),
+          // _textArea(context, chatService, currentUser),
         ],
       ),
     );
@@ -105,13 +95,13 @@ class _ChatPageState extends ConsumerState<ChatPage> {
   AppBar _appBar(BuildContext context) {
     return AppBar(
       // leadingWidth: 40, // reduces default 56 width
-      titleSpacing: 4,   // removes extra gap before title
+      titleSpacing: 4, // removes extra gap before title
       title: Row(
         children: [
-          CircularUserAvatar(imageUrl: widget.contact.photoURL, radius: 20),
+          CircularUserAvatar(imageUrl: contact.photoURL, radius: 20),
           SizedBox(width: 8),
           Text(
-            widget.contact.name,
+            contact.name,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.white),
             softWrap: false,
             overflow: TextOverflow.ellipsis,
@@ -133,68 +123,73 @@ class _ChatPageState extends ConsumerState<ChatPage> {
     );
   }
 
-  Widget _textArea(BuildContext context, ChatService chatService, AppUser currentUser) {
-    final keyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
-    final hasText = textEditingController.text.trim().isNotEmpty;
-
-    final showSend = keyboardOpen && hasText;
-
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        children: [
-          Expanded(
-              child:Container(
-                padding: EdgeInsets.symmetric(horizontal: 12),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(40),
-                  border: Border.all(color: Colors.grey),
-                ),
-                child: Row(
-                  children: [
-                    IconButton(onPressed: () {}, icon: Icon(Icons.emoji_emotions_outlined)),
-                    Expanded(
-                      child: TextField(
-                        controller: textEditingController,
-                        onChanged: (_) => setState(() {}),
-                        style: TextStyle(color: Colors.black),
-                        decoration: InputDecoration(
-                          hintText: "Type a message",
-                          border: InputBorder.none,
-                        ),
-                      ),
-                    ),
-                    IconButton(onPressed: () {}, icon: Icon(Icons.attachment)),
-                    IconButton(onPressed: () {}, icon: Icon(Icons.camera_alt_outlined)),
-                  ],
-                ),
-              )
-          ),
-
-          showSend
-              ? IconButton(
-                  icon: Icon(Icons.send),
-                  onPressed: () {
-                    final text = textEditingController.text.trim();
-
-                    if (text.isEmpty) return;
-
-                    final message = Message(
-                      messageId: '',
-                      senderId: currentUser.uid,
-                      messageType: MessageType.text,
-                      createdAt: Timestamp.now(),
-                      text: text,
-                    );
-
-                    chatService.sendMessageTo(contact:widget.contact, message:message);
-
-                    textEditingController.clear();
-                  },
-                )
-              : IconButton(icon: Icon(Icons.mic), onPressed: () {}),
-        ],
-      ),
-    );
-  }
+  // Widget _textArea(BuildContext context, ChatService chatService, AppUser currentUser) {
+  //   final keyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
+  //   final hasText = textEditingController.text.trim().isNotEmpty;
+  //
+  //   final showSend = keyboardOpen && hasText;
+  //
+  //   return Padding(
+  //     padding: const EdgeInsets.all(8.0),
+  //     child: Row(
+  //       children: [
+  //         Expanded(
+  //             child:Container(
+  //               padding: EdgeInsets.symmetric(horizontal: 12),
+  //               decoration: BoxDecoration(
+  //                 borderRadius: BorderRadius.circular(40),
+  //                 border: Border.all(color: Colors.grey),
+  //               ),
+  //               child: Row(
+  //                 children: [
+  //                   IconButton(onPressed: () {}, icon: Icon(Icons.emoji_emotions_outlined)),
+  //                   Expanded(
+  //                     child: TextField(
+  //                       controller: textEditingController,
+  //                       onChanged: (text){
+  //                          setState(() {});
+  //
+  //
+  //
+  //                       },
+  //                       style: TextStyle(color: Colors.black),
+  //                       decoration: InputDecoration(
+  //                         hintText: "Type a message",
+  //                         border: InputBorder.none,
+  //                       ),
+  //                     ),
+  //                   ),
+  //                   IconButton(onPressed: () {}, icon: Icon(Icons.attachment)),
+  //                   IconButton(onPressed: () {}, icon: Icon(Icons.camera_alt_outlined)),
+  //                 ],
+  //               ),
+  //             )
+  //         ),
+  //
+  //         showSend
+  //             ? IconButton(
+  //                 icon: Icon(Icons.send),
+  //                 onPressed: () {
+  //                   final text = textEditingController.text.trim();
+  //
+  //                   if (text.isEmpty) return;
+  //
+  //                   final message = Message(
+  //                     messageId: '',
+  //                     senderId: currentUser.uid,
+  //                     messageType: MessageType.text,
+  //                     createdAt: Timestamp.now(),
+  //                     text: text,
+  //                   );
+  //
+  //                   chatService.sendMessageTo(contact:widget.contact, message:message);
+  //
+  //                   textEditingController.clear();
+  //                 },
+  //               )
+  //             : IconButton(icon: Icon(Icons.mic), onPressed: () {}),
+  //       ],
+  //     ),
+  //   );
+  // }
 }
