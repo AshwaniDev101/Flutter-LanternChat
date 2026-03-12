@@ -13,10 +13,10 @@ import '../../../data/chat_service.dart';
 import '../../../provider/chat_provider.dart';
 
 class TextArea extends ConsumerStatefulWidget {
-  final ConversationTile conversationTile;
+  // final ConversationTile conversationTile;
+  final Function(Message) onSend;
 
-  const TextArea({required this.conversationTile, super.key});
-
+  const TextArea({required this.onSend,  super.key,});
   @override
   ConsumerState<TextArea> createState() => _TextAreaState();
 }
@@ -34,7 +34,7 @@ class _TextAreaState extends ConsumerState<TextArea> {
 
     final typingService = ref.read(typingServiceProvider);
 
-    final ChatService chatService = ref.read(chatServiceProvider);
+
 
 
     return Padding(
@@ -91,7 +91,9 @@ class _TextAreaState extends ConsumerState<TextArea> {
               );
 
               // chatService.sendMessageTo(conversation: widget.conversationTile.conversation, message: message);
-              _sendMessage(message, chatService, currentUser);
+
+              widget.onSend(message);
+              // _sendMessage(message);
               textEditingController.clear();
             },
           )
@@ -122,19 +124,5 @@ class _TextAreaState extends ConsumerState<TextArea> {
     );
   }
 
-  void _sendMessage(Message message, ChatService chatService, AppUser currentUser) {
 
-    final conversation = widget.conversationTile.conversation;
-
-    if (conversation == null) {
-      // create conversationId and send message
-      chatService.sendMessageCreateNewConversation(message: message, senderUid: currentUser.uid, sentToUid: widget.conversationTile.contact.uid);
-
-
-    } else {
-
-      chatService.sendMessageTo(conversation: conversation, message: message);
-
-    }
-  }
 }

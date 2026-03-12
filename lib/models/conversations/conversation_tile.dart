@@ -8,7 +8,7 @@ class _Field {
 
 class ConversationTile {
   final Contact contact;
-  Conversation? conversation;
+  final Conversation? conversation;
 
   ConversationTile({
     required this.contact,

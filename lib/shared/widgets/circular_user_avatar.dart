@@ -13,7 +13,7 @@ class CircularUserAvatar extends StatelessWidget {
 
     final hasImage = imageUrl !=null && imageUrl!.isNotEmpty;
 
-    print("### hasImage $hasImage $imageUrl");
+    // print("### hasImage $hasImage $imageUrl");
     return CircleAvatar(
       radius: radius,
       child: ClipOval(

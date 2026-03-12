@@ -5,11 +5,14 @@ import 'package:lanternchat/features/chat/provider/chat_provider.dart';
 import 'package:lanternchat/features/chat/screens/view/widgets/chat_bubble.dart';
 import 'package:lanternchat/features/chat/screens/view/widgets/text_area.dart';
 import 'package:lanternchat/features/conversation/provider/conversation_provider.dart';
+import 'package:lanternchat/models/conversations/conversation.dart';
 import 'package:lanternchat/models/conversations/conversation_tile.dart';
 
 import '../../../../models/messages/message.dart';
+import '../../../../models/users/app_user.dart';
 import '../../../../shared/widgets/circular_user_avatar.dart';
 import '../../../auth/provider/auth_provider.dart';
+import '../../data/chat_service.dart';
 
 // Popup Option menu for the Chat page
 enum ChatPagePopupMenu {
@@ -51,41 +54,40 @@ class ChatPage extends ConsumerStatefulWidget {
 }
 
 class _ChatPageState extends ConsumerState<ChatPage> {
+  Conversation? newConversation;
 
-
-
-@override
+  @override
   void initState() {
     super.initState();
+
     _init();
   }
 
-  Future<void> _init() async
-  {
+  Future<void> _init() async {
+    newConversation = widget.conversationTile.conversation;
     // if conversation is null
     if (widget.conversationTile.conversation == null) {
-
       // It's possible conversation id exist, if it does, we can find it using 'pairId'
-      final currentUser = ref.watch(currentUserProvider);
+      final currentUser = ref.read(currentUserProvider);
       final pairId = IdHelper.generatePairId(currentUser.uid, widget.conversationTile.contact.uid);
 
       final conversationService = ref.read(conversationServiceProvider);
-      final conversation = await conversationService.getConversationUsingPairId(pairId: pairId);
+      final Conversation? conversation = await conversationService.getConversationUsingPairId(pairId: pairId);
 
       // if conversation is not found
-      if(conversation==null)
-      {
+      if (conversation == null) {
         debugPrint('#### Conversation was not found');
-      }else
-        {
-          widget.conversationTile.conversation=conversation;
+      } else {
+        print("####  conversationService.getConversationUsingPairId ${conversation.conversationId}");
 
-          // setState(() {
-          //
-          // });
-        }
+        // widget.conversationTile.conversation = conversation;
 
-
+        setState(() {
+          newConversation = conversation;
+        });
+      }
+    } else {
+      print("####  conversationTile have conversation ${widget.conversationTile.conversation!.conversationId}");
     }
   }
 
@@ -105,7 +107,10 @@ class _ChatPageState extends ConsumerState<ChatPage> {
     //   chatStream = ref.watch(chatStreamProvider(conversationTile.conversation.conversationId));
     // });
 
-    final chatStream = ref.watch(chatStreamProvider(widget.conversationTile.conversation?.conversationId));
+    final ChatService chatService = ref.read(chatServiceProvider);
+    final AppUser currentUser = ref.watch(currentUserProvider);
+
+    final chatStream = ref.watch(chatStreamProvider(newConversation?.conversationId));
 
     return Scaffold(
       appBar: _appBar(context),
@@ -142,8 +147,24 @@ class _ChatPageState extends ConsumerState<ChatPage> {
           ),
 
           // TypingIndicator(conversationTile: conversationTile),
-          TextArea(conversationTile: widget.conversationTile),
+          TextArea(
+            onSend: (Message message) async {
+              if (newConversation == null) {
+                // create conversationId and send message
+                final conversation = await chatService.sendMessageCreateNewConversation(
+                  message: message,
+                  senderUid: currentUser.uid,
+                  sentToUid: widget.conversationTile.contact.uid,
+                );
 
+                setState(() {
+                  newConversation = conversation;
+                });
+              } else {
+                chatService.sendMessageTo(conversation: newConversation!, message: message);
+              }
+            },
+          ),
         ],
       ),
     );

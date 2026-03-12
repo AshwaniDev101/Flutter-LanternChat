@@ -34,6 +34,7 @@ class ChatService {
     });
   }
 
+
   /// Sent message to conversationId as well updates the conversation summary
   Future<void> sendMessageTo({required Conversation conversation, required Message message}) async {
     // print("#### Sending message on ${contact.conversationId}, ${message.text}");
@@ -84,7 +85,6 @@ class ChatService {
     );
 
     batch.set(docRef, conversation.toMap());
-    // await docRef.set();
 
     final convDoc = _getConversationsRef().doc(conversation.conversationId);
 
