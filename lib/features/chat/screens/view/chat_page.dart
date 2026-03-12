@@ -4,6 +4,7 @@ import 'package:lanternchat/core/helpers/id_helper.dart';
 import 'package:lanternchat/features/chat/provider/chat_provider.dart';
 import 'package:lanternchat/features/chat/screens/view/widgets/chat_bubble.dart';
 import 'package:lanternchat/features/chat/screens/view/widgets/text_area.dart';
+import 'package:lanternchat/features/chat/screens/view/widgets/typing_indicator.dart';
 import 'package:lanternchat/features/conversation/provider/conversation_provider.dart';
 import 'package:lanternchat/models/conversations/conversation.dart';
 import 'package:lanternchat/models/conversations/conversation_tile.dart';
@@ -146,25 +147,28 @@ class _ChatPageState extends ConsumerState<ChatPage> {
             ),
           ),
 
-          // TypingIndicator(conversationTile: conversationTile),
-          TextArea(
-            onSend: (Message message) async {
-              if (newConversation == null) {
-                // create conversationId and send message
-                final conversation = await chatService.sendMessageCreateNewConversation(
-                  message: message,
-                  senderUid: currentUser.uid,
-                  sentToUid: widget.conversationTile.contact.uid,
-                );
+          if (newConversation != null)
+            TypingIndicator(conversationId: newConversation!.conversationId, uid: currentUser.uid),
+          if (newConversation != null)
+            TextArea(
+              conversationId: newConversation!.conversationId,
+              onSend: (Message message) async {
+                if (newConversation == null) {
+                  // create conversationId and send message
+                  final conversation = await chatService.sendMessageCreateNewConversation(
+                    message: message,
+                    senderUid: currentUser.uid,
+                    sentToUid: widget.conversationTile.contact.uid,
+                  );
 
-                setState(() {
-                  newConversation = conversation;
-                });
-              } else {
-                chatService.sendMessageTo(conversation: newConversation!, message: message);
-              }
-            },
-          ),
+                  setState(() {
+                    newConversation = conversation;
+                  });
+                } else {
+                  chatService.sendMessageTo(conversation: newConversation!, message: message);
+                }
+              },
+            ),
         ],
       ),
     );

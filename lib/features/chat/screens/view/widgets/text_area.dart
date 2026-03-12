@@ -4,19 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lanternchat/features/chat/provider/typing_provider.dart';
 
-import '../../../../../models/conversations/conversation_tile.dart';
 import '../../../../../models/messages/enums/message_type.dart';
 import '../../../../../models/messages/message.dart';
 import '../../../../../models/users/app_user.dart';
 import '../../../../auth/provider/auth_provider.dart';
-import '../../../data/chat_service.dart';
-import '../../../provider/chat_provider.dart';
+
 
 class TextArea extends ConsumerStatefulWidget {
   // final ConversationTile conversationTile;
   final Function(Message) onSend;
+  final String conversationId;
 
-  const TextArea({required this.onSend,  super.key,});
+  const TextArea({required this.conversationId, required this.onSend,  super.key,});
   @override
   ConsumerState<TextArea> createState() => _TextAreaState();
 }
@@ -36,7 +35,7 @@ class _TextAreaState extends ConsumerState<TextArea> {
 
 
 
-
+    // Todo think about adding a typo function in which whatever one side type is visible to other side insistently , it to learn the emotion of someone who is typing
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
@@ -61,7 +60,7 @@ class _TextAreaState extends ConsumerState<TextArea> {
                         // print('### $text');
 
 
-                        typingService.sendData(Timestamp.now());
+                        typingService.sendData(conversationId: widget.conversationId, uid: currentUser.uid);
                         // participantService.typing(widget.contact.conversationId, currentUser.uid);
                       },
                       style: TextStyle(color: Colors.black),
