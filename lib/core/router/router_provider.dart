@@ -54,10 +54,12 @@ final goRouterProvider = Provider((ref) {
     initialLocation: AppRoute.auth,
     // redirect run on every route change.
     redirect: (BuildContext context, GoRouterState state) {
-      final user = auth.currentUser;
+
+      final User? user = auth.currentUser;
       final isOnLoginPage = state.matchedLocation == AppRoute.auth;
 
       if (user == null && !isOnLoginPage) {
+
         return AppRoute.auth;
       }
       if (user != null && isOnLoginPage) {

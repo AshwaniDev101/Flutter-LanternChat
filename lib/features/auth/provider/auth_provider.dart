@@ -8,14 +8,20 @@ final firebaseAuthProvider = Provider<FirebaseAuth>((ref) {
   return FirebaseAuth.instance;
 });
 
-final currentUserProvider = Provider<AppUser>((ref) {
-  final User? currentUser = ref.watch(firebaseAuthProvider).currentUser;
 
-  if (currentUser == null) {
-    throw Exception("User can't be null something went wrong");
-    // ref.watch(goRouterProvider).go(AppRoute.login);
-  }
-  return AppUser.fromFirebaseUser(currentUser);
+final currentUserProvider = Provider<AppUser>((ref) {
+  final authState = ref.watch(authStatusProvider);
+
+  return authState.when(
+    data: (user) {
+      if (user == null) {
+        throw StateError('User not logged in');
+      }
+      return AppUser.fromFirebaseUser(user);
+    },
+    loading: () => throw StateError('Auth loading'),
+    error: (e, _) => throw e,
+  );
 });
 
 // this is just so i don't have to handle a stream convert stream into final AsyncValue<User?> auth
