@@ -17,7 +17,6 @@ class ConversationService {
   Stream<List<Conversation>> conversationStream({required String memberId}) {
     return _getConversationsRef()
         .where(_ServiceConstants.memberIds, arrayContains: memberId)
-        .where(_ServiceConstants.lastSenderId, isNotEqualTo: '')
         .orderBy(_ServiceConstants.lastMessageTime, descending: true)
         .snapshots()
         .map((QuerySnapshot<Map<String, dynamic>> snapshot) {
@@ -39,27 +38,7 @@ class ConversationService {
     return Conversation.fromMap(data);
   }
 
-  Future<Conversation> createConversation({
-    required List<String> memberIds,
-    required ConversationType conversationType,
-    String? pairId,
-  }) async {
-    final docRef = _getConversationsRef().doc();
 
-    final conversation = Conversation(
-      conversationId: docRef.id,
-      memberIds: memberIds,
-      conversationType: conversationType,
-      pairID: pairId,
-      lastMessagePreview: '',
-      lastSenderId: '',
-      lastMessageTime: Timestamp.now(),
-    );
-
-    await docRef.set(conversation.toMap());
-
-    return conversation;
-  }
 
 
   CollectionReference<Map<String, dynamic>> _getConversationsRef() {

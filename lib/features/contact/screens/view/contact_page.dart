@@ -65,31 +65,7 @@ class ContactPage extends ConsumerWidget {
                           final conversationTile = ConversationTile(contact: contacts[index], conversation: null);
                           context.pushReplacement(AppRoute.chat, extra: conversationTile);
 
-                          // final Conversation? conversation = await conversationService.getSoloConversation(
-                          //   pairId: IdHelper.generatePairId(currentUser.uid, contacts[index].uid),
-                          // );
-                          //
-                          // if (!context.mounted) return;
-                          //
-                          // if (conversation == null) {
-                          //   final Conversation newConversation = await conversationService.createConversation(
-                          //     memberIds: [currentUser.uid, contacts[index].uid],
-                          //     conversationType: ConversationType.solo,
-                          //     pairId: IdHelper.generatePairId(currentUser.uid, contacts[index].uid),
-                          //   );
-                          //
-                          //   if (!context.mounted) return;
-                          //
-                          //   context.pushReplacement(
-                          //     AppRoute.chat,
-                          //     extra: ConversationTile(contact: contacts[index], conversation: newConversation),
-                          //   );
-                          // } else {
-                          //   context.pushReplacement(
-                          //     AppRoute.chat,
-                          //     extra: ConversationTile(contact: contacts[index], conversation: conversation),
-                          //   );
-                          // }
+
                         },
                       );
                     },

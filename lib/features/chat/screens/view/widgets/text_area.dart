@@ -8,10 +8,8 @@ import '../../../../../models/conversations/conversation_tile.dart';
 import '../../../../../models/messages/enums/message_type.dart';
 import '../../../../../models/messages/message.dart';
 import '../../../../../models/users/app_user.dart';
-import '../../../../../models/users/contact.dart';
 import '../../../../auth/provider/auth_provider.dart';
 import '../../../data/chat_service.dart';
-
 import '../../../provider/chat_provider.dart';
 
 class TextArea extends ConsumerStatefulWidget {
@@ -30,19 +28,14 @@ class _TextAreaState extends ConsumerState<TextArea> {
   Widget build(BuildContext context) {
     // final keyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
     // final hasText = textEditingController.text.trim().isNotEmpty;
-    //
     // final showSend = keyboardOpen && hasText;
 
     final AppUser currentUser = ref.watch(currentUserProvider);
 
-    // final ChatService chatService = ref.read(chatServiceProvider);
-
     final typingService = ref.read(typingServiceProvider);
 
-    // typingService.watchData().listen((data){
-    //
-    //   print('#### ${data.toString()}');
-    // });
+    final ChatService chatService = ref.read(chatServiceProvider);
+
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -65,7 +58,7 @@ class _TextAreaState extends ConsumerState<TextArea> {
                         setState(() {});
 
 
-                        print('### $text');
+                        // print('### $text');
 
 
                         typingService.sendData(Timestamp.now());
@@ -98,7 +91,7 @@ class _TextAreaState extends ConsumerState<TextArea> {
               );
 
               // chatService.sendMessageTo(conversation: widget.conversationTile.conversation, message: message);
-
+              _sendMessage(message, chatService, currentUser);
               textEditingController.clear();
             },
           )
@@ -127,5 +120,21 @@ class _TextAreaState extends ConsumerState<TextArea> {
         ],
       ),
     );
+  }
+
+  void _sendMessage(Message message, ChatService chatService, AppUser currentUser) {
+
+    final conversation = widget.conversationTile.conversation;
+
+    if (conversation == null) {
+      // create conversationId and send message
+      chatService.sendMessageCreateNewConversation(message: message, senderUid: currentUser.uid, sentToUid: widget.conversationTile.contact.uid);
+
+
+    } else {
+
+      chatService.sendMessageTo(conversation: conversation, message: message);
+
+    }
   }
 }

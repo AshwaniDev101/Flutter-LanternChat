@@ -13,7 +13,7 @@ final chatStreamProvider = StreamProvider.family<List<Message>, String?>((ref, S
     return Stream.value([]);
   }
 
-  return ref.read(chatServiceProvider).chatStream(conversationId);
+  return ref.read(chatServiceProvider).watchChatStream(conversationId);
 });
 
 // final chatStreamProvider = StreamProvider.family<List<Message>, String>((ref, String conversationID) {

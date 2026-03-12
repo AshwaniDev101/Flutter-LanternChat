@@ -54,10 +54,14 @@ class _ChatPageState extends ConsumerState<ChatPage> {
 
 
 
-  @override
-  Future<void> initState() async {
+@override
+  void initState() {
     super.initState();
+    _init();
+  }
 
+  Future<void> _init() async
+  {
     // if conversation is null
     if (widget.conversationTile.conversation == null) {
 
@@ -71,28 +75,16 @@ class _ChatPageState extends ConsumerState<ChatPage> {
       // if conversation is not found
       if(conversation==null)
       {
-        debugPrint('Conversation was not found');
-      }
-      // else
-      // {
-      //   // Conversation does not exists new one need to be created
-      //   // show empty stream
-      //   // New one ill be created once send button is pressed along with a message
-      // }
+        debugPrint('#### Conversation was not found');
+      }else
+        {
+          widget.conversationTile.conversation=conversation;
 
-      // if(widget.conversationTile.conversation.conversationType==ConversationType.solo)
-      //   {
-      //
-      //   }else
-      //     {
-      //       // conversation is empty, conversation is group-conversation
-      //       // conversation is group-conversation without conversationId (unlikely to be possible)
-      //       // ui does not allow to open conversation like that
-      //       // chat page can be only open from profile with 'contact' and 'empty conversation' (in this conversationType ill be solo) or from
-      //       // Conversation page with containing both 'contact' and 'conversation' (conversationType can be 'group' but always have conversationId)
-      //       // therefore there never a condition where conversationId is empty and conversation type is group
-      //       throw Exception("Error: conversationId can't be empty for groups");
-      //     }
+          // setState(() {
+          //
+          // });
+        }
+
 
     }
   }
