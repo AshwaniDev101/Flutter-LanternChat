@@ -33,7 +33,7 @@ class ConversationPage extends ConsumerWidget {
               },
               error: (e, t) {
                 print("Error there is an Error $e : $t");
-                return Text("Error there is an Error $e");
+                return Text("Error: there is an Error $e");
               },
               loading: () {
                 return CircularProgressIndicator();

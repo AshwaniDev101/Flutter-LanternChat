@@ -8,9 +8,10 @@ final firebaseAuthProvider = Provider<FirebaseAuth>((ref) {
   return FirebaseAuth.instance;
 });
 
-
 final currentUserProvider = Provider<AppUser>((ref) {
   final authState = ref.watch(authStatusProvider);
+
+  final firebaseAuth = ref.watch(firebaseAuthProvider);
 
   return authState.when(
     data: (user) {
@@ -19,7 +20,18 @@ final currentUserProvider = Provider<AppUser>((ref) {
       }
       return AppUser.fromFirebaseUser(user);
     },
-    loading: () => throw StateError('Auth loading'),
+    loading: () {
+      final cachedUser = firebaseAuth.currentUser;
+
+      // During app restart FirebaseAuth briefly enters a loading state before
+      // authStateChanges() emits the current user. To avoid throwing a StateError
+      // during that window, we temporarily return the locally cached FirebaseAuth provided through the `data` state.
+      if (cachedUser != null) {
+        return AppUser.fromFirebaseUser(cachedUser);
+      }
+
+      throw StateError('currentUserProvider accessed before auth ready');
+    },
     error: (e, _) => throw e,
   );
 });

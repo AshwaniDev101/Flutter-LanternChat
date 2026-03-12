@@ -6,23 +6,31 @@ import '../../../../models/users/contact.dart';
 
 class ConversationStreamUtils {
   static Stream<List<ConversationTile>> conversationsTileStream(
-    Stream<List<Contact>> contactsStream,
-    Stream<List<Conversation>> conversationsStream,
-  ) {
-    return Rx.combineLatest2(contactsStream, conversationsStream, (
-      List<Contact> contacts,
-      List<Conversation> conversations,
-    ) {
-      return contacts.map((contact) {
-        final conversation = conversations.firstWhere((conversation) {
+      Stream<List<Contact>> contactsStream,
+      Stream<List<Conversation>> conversationsStream,
+      ) {
+    return Rx.combineLatest2(
+      contactsStream,
+      conversationsStream,
+          (List<Contact> contacts, List<Conversation> conversations) {
 
-          return conversation.memberIds.contains(contact.uid);
-        } );
+        return conversations.map((conversation) {
 
-        return ConversationTile(contact: contact, conversation: conversation);
-      }).toList();
-    });
+          final contact = contacts.firstWhere(
+                (contact) => conversation.memberIds.contains(contact.uid),
+          );
+
+          return ConversationTile(
+            contact: contact,
+            conversation: conversation,
+          );
+
+        }).toList();
+
+      },
+    );
   }
+
 
 
 /// Old Example
