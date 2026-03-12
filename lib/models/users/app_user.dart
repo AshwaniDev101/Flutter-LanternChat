@@ -33,7 +33,6 @@ class AppUser {
   Contact toContact() {
     return Contact(
       uid: uid,
-      conversationId: '',
       name: name,
       email: email,
       photoURL: photoURL,

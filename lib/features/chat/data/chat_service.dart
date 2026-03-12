@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../../models/conversations/conversation.dart';
+import '../../../models/conversations/conversation_tile.dart';
 import '../../../models/messages/message.dart';
 import '../../../models/users/contact.dart';
 
@@ -34,15 +35,15 @@ class ChatService {
     });
   }
 
-  Future<void> sendMessageTo({required Contact contact, required Message message}) async {
+  Future<void> sendMessageTo({required Conversation conversation, required Message message}) async {
     // print("#### Sending message on ${contact.conversationId}, ${message.text}");
     final batch = firestore.batch();
 
     // create conversation doc with id
 
-    final convDoc = firestore.collection(_ServiceConstants.conversations).doc(contact.conversationId);
+    final convDoc = firestore.collection(_ServiceConstants.conversations).doc(conversation.conversationId);
 
-    batch.set(convDoc, Conversation.summary(contact: contact, message: message).toMap());
+    batch.set(convDoc, Conversation.summary(conversation: conversation, message: message).toMap());
 
     convDoc.collection(_ServiceConstants.messages).add(message.toMap());
 

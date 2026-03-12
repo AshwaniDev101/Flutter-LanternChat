@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lanternchat/core/helpers/id_helper.dart';
 import 'package:lanternchat/core/router/router_provider.dart';
 import 'package:lanternchat/features/contact/screens/view/widgets/contact_tile.dart';
 import 'package:lanternchat/features/contact/screens/view/widgets/new_button.dart';
+import 'package:lanternchat/features/conversation/provider/conversation_provider.dart';
+import 'package:lanternchat/models/conversations/conversation_tile.dart';
+import 'package:lanternchat/models/conversations/enums/conversation_type.dart';
 
-import '../../../../models/users/app_user.dart';
+import '../../../../models/conversations/conversation.dart';
 import '../../../../models/users/contact.dart';
+import '../../../auth/provider/auth_provider.dart';
 import '../../provider/contact_providers.dart';
 
 class ContactPage extends ConsumerWidget {
@@ -14,8 +19,9 @@ class ContactPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    // final currentUser = ref.watch(firebaseAuthProvider).currentUser;
+    // final currentUser = ref.watch(currentUserProvider);
 
+    // final conversationService = ref.read(conversationServiceProvider);
     final AsyncValue<List<Contact>> connectionStreamProvider = ref.watch(contactStreamProvider);
 
     return Scaffold(
@@ -32,12 +38,13 @@ class ContactPage extends ConsumerWidget {
                 NewButton(
                   icon: Icons.person_add_alt_1,
                   title: 'New contact',
-                  onTap: () {
-
-                  },
-                  additionalOption: (icon: Icons.qr_code, onTap: () {
-                    context.pushReplacement(AppRoute.qrCode);
-                  }),
+                  onTap: () {},
+                  additionalOption: (
+                    icon: Icons.qr_code,
+                    onTap: () {
+                      context.pushReplacement(AppRoute.qrCode);
+                    },
+                  ),
                 ),
                 NewButton(icon: Icons.groups, title: 'New Community', onTap: () {}),
               ],
@@ -54,8 +61,35 @@ class ContactPage extends ConsumerWidget {
                       return ContactTile(
                         contact: contacts[index],
                         onClick: () {
-                          // Opening ChatWindow
-                          context.pushReplacement(AppRoute.chat, extra: contacts[index]);
+
+                          final conversationTile = ConversationTile(contact: contacts[index], conversation: null);
+                          context.pushReplacement(AppRoute.chat, extra: conversationTile);
+
+                          // final Conversation? conversation = await conversationService.getSoloConversation(
+                          //   pairId: IdHelper.generatePairId(currentUser.uid, contacts[index].uid),
+                          // );
+                          //
+                          // if (!context.mounted) return;
+                          //
+                          // if (conversation == null) {
+                          //   final Conversation newConversation = await conversationService.createConversation(
+                          //     memberIds: [currentUser.uid, contacts[index].uid],
+                          //     conversationType: ConversationType.solo,
+                          //     pairId: IdHelper.generatePairId(currentUser.uid, contacts[index].uid),
+                          //   );
+                          //
+                          //   if (!context.mounted) return;
+                          //
+                          //   context.pushReplacement(
+                          //     AppRoute.chat,
+                          //     extra: ConversationTile(contact: contacts[index], conversation: newConversation),
+                          //   );
+                          // } else {
+                          //   context.pushReplacement(
+                          //     AppRoute.chat,
+                          //     extra: ConversationTile(contact: contacts[index], conversation: conversation),
+                          //   );
+                          // }
                         },
                       );
                     },

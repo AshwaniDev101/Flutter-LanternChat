@@ -8,6 +8,14 @@ final chatServiceProvider = Provider((ref) {
   return ChatService(firestore: firestore);
 });
 
-final chatStreamProvider = StreamProvider.family<List<Message>, String>((ref, String conversationID) {
-  return ref.read(chatServiceProvider).chatStream(conversationID);
+final chatStreamProvider = StreamProvider.family<List<Message>, String?>((ref, String? conversationId) {
+  if (conversationId == null) {
+    return Stream.value([]);
+  }
+
+  return ref.read(chatServiceProvider).chatStream(conversationId);
 });
+
+// final chatStreamProvider = StreamProvider.family<List<Message>, String>((ref, String conversationID) {
+//   return ref.read(chatServiceProvider).chatStream(conversationID);
+// });

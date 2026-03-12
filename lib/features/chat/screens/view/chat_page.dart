@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lanternchat/core/helpers/id_helper.dart';
 import 'package:lanternchat/features/chat/provider/chat_provider.dart';
 import 'package:lanternchat/features/chat/screens/view/widgets/chat_bubble.dart';
 import 'package:lanternchat/features/chat/screens/view/widgets/text_area.dart';
-import 'package:lanternchat/features/chat/screens/view/widgets/typing_indicator.dart';
+import 'package:lanternchat/features/conversation/provider/conversation_provider.dart';
+import 'package:lanternchat/models/conversations/conversation_tile.dart';
 
 import '../../../../models/messages/message.dart';
-import '../../../../models/users/contact.dart';
 import '../../../../shared/widgets/circular_user_avatar.dart';
+import '../../../auth/provider/auth_provider.dart';
 
 // Popup Option menu for the Chat page
 enum ChatPagePopupMenu {
@@ -37,17 +39,81 @@ extension on ChatPagePopupMenu {
   }
 }
 
-class ChatPage extends ConsumerWidget {
-  final Contact contact;
+class ChatPage extends ConsumerStatefulWidget {
+  // ConversationTile(contact, conversation)
+  // conversation.empty == true if ChatPage is open from profile page
+  final ConversationTile conversationTile;
 
-  const ChatPage({super.key, required this.contact});
+  const ChatPage({super.key, required this.conversationTile});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    // String conversationId = '';
-    final chatStream = ref.watch(chatStreamProvider(contact.conversationId));
-    // final chatService = ref.watch(chatServiceProvider);
+  ConsumerState<ChatPage> createState() => _ChatPageState();
+}
+
+class _ChatPageState extends ConsumerState<ChatPage> {
+
+
+
+  @override
+  Future<void> initState() async {
+    super.initState();
+
+    // if conversation is null
+    if (widget.conversationTile.conversation == null) {
+
+      // It's possible conversation id exist, if it does, we can find it using 'pairId'
+      final currentUser = ref.watch(currentUserProvider);
+      final pairId = IdHelper.generatePairId(currentUser.uid, widget.conversationTile.contact.uid);
+
+      final conversationService = ref.read(conversationServiceProvider);
+      final conversation = await conversationService.getConversationUsingPairId(pairId: pairId);
+
+      // if conversation is not found
+      if(conversation==null)
+      {
+        debugPrint('Conversation was not found');
+      }
+      // else
+      // {
+      //   // Conversation does not exists new one need to be created
+      //   // show empty stream
+      //   // New one ill be created once send button is pressed along with a message
+      // }
+
+      // if(widget.conversationTile.conversation.conversationType==ConversationType.solo)
+      //   {
+      //
+      //   }else
+      //     {
+      //       // conversation is empty, conversation is group-conversation
+      //       // conversation is group-conversation without conversationId (unlikely to be possible)
+      //       // ui does not allow to open conversation like that
+      //       // chat page can be only open from profile with 'contact' and 'empty conversation' (in this conversationType ill be solo) or from
+      //       // Conversation page with containing both 'contact' and 'conversation' (conversationType can be 'group' but always have conversationId)
+      //       // therefore there never a condition where conversationId is empty and conversation type is group
+      //       throw Exception("Error: conversationId can't be empty for groups");
+      //     }
+
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // final conversationService = ref.watch(conversationServiceProvider);
+    //
     // final currentUser = ref.watch(currentUserProvider);
+    //
+    // final pairId = IdHelper.generatePairId(currentUser.uid, widget.conversationTile.contact.uid);
+    //
+    // final Future<Conversation?> conversation = conversationService.getConversationUsingPairId(pairId: pairId);
+    //
+    // AsyncValue<List<Message>?> chatStream;
+    //
+    // conversation.whenComplete(() {
+    //   chatStream = ref.watch(chatStreamProvider(conversationTile.conversation.conversationId));
+    // });
+
+    final chatStream = ref.watch(chatStreamProvider(widget.conversationTile.conversation?.conversationId));
 
     return Scaffold(
       appBar: _appBar(context),
@@ -83,9 +149,9 @@ class ChatPage extends ConsumerWidget {
             ),
           ),
 
-          TypingIndicator(contact: contact),
-          TextArea(contact: contact),
-          // _textArea(context, chatService, currentUser),
+          // TypingIndicator(conversationTile: conversationTile),
+          TextArea(conversationTile: widget.conversationTile),
+
         ],
       ),
     );
@@ -98,10 +164,10 @@ class ChatPage extends ConsumerWidget {
       titleSpacing: 4, // removes extra gap before title
       title: Row(
         children: [
-          CircularUserAvatar(imageUrl: contact.photoURL, radius: 20),
+          CircularUserAvatar(imageUrl: widget.conversationTile.contact.photoURL, radius: 20),
           SizedBox(width: 8),
           Text(
-            contact.name,
+            widget.conversationTile.contact.name,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.white),
             softWrap: false,
             overflow: TextOverflow.ellipsis,

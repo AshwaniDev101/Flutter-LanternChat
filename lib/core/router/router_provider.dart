@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lanternchat/models/conversations/conversation_tile.dart';
 import 'package:lanternchat/models/users/contact.dart';
 
 import '../../features/auth/provider/auth_provider.dart';
@@ -105,8 +106,8 @@ final goRouterProvider = Provider((ref) {
       GoRoute(
         path: AppRoute.chat,
         builder: (BuildContext context, GoRouterState state) {
-          final otherUser = state.extra as Contact;
-          return ChatPage(contact: otherUser);
+          final conversationTile = state.extra as ConversationTile;
+          return ChatPage(conversationTile: conversationTile);
         },
       ),
 

@@ -2,18 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lanternchat/models/users/contact.dart';
 
+import '../../../../../models/conversations/conversation_tile.dart';
+
 
 class TypingIndicator extends ConsumerWidget {
-  final Contact contact;
+  final ConversationTile conversationTile;
 
-  const TypingIndicator({required this.contact, super.key});
+  const TypingIndicator({required this.conversationTile, super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // final participantStream = ref.watch(participantStreamProvider(contact.conversationId));
 
 
-    return CircularProgressIndicator();
+    return Icon(Icons.more_horiz_rounded);
     // return participantStream.when(
     //   data: (List<Participant> pList) {
     //

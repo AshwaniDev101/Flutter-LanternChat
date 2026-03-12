@@ -8,7 +8,7 @@ class _Field {
 
 class ConversationTile {
   final Contact contact;
-  final Conversation conversation;
+  final Conversation? conversation;
 
   ConversationTile({
     required this.contact,
@@ -22,10 +22,10 @@ class ConversationTile {
     );
   }
 
-  Map<String, dynamic> toMap() {
-    return {
-      _Field.contact: contact.toMap(),
-      _Field.conversation: conversation.toMap(),
-    };
-  }
+  // Map<String, dynamic> toMap() {
+  //   return {
+  //     _Field.contact: contact.toMap(),
+  //     _Field.conversation: conversation.toMap(),
+  //   };
+  // }
 }

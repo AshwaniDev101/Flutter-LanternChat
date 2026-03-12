@@ -16,6 +16,7 @@ class ConversationPage extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
     final currentUser = ref.watch(currentUserProvider);
 
+    // return a list of contact and conversation link by memberIds
     final conversationSteam = ref.watch(conversationContactMergeSteamProvider(currentUser.uid));
 
     return Scaffold(
@@ -26,9 +27,9 @@ class ConversationPage extends ConsumerWidget {
             _searchBar(),
 
             conversationSteam.when(
-              data: (data) {
+              data: (List<ConversationTile> tile) {
                 // print("##### ${data.length}");
-                return _getConversionList(data);
+                return _getConversionList(tile);
               },
               error: (e, t) {
                 print("Error there is an Error $e : $t");
@@ -68,26 +69,17 @@ class ConversationPage extends ConsumerWidget {
 
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(30),
-              borderSide: BorderSide(
-                color: Colors.grey.shade300,
-                width: 1,
-              ),
+              borderSide: BorderSide(color: Colors.grey.shade300, width: 1),
             ),
 
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(30),
-              borderSide: BorderSide(
-                color: Colors.grey.shade300,
-                width: 1,
-              ),
+              borderSide: BorderSide(color: Colors.grey.shade300, width: 1),
             ),
 
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(30),
-              borderSide: BorderSide(
-                color: Colors.grey.shade400,
-                width: 1,
-              ),
+              borderSide: BorderSide(color: Colors.grey.shade400, width: 1),
             ),
           ),
         ),
@@ -100,28 +92,25 @@ class ConversationPage extends ConsumerWidget {
       child: ListView.builder(
         itemCount: conversationTileList.length,
         itemBuilder: (context, index) {
-          return _Card(tile:conversationTileList[index]);
+          return _Card(tile: conversationTileList[index]);
         },
       ),
     );
   }
-
-
 }
 
-
 class _Card extends StatelessWidget {
-
   final ConversationTile tile;
 
   const _Card({required this.tile});
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: (){
+    // tile.
 
-        context.push(AppRoute.chat,extra: tile.contact);
+    return InkWell(
+      onTap: () {
+        context.push(AppRoute.chat, extra: tile);
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -137,15 +126,17 @@ class _Card extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Text(tile.contact.name,style: Theme.of(context).textTheme.titleSmall,),
+                      Text(tile.contact.name, style: Theme.of(context).textTheme.titleSmall),
                       Spacer(),
-                      Text(TimerFormateHelper.formatMessageDate(tile.conversation.lastMessageTime)),
+                      if (tile.conversation != null)
+                        Text(TimerFormateHelper.formatMessageDate(tile.conversation!.lastMessageTime)),
                     ],
                   ),
 
                   Row(
                     children: [
-                      Text(tile.conversation.lastMessagePreview, style: Theme.of(context).textTheme.bodyMedium,),
+                      if (tile.conversation != null)
+                        Text(tile.conversation!.lastMessagePreview, style: Theme.of(context).textTheme.bodyMedium),
                       Spacer(),
                       Icon(Icons.push_pin_rounded, size: 16),
                     ],
@@ -159,4 +150,3 @@ class _Card extends StatelessWidget {
     );
   }
 }
-

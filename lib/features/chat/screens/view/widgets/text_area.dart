@@ -2,7 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lanternchat/features/chat/provider/typing_provider.dart';
 
+import '../../../../../models/conversations/conversation_tile.dart';
 import '../../../../../models/messages/enums/message_type.dart';
 import '../../../../../models/messages/message.dart';
 import '../../../../../models/users/app_user.dart';
@@ -13,9 +15,9 @@ import '../../../data/chat_service.dart';
 import '../../../provider/chat_provider.dart';
 
 class TextArea extends ConsumerStatefulWidget {
-  final Contact contact;
+  final ConversationTile conversationTile;
 
-  const TextArea({required this.contact, super.key});
+  const TextArea({required this.conversationTile, super.key});
 
   @override
   ConsumerState<TextArea> createState() => _TextAreaState();
@@ -26,16 +28,21 @@ class _TextAreaState extends ConsumerState<TextArea> {
 
   @override
   Widget build(BuildContext context) {
-    final keyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
-    final hasText = textEditingController.text.trim().isNotEmpty;
-
-    final showSend = keyboardOpen && hasText;
+    // final keyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
+    // final hasText = textEditingController.text.trim().isNotEmpty;
+    //
+    // final showSend = keyboardOpen && hasText;
 
     final AppUser currentUser = ref.watch(currentUserProvider);
 
-    final ChatService chatService = ref.read(chatServiceProvider);
+    // final ChatService chatService = ref.read(chatServiceProvider);
 
-    // final ParticipantService participantService = ref.read(participantServiceProvider);
+    final typingService = ref.read(typingServiceProvider);
+
+    // typingService.watchData().listen((data){
+    //
+    //   print('#### ${data.toString()}');
+    // });
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -59,6 +66,9 @@ class _TextAreaState extends ConsumerState<TextArea> {
 
 
                         print('### $text');
+
+
+                        typingService.sendData(Timestamp.now());
                         // participantService.typing(widget.contact.conversationId, currentUser.uid);
                       },
                       style: TextStyle(color: Colors.black),
@@ -72,28 +82,48 @@ class _TextAreaState extends ConsumerState<TextArea> {
             ),
           ),
 
-          showSend
-              ? IconButton(
-                  icon: Icon(Icons.send),
-                  onPressed: () {
-                    final text = textEditingController.text.trim();
+          IconButton(
+            icon: Icon(Icons.send),
+            onPressed: () {
+              final text = textEditingController.text.trim();
 
-                    if (text.isEmpty) return;
+              if (text.isEmpty) return;
 
-                    final message = Message(
-                      messageId: '',
-                      senderId: currentUser.uid,
-                      messageType: MessageType.text,
-                      createdAt: Timestamp.now(),
-                      text: text,
-                    );
+              final message = Message(
+                messageId: '',
+                senderId: currentUser.uid,
+                messageType: MessageType.text,
+                createdAt: Timestamp.now(),
+                text: text,
+              );
 
-                    chatService.sendMessageTo(contact: widget.contact, message: message);
+              // chatService.sendMessageTo(conversation: widget.conversationTile.conversation, message: message);
 
-                    textEditingController.clear();
-                  },
-                )
-              : IconButton(icon: Icon(Icons.mic), onPressed: () {}),
+              textEditingController.clear();
+            },
+          )
+          // showSend
+          //     ? IconButton(
+          //         icon: Icon(Icons.send),
+          //         onPressed: () {
+          //           final text = textEditingController.text.trim();
+          //
+          //           if (text.isEmpty) return;
+          //
+          //           final message = Message(
+          //             messageId: '',
+          //             senderId: currentUser.uid,
+          //             messageType: MessageType.text,
+          //             createdAt: Timestamp.now(),
+          //             text: text,
+          //           );
+          //
+          //           chatService.sendMessageTo(conversation: widget.conversationTile.conversation, message: message);
+          //
+          //           textEditingController.clear();
+          //         },
+          //       )
+          //     : IconButton(icon: Icon(Icons.mic), onPressed: () {}),
         ],
       ),
     );

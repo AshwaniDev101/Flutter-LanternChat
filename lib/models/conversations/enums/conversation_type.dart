@@ -1,1 +1,1 @@
-enum ConversationType { group, solo }
+enum ConversationType { group, solo,}

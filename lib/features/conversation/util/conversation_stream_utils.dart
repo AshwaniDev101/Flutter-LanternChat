@@ -14,7 +14,10 @@ class ConversationStreamUtils {
       List<Conversation> conversations,
     ) {
       return contacts.map((contact) {
-        final conversation = conversations.firstWhere((conversation) => conversation.id == contact.conversationId);
+        final conversation = conversations.firstWhere((conversation) {
+
+          return conversation.memberIds.contains(contact.uid);
+        } );
 
         return ConversationTile(contact: contact, conversation: conversation);
       }).toList();
