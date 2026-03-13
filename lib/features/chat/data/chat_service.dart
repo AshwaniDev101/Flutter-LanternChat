@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:lanternchat/core/helpers/id_helper.dart';
+import 'package:lanternchat/core/util/logger.dart';
 
 import '../../../models/conversations/conversation.dart';
 import '../../../models/conversations/conversation_tile.dart';
@@ -49,6 +50,7 @@ class ChatService {
     convDoc.collection(_ServiceConstants.messages).add(message.toMap());
 
     batch.commit();
+
   }
 
   // Future<Conversation> createConversation({

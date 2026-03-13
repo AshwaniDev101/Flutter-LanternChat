@@ -46,6 +46,7 @@ dependencies:
 
   # For combining Streams
   rxdart: ^0.28.0
+  logger: ^2.6.2
 
 
 dev_dependencies:

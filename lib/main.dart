@@ -29,23 +29,11 @@ void main() async {
 // Todo implement paging
 // Introduce paging
 //User scrolls up
-//         │
-//         ▼
 // ScrollController detects threshold
-//         │
-//         ▼
 // loadOlderMessages()
-//         │
-//         ▼
 // Firestore query (startAfterDocument)
-//         │
-//         ▼
 // pagination stream emits messages
-//         │
-//         ▼
 // Rx.merge combines streams
-//         │
-//         ▼
 // StreamBuilder rebuilds UI
 
 class LanternChat extends ConsumerWidget {
