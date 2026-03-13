@@ -10,6 +10,9 @@ import '../../../../../models/users/app_user.dart';
 import '../../../../auth/provider/auth_provider.dart';
 
 
+
+
+
 class TextArea extends ConsumerStatefulWidget {
   // final ConversationTile conversationTile;
   final Function(String) onSend;

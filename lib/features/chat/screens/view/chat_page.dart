@@ -153,7 +153,10 @@ class _ChatPageState extends ConsumerState<ChatPage> {
           ),
 
           if (newConversation != null)
-            TypingIndicator(conversationId: newConversation!.conversationId, uid: currentUser.uid),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: TypingIndicator(conversationId: newConversation!.conversationId, uid: currentUser.uid),
+            ),
 
           TextArea(
             conversationId: newConversation?.conversationId,

@@ -4,7 +4,6 @@ import 'package:firebase_database/firebase_database.dart';
 class _ServiceConstants {
   static const String conversations = 'conversations';
   static const String typing = 'typing';
-  static const String lastSeenMessage = 'lastSeenMessage';
 }
 
 class TypingService {
@@ -30,7 +29,7 @@ class TypingService {
         .child(_ServiceConstants.conversations)
         .child(conversationId)
         .child(_ServiceConstants.typing)
-        .set({uid: ServerValue.timestamp});
+        .set({'uid':uid,'timestamp': ServerValue.timestamp});
   }
 
 
