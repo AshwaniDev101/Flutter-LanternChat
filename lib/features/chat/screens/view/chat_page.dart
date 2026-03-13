@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lanternchat/core/helpers/id_helper.dart';
@@ -9,11 +10,13 @@ import 'package:lanternchat/features/conversation/provider/conversation_provider
 import 'package:lanternchat/models/conversations/conversation.dart';
 import 'package:lanternchat/models/conversations/conversation_tile.dart';
 
+import '../../../../models/messages/enums/message_type.dart';
 import '../../../../models/messages/message.dart';
 import '../../../../models/users/app_user.dart';
 import '../../../../shared/widgets/circular_user_avatar.dart';
 import '../../../auth/provider/auth_provider.dart';
 import '../../data/chat_service.dart';
+import '../../provider/typing_provider.dart';
 
 // Popup Option menu for the Chat page
 enum ChatPagePopupMenu {
@@ -113,6 +116,8 @@ class _ChatPageState extends ConsumerState<ChatPage> {
 
     final chatStream = ref.watch(chatStreamProvider(newConversation?.conversationId));
 
+    final typingService = ref.read(typingServiceProvider);
+
     return Scaffold(
       appBar: _appBar(context),
       backgroundColor: Colors.grey[200],
@@ -149,26 +154,40 @@ class _ChatPageState extends ConsumerState<ChatPage> {
 
           if (newConversation != null)
             TypingIndicator(conversationId: newConversation!.conversationId, uid: currentUser.uid),
-          if (newConversation != null)
-            TextArea(
-              conversationId: newConversation!.conversationId,
-              onSend: (Message message) async {
-                if (newConversation == null) {
-                  // create conversationId and send message
-                  final conversation = await chatService.sendMessageCreateNewConversation(
-                    message: message,
-                    senderUid: currentUser.uid,
-                    sentToUid: widget.conversationTile.contact.uid,
-                  );
 
-                  setState(() {
-                    newConversation = conversation;
-                  });
-                } else {
-                  chatService.sendMessageTo(conversation: newConversation!, message: message);
-                }
-              },
-            ),
+          TextArea(
+            conversationId: newConversation?.conversationId,
+            onSend: (String text) async {
+              final message = Message(
+                messageId: '',
+                senderId: currentUser.uid,
+                messageType: MessageType.text,
+                createdAt: Timestamp.now(),
+                text: text,
+              );
+
+              if (newConversation != null) {
+                chatService.sendMessageTo(conversation: newConversation!, message: message);
+              } else {
+                // create conversationId and send message
+                final conversation = await chatService.sendMessageCreateNewConversation(
+                  message: message,
+                  senderUid: currentUser.uid,
+                  sentToUid: widget.conversationTile.contact.uid,
+                );
+
+                setState(() {
+                  newConversation = conversation;
+                });
+              }
+            },
+
+            onTyping: (text) {
+              if (newConversation != null) {
+                typingService.sendData(conversationId: newConversation!.conversationId, uid: currentUser.uid);
+              }
+            },
+          ),
         ],
       ),
     );

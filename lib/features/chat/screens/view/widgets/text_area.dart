@@ -12,10 +12,11 @@ import '../../../../auth/provider/auth_provider.dart';
 
 class TextArea extends ConsumerStatefulWidget {
   // final ConversationTile conversationTile;
-  final Function(Message) onSend;
-  final String conversationId;
+  final Function(String) onSend;
+  final Function(String) onTyping;
+  final String? conversationId;
 
-  const TextArea({required this.conversationId, required this.onSend,  super.key,});
+  const TextArea({required this.conversationId, required this.onSend, required this.onTyping, super.key,});
   @override
   ConsumerState<TextArea> createState() => _TextAreaState();
 }
@@ -28,10 +29,6 @@ class _TextAreaState extends ConsumerState<TextArea> {
     // final keyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
     // final hasText = textEditingController.text.trim().isNotEmpty;
     // final showSend = keyboardOpen && hasText;
-
-    final AppUser currentUser = ref.watch(currentUserProvider);
-
-    final typingService = ref.read(typingServiceProvider);
 
 
 
@@ -53,16 +50,7 @@ class _TextAreaState extends ConsumerState<TextArea> {
                   Expanded(
                     child: TextField(
                       controller: textEditingController,
-                      onChanged: (text) {
-                        setState(() {});
-
-
-                        // print('### $text');
-
-
-                        typingService.sendData(conversationId: widget.conversationId, uid: currentUser.uid);
-                        // participantService.typing(widget.contact.conversationId, currentUser.uid);
-                      },
+                      onChanged: widget.onTyping,
                       style: TextStyle(color: Colors.black),
                       decoration: InputDecoration(hintText: "Type a message", border: InputBorder.none),
                     ),
@@ -81,17 +69,10 @@ class _TextAreaState extends ConsumerState<TextArea> {
 
               if (text.isEmpty) return;
 
-              final message = Message(
-                messageId: '',
-                senderId: currentUser.uid,
-                messageType: MessageType.text,
-                createdAt: Timestamp.now(),
-                text: text,
-              );
 
               // chatService.sendMessageTo(conversation: widget.conversationTile.conversation, message: message);
 
-              widget.onSend(message);
+              widget.onSend(text);
               // _sendMessage(message);
               textEditingController.clear();
             },
