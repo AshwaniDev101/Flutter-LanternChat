@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lanternchat/core/helpers/id_helper.dart';
+import 'package:lanternchat/core/util/logger.dart';
 import 'package:lanternchat/features/chat/provider/chat_provider.dart';
 import 'package:lanternchat/features/chat/screens/view/widgets/chat_bubble.dart';
 import 'package:lanternchat/features/chat/screens/view/widgets/text_area.dart';
@@ -53,6 +54,7 @@ class ChatPage extends ConsumerStatefulWidget {
   // conversation.empty == true if ChatPage is open from profile page
   final ConversationTile conversationTile;
 
+
   const ChatPage({super.key, required this.conversationTile});
 
   @override
@@ -67,9 +69,15 @@ class _ChatPageState extends ConsumerState<ChatPage> {
     super.initState();
 
     _init();
+
   }
 
+
+
+
   Future<void> _init() async {
+
+
     newConversation = widget.conversationTile.conversation;
     // if conversation is null
     if (widget.conversationTile.conversation == null) {
@@ -90,11 +98,42 @@ class _ChatPageState extends ConsumerState<ChatPage> {
 
         setState(() {
           newConversation = conversation;
+          _seenLister();
         });
       }
     } else {
       print("####  conversationTile have conversation ${widget.conversationTile.conversation!.conversationId}");
+      _seenLister();
     }
+  }
+
+
+  void _seenLister() {
+
+    ref.listenManual(
+      seenMessageMergeSteamProvider(newConversation?.conversationId),
+          (previous, next) {
+        next.whenData((messages) {
+          if (messages.isEmpty || newConversation == null) return;
+
+          final lastMessage = messages.last.message;
+
+          final chatService = ref.read(chatServiceProvider);
+          final currentUser = ref.read(currentUserProvider);
+
+
+
+          if (lastMessage.senderId == currentUser.uid) return;
+          if (lastMessage.seenBy.containsKey(currentUser.uid)) return;
+
+          chatService.seenMessage(
+            newConversation!.conversationId,
+            lastMessage.messageId,
+            currentUser.uid,
+          );
+        });
+      },
+    );
   }
 
   @override
@@ -105,9 +144,11 @@ class _ChatPageState extends ConsumerState<ChatPage> {
 
     // Old chatting Stream
     // final chatStream = ref.watch(chatStreamProvider(newConversation?.conversationId));
-    final  AsyncValue<List<MessageTile>> chatStream = ref.watch(seenMessageMergeSteamProvider(newConversation!.conversationId));
+    final  AsyncValue<List<MessageTile>> chatStream = ref.watch(seenMessageMergeSteamProvider(newConversation?.conversationId));
 
     final typingService = ref.read(typingServiceProvider);
+
+
 
     return Scaffold(
       appBar: _appBar(context),
@@ -129,6 +170,11 @@ class _ChatPageState extends ConsumerState<ChatPage> {
                   itemBuilder: (context, index) {
                     //// When reverse: true, index 0 = newest message
                     final messageTile = messageTiles[messageTiles.length - 1 - index];
+
+                    //Updating last seen message every time new message comes
+
+                    AppLogger.i('[chat_page] $index ${messageTiles[index].message.text} ${messageTiles[index].message.messageId}  ${messageTiles[index].message.seenBy.values.toString()}');
+
                     return ChatBubble(messageTile: messageTile);
                   },
                 );

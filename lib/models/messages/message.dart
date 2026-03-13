@@ -66,7 +66,6 @@ class Message {
 
   Map<String, dynamic> toMap() {
     return {
-      _Field.messageId: messageId,
       _Field.senderId: senderId,
       _Field.messageType: messageType.name,
       _Field.messageMedia: messageMedia?.toMap(),
@@ -81,7 +80,7 @@ class Message {
     };
   }
 
-  factory Message.fromMap(Map<String, dynamic> map) {
+  factory Message.fromMap(String messageId, Map<String, dynamic> map) {
     final mediaMap = map[_Field.messageMedia] as Map<String, dynamic>?;
     final reactionMap = map[_Field.reactions] as Map<String, dynamic>? ?? {};
     final seenByMap = map[_Field.seenBy] as Map<String, dynamic>? ?? {};
@@ -89,7 +88,7 @@ class Message {
     final editHistoryList = map[_Field.editHistory] as List? ?? [];
 
     return Message(
-      messageId: map[_Field.messageId] ?? '',
+      messageId: messageId,
       senderId: map[_Field.senderId] ?? '',
       messageType: MessageType.values.asNameMap()[map[_Field.messageType]] ?? MessageType.text,
       messageMedia: mediaMap != null ? MessageMedia.fromMap(mediaMap) : null,

@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:lanternchat/core/helpers/id_helper.dart';
-import 'package:lanternchat/core/util/logger.dart';
 
 import '../../../models/conversations/conversation.dart';
 import '../../../models/conversations/conversation_tile.dart';
@@ -29,12 +28,11 @@ class ChatService {
     return convDoc.orderBy(_ServiceConstants.createdAt, descending: false).snapshots().map((
       QuerySnapshot<Map<String, dynamic>> snapshot,
     ) {
-      return snapshot.docs.map((QueryDocumentSnapshot<Map<String, dynamic>> documents) {
-        return Message.fromMap(documents.data());
+      return snapshot.docs.map((QueryDocumentSnapshot<Map<String, dynamic>> document) {
+        return Message.fromMap(document.id, document.data());
       }).toList();
     });
   }
-
 
   /// Sent message to conversationId as well updates the conversation summary
   Future<void> sendMessageTo({required Conversation conversation, required Message message}) async {
@@ -50,24 +48,13 @@ class ChatService {
     convDoc.collection(_ServiceConstants.messages).add(message.toMap());
 
     batch.commit();
-
   }
-
-  // Future<Conversation> createConversation({
-  //   required List<String> memberIds,
-  //   required ConversationType conversationType,
-  //   String? pairId,
-  // }) async {
-  //
-  //
-  //   return conversation;
-  // }
 
   /// Sent message to conversationId as well updates the conversation summary
   Future<Conversation> sendMessageToConversation({
     required Message message,
     required String senderUid,
-    required String sentToUid
+    required String sentToUid,
   }) async {
     // print("#### Sending message on ${contact.conversationId}, ${message.text}");
     final batch = firestore.batch();
@@ -78,7 +65,7 @@ class ChatService {
 
     final conversation = Conversation(
       conversationId: docRef.id,
-      memberIds: [senderUid,sentToUid],
+      memberIds: [senderUid, sentToUid],
       conversationType: ConversationType.solo,
       pairID: IdHelper.generatePairId(senderUid, sentToUid),
       lastMessagePreview: message.text.toString(),
@@ -99,9 +86,28 @@ class ChatService {
     return conversation;
   }
 
+  void seenMessage(String conversationID, String messageID, String uid) {
+    final singleMessagesRef =
+    _getMessagesReference(conversationId: conversationID).doc(messageID);
+
+    singleMessagesRef.update({
+      'seenBy.$uid': Timestamp.now(),
+    });
+  }
+
+
+
+
   CollectionReference<Map<String, dynamic>> _getConversationsRef() {
     return firestore.collection(_ServiceConstants.conversations);
   }
+
+CollectionReference<Map<String, dynamic>> _getMessagesReference({required String conversationId}) {
+  return firestore
+      .collection(_ServiceConstants.conversations)
+      .doc(conversationId)
+      .collection(_ServiceConstants.messages);
+}
 
   //
   // void deleteMessage(String conversationID, String messageID) {

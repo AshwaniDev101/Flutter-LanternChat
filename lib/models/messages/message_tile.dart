@@ -1,7 +1,5 @@
-import 'package:lanternchat/models/conversations/conversation.dart';
 import 'package:lanternchat/models/messages/message.dart';
 import 'package:lanternchat/models/messages/seen_message.dart';
-import 'package:lanternchat/models/users/contact.dart';
 
 class _Field {
   static const String contact = 'contact';
@@ -17,11 +15,11 @@ class MessageTile {
     this.seenMessage,
   });
 
-  factory MessageTile.fromMap(Map<String, dynamic> map) {
+/*  factory MessageTile.fromMap(Map<String, dynamic> map) {
     return MessageTile(
       message: Message.fromMap(map[_Field.contact] as Map<String, dynamic>? ?? {}),
       seenMessage: SeenMessage.fromMap(map[_Field.conversation] as Map<String, dynamic>? ?? {}),
     );
-  }
+  }*/
 
 }

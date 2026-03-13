@@ -24,7 +24,7 @@ final seenMessageServiceProvider = Provider((ref) {
 // });
 //
 
-final seenMessageMergeSteamProvider = StreamProvider.family<List<MessageTile>, String>((ref,String?  conversationId) {
+final seenMessageMergeSteamProvider = StreamProvider.family<List<MessageTile>, String?>((ref,String?  conversationId) {
 
 
   if (conversationId == null) {
