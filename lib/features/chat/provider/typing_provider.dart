@@ -9,30 +9,30 @@ final typingServiceProvider = Provider((ref) {
   return TypingService(realtimeDb);
 });
 
-class TypingTo {
-  final String conversationId;
-  final String uid;
+// class TypingTo {
+//   final String conversationId;
+//   final String uid;
+//
+//   TypingTo({required this.conversationId, required this.uid});
+//
+//
+//   @override
+//   bool operator ==(Object other) {
+//     return other is TypingTo &&
+//         other.conversationId == conversationId &&
+//         other.uid == uid;
+//   }
+//
+//   @override
+//   int get hashCode => Object.hash(conversationId, uid);
+// }
 
-  TypingTo({required this.conversationId, required this.uid});
 
-
-  @override
-  bool operator ==(Object other) {
-    return other is TypingTo &&
-        other.conversationId == conversationId &&
-        other.uid == uid;
-  }
-
-  @override
-  int get hashCode => Object.hash(conversationId, uid);
-}
-
-
-final typingStreamProvider = StreamProvider.family<DatabaseEvent, TypingTo>((ref, TypingTo typingTo) {
+final typingStreamProvider = StreamProvider.family<DatabaseEvent, String>((ref, String conversationId) {
   final realtimeDb = ref.watch(realtimeDbProvider);
   final dataEvents = TypingService(
     realtimeDb,
-  ).watchTyping(conversationId: typingTo.conversationId, uid: typingTo.uid);
+  ).watchTyping(conversationId: conversationId);
 
   return dataEvents;
 });

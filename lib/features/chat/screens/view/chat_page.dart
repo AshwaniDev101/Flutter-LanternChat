@@ -12,10 +12,12 @@ import 'package:lanternchat/models/conversations/conversation_tile.dart';
 
 import '../../../../models/messages/enums/message_type.dart';
 import '../../../../models/messages/message.dart';
+import '../../../../models/messages/message_tile.dart';
 import '../../../../models/users/app_user.dart';
 import '../../../../shared/widgets/circular_user_avatar.dart';
 import '../../../auth/provider/auth_provider.dart';
 import '../../data/chat_service.dart';
+import '../../provider/seen_message_provider.dart';
 import '../../provider/typing_provider.dart';
 
 // Popup Option menu for the Chat page
@@ -114,7 +116,8 @@ class _ChatPageState extends ConsumerState<ChatPage> {
     final ChatService chatService = ref.read(chatServiceProvider);
     final AppUser currentUser = ref.watch(currentUserProvider);
 
-    final chatStream = ref.watch(chatStreamProvider(newConversation?.conversationId));
+    // final chatStream = ref.watch(chatStreamProvider(newConversation?.conversationId));
+    final  AsyncValue<List<MessageTile>> chatStream = ref.watch(seenMessageMergeSteamProvider(newConversation!.conversationId));
 
     final typingService = ref.read(typingServiceProvider);
 
@@ -125,20 +128,20 @@ class _ChatPageState extends ConsumerState<ChatPage> {
         children: [
           Expanded(
             child: chatStream.when(
-              data: (List<Message> messages) {
+              data: (List<MessageTile> messageTiles) {
                 // WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
                 return ListView.separated(
                   reverse: true,
                   separatorBuilder: (context, index) {
                     return SizedBox(height: 10);
                   },
-                  itemCount: messages.length,
+                  itemCount: messageTiles.length,
                   padding: EdgeInsets.all(16),
 
                   itemBuilder: (context, index) {
                     //// When reverse: true, index 0 = newest message
-                    final message = messages[messages.length - 1 - index];
-                    return ChatBubble(message: message);
+                    final messageTile = messageTiles[messageTiles.length - 1 - index];
+                    return ChatBubble(message: messageTile.message);
                   },
                 );
               },
@@ -173,7 +176,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
                 chatService.sendMessageTo(conversation: newConversation!, message: message);
               } else {
                 // create conversationId and send message
-                final conversation = await chatService.sendMessageCreateNewConversation(
+                final conversation = await chatService.sendMessageToConversation(
                   message: message,
                   senderUid: currentUser.uid,
                   sentToUid: widget.conversationTile.contact.uid,

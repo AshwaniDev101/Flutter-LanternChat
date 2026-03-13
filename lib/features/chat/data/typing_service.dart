@@ -3,6 +3,8 @@ import 'package:firebase_database/firebase_database.dart';
 
 class _ServiceConstants {
   static const String conversations = 'conversations';
+  static const String uid = 'uid';
+  static const String timestamp = 'timestamp';
   static const String typing = 'typing';
 }
 
@@ -11,9 +13,7 @@ class TypingService {
 
   TypingService(this.firebaseDatabase);
 
-
-
-  Stream<DatabaseEvent> watchTyping({required String conversationId, required String uid}) {
+  Stream<DatabaseEvent> watchTyping({required String conversationId}) {
     final ref = firebaseDatabase
         .ref()
         .child(_ServiceConstants.conversations)
@@ -29,8 +29,6 @@ class TypingService {
         .child(_ServiceConstants.conversations)
         .child(conversationId)
         .child(_ServiceConstants.typing)
-        .set({'uid':uid,'timestamp': ServerValue.timestamp});
+        .set({_ServiceConstants.uid: uid, _ServiceConstants.timestamp: ServerValue.timestamp});
   }
-
-
 }

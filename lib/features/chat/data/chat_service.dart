@@ -62,7 +62,7 @@ class ChatService {
   // }
 
   /// Sent message to conversationId as well updates the conversation summary
-  Future<Conversation> sendMessageCreateNewConversation({
+  Future<Conversation> sendMessageToConversation({
     required Message message,
     required String senderUid,
     required String sentToUid

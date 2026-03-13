@@ -1,15 +1,9 @@
 import 'dart:async';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lanternchat/features/chat/provider/typing_provider.dart';
 import 'package:lanternchat/features/chat/screens/view/widgets/chat_bubble.dart';
-import 'package:lanternchat/models/messages/message.dart';
-import 'package:lanternchat/models/users/contact.dart';
-
-import '../../../../../models/conversations/conversation_tile.dart';
 
 class _ServiceConstants {
   static const String uid = 'uid';
@@ -37,7 +31,7 @@ class _TypingIndicatorState extends ConsumerState<TypingIndicator> {
 
     bool firstEvent = true; // this is to prevent _startTypingTimer from triggering when listening is mounted for the very first time
     ref.listenManual(
-      typingStreamProvider(TypingTo(conversationId: widget.conversationId, uid: widget.uid)),
+      typingStreamProvider(widget.conversationId),
       (previous, next) {
         next.whenData((event) {
           if (firstEvent) {
