@@ -38,7 +38,7 @@ class SeenMessageService {
 
     final convRef = _getConversationsRef().doc(conversationId).collection(_ServiceConstants.seenMessages);
 
-    convRef.doc(seemMessage.uid).set(seemMessage.toMap());
+    convRef.doc(seemMessage.messageId).set(seemMessage.toMap());
   }
 
   CollectionReference<Map<String, dynamic>> _getConversationsRef() {

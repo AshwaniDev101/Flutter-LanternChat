@@ -15,19 +15,26 @@ final seenMessageServiceProvider = Provider((ref) {
   return SeenMessageService(firestore: firestore);
 });
 
-final seenMessageStreamProvider = StreamProvider.family<List<SeenMessage>, String?>((ref, String? conversationId) {
+// final seenMessageStreamProvider = StreamProvider.family<List<SeenMessage>, String?>((ref, String? conversationId) {
+//   if (conversationId == null) {
+//     return Stream.value([]);
+//   }
+//
+//   return ref.read(seenMessageServiceProvider).watchSeenMessageStream(conversationId);
+// });
+//
+
+final seenMessageMergeSteamProvider = StreamProvider.family<List<MessageTile>, String>((ref,String?  conversationId) {
+
+
   if (conversationId == null) {
     return Stream.value([]);
   }
 
-  return ref.read(seenMessageServiceProvider).watchSeenMessageStream(conversationId);
-});
-
-
-final seenMessageMergeSteamProvider = StreamProvider.family<List<MessageTile>, String>((ref, conversationId) {
   // currentUid is to filter where 'memberIds'
   final contactsStream = ref.watch(chatServiceProvider).watchChatStream(conversationId);
   // currentUid is need to fetch user contact list
+  // final conversationsStream = ref.watch(seenMessageServiceProvider).watchSeenMessageStream(conversationId);
   final conversationsStream = ref.watch(seenMessageServiceProvider).watchSeenMessageStream(conversationId);
 
   return ChatStreamUtils.messageTileStream(contactsStream, conversationsStream);

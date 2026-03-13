@@ -99,23 +99,11 @@ class _ChatPageState extends ConsumerState<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
-    // final conversationService = ref.watch(conversationServiceProvider);
-    //
-    // final currentUser = ref.watch(currentUserProvider);
-    //
-    // final pairId = IdHelper.generatePairId(currentUser.uid, widget.conversationTile.contact.uid);
-    //
-    // final Future<Conversation?> conversation = conversationService.getConversationUsingPairId(pairId: pairId);
-    //
-    // AsyncValue<List<Message>?> chatStream;
-    //
-    // conversation.whenComplete(() {
-    //   chatStream = ref.watch(chatStreamProvider(conversationTile.conversation.conversationId));
-    // });
 
     final ChatService chatService = ref.read(chatServiceProvider);
     final AppUser currentUser = ref.watch(currentUserProvider);
 
+    // Old chatting Stream
     // final chatStream = ref.watch(chatStreamProvider(newConversation?.conversationId));
     final  AsyncValue<List<MessageTile>> chatStream = ref.watch(seenMessageMergeSteamProvider(newConversation!.conversationId));
 
@@ -141,7 +129,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
                   itemBuilder: (context, index) {
                     //// When reverse: true, index 0 = newest message
                     final messageTile = messageTiles[messageTiles.length - 1 - index];
-                    return ChatBubble(message: messageTile.message);
+                    return ChatBubble(messageTile: messageTile);
                   },
                 );
               },
@@ -231,73 +219,4 @@ class _ChatPageState extends ConsumerState<ChatPage> {
     );
   }
 
-  // Widget _textArea(BuildContext context, ChatService chatService, AppUser currentUser) {
-  //   final keyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
-  //   final hasText = textEditingController.text.trim().isNotEmpty;
-  //
-  //   final showSend = keyboardOpen && hasText;
-  //
-  //   return Padding(
-  //     padding: const EdgeInsets.all(8.0),
-  //     child: Row(
-  //       children: [
-  //         Expanded(
-  //             child:Container(
-  //               padding: EdgeInsets.symmetric(horizontal: 12),
-  //               decoration: BoxDecoration(
-  //                 borderRadius: BorderRadius.circular(40),
-  //                 border: Border.all(color: Colors.grey),
-  //               ),
-  //               child: Row(
-  //                 children: [
-  //                   IconButton(onPressed: () {}, icon: Icon(Icons.emoji_emotions_outlined)),
-  //                   Expanded(
-  //                     child: TextField(
-  //                       controller: textEditingController,
-  //                       onChanged: (text){
-  //                          setState(() {});
-  //
-  //
-  //
-  //                       },
-  //                       style: TextStyle(color: Colors.black),
-  //                       decoration: InputDecoration(
-  //                         hintText: "Type a message",
-  //                         border: InputBorder.none,
-  //                       ),
-  //                     ),
-  //                   ),
-  //                   IconButton(onPressed: () {}, icon: Icon(Icons.attachment)),
-  //                   IconButton(onPressed: () {}, icon: Icon(Icons.camera_alt_outlined)),
-  //                 ],
-  //               ),
-  //             )
-  //         ),
-  //
-  //         showSend
-  //             ? IconButton(
-  //                 icon: Icon(Icons.send),
-  //                 onPressed: () {
-  //                   final text = textEditingController.text.trim();
-  //
-  //                   if (text.isEmpty) return;
-  //
-  //                   final message = Message(
-  //                     messageId: '',
-  //                     senderId: currentUser.uid,
-  //                     messageType: MessageType.text,
-  //                     createdAt: Timestamp.now(),
-  //                     text: text,
-  //                   );
-  //
-  //                   chatService.sendMessageTo(contact:widget.contact, message:message);
-  //
-  //                   textEditingController.clear();
-  //                 },
-  //               )
-  //             : IconButton(icon: Icon(Icons.mic), onPressed: () {}),
-  //       ],
-  //     ),
-  //   );
-  // }
 }

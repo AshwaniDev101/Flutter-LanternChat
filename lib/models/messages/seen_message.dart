@@ -1,37 +1,36 @@
-
 class SeenMessage {
-  final String uid;
-  final String seenMessageId;
+  final String messageId;
+  final List<String> seenBy;
 
   const SeenMessage({
-    required this.uid,
-    required this.seenMessageId,
+    required this.messageId,
+    required this.seenBy,
   });
 
   /// Create object from Map
   factory SeenMessage.fromMap(Map<String, dynamic> map) {
     return SeenMessage(
-      uid: map['uid'] as String,
-      seenMessageId: map['seenMessageId'] as String,
+      messageId: map['messageId'] as String,
+      seenBy: List<String>.from(map['seenBy'] ?? []),
     );
   }
 
   /// Convert object to Map
   Map<String, dynamic> toMap() {
     return {
-      'uid': uid,
-      'seenMessageId': seenMessageId,
+      'messageId': messageId,
+      'seenBy': seenBy,
     };
   }
 
   /// Create a copy with modifications
   SeenMessage copyWith({
-    String? uid,
-    String? seenMessageId,
+    String? messageId,
+    List<String>? seenBy,
   }) {
     return SeenMessage(
-      uid: uid ?? this.uid,
-      seenMessageId: seenMessageId ?? this.seenMessageId,
+      messageId: messageId ?? this.messageId,
+      seenBy: seenBy ?? this.seenBy,
     );
   }
 }

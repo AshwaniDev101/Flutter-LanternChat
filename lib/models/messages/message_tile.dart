@@ -10,11 +10,11 @@ class _Field {
 
 class MessageTile {
   final Message message;
-  final SeenMessage seenMessage;
+  final SeenMessage? seenMessage;
 
   MessageTile({
     required this.message,
-    required this.seenMessage,
+    this.seenMessage,
   });
 
   factory MessageTile.fromMap(Map<String, dynamic> map) {
