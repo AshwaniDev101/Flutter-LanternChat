@@ -100,31 +100,25 @@ class _ChatPageState extends ConsumerState<ChatPage> {
     }
   }
 
-
   String? _lastHandledMessageId;
   int? _lastKnowNumberOfMessages;
 
   void _seenLister() {
-
     // TODO: Replace per-message seenBy updates with a conversation-level lastSeen pointer.
 
     ref.listenManual(seenMessageMergeSteamProvider(newConversation?.conversationId), (previous, next) {
       next.whenData((messages) {
         if (messages.isEmpty || newConversation == null) return;
 
-
-
         // structural guard
-        if(_lastKnowNumberOfMessages==messages.length) return;
+        if (_lastKnowNumberOfMessages == messages.length) return;
         _lastKnowNumberOfMessages = messages.length;
 
         final lastMessage = messages.last.message;
 
         // message guard, Prevent reprocessing same message
-        if(_lastHandledMessageId == lastMessage.messageId) return;
+        if (_lastHandledMessageId == lastMessage.messageId) return;
         _lastHandledMessageId = lastMessage.messageId;
-
-
 
         final chatService = ref.read(chatServiceProvider);
         final currentUser = ref.read(currentUserProvider);
@@ -177,7 +171,22 @@ class _ChatPageState extends ConsumerState<ChatPage> {
                       '[chat_page] $index ${messageTiles[index].message.text} ${messageTiles[index].message.messageId}  ${messageTiles[index].message.seenBy.values.toString()}',
                     );
 
-                    return ChatBubble(messageTile: messageTile);
+                    final isMine = messageTile.message.senderId == currentUser.uid;
+
+                    final isSeenByOtherUser = messageTile.message.seenBy.containsKey(
+                      widget.conversationTile.contact.uid,
+                    );
+                    return Column(
+
+                      children: [
+                        ChatBubble(messageTile: messageTile, conversationTile: widget.conversationTile,),
+
+                        // if (isMine && isSeenByOtherUser) Text("seen", style: Theme.of(context).textTheme.bodySmall),
+                        // if (isMine && isSeenByOtherUser) Text("Seen ${messageTile.message.seenBy.containsKey(widget.conversationTile.contact.uid)}", style: Theme.of(context).textTheme.bodySmall),
+                        // if(!messageTiles[index].message.seenBy.containsKey(currentUser.uid))
+                        //   Text('seen',style: Theme.of(context).textTheme.bodySmall,)
+                      ],
+                    );
                   },
                 );
               },

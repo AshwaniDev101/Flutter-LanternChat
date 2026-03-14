@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:lanternchat/models/messages/seen_message.dart';
 
-import '../../../models/conversations/conversation.dart';
 
 class _ServiceConstants {
   static const String conversations = 'conversations';

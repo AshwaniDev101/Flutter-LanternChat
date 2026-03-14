@@ -1,14 +1,17 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lanternchat/features/auth/provider/auth_provider.dart';
 
 import '../../../../../core/theme/chat_theme.dart';
+import '../../../../../models/conversations/conversation_tile.dart';
 import '../../../../../models/messages/message_tile.dart';
 
 class ChatBubble extends ConsumerWidget {
   final MessageTile messageTile;
+  final ConversationTile conversationTile;
 
-  const ChatBubble({required this.messageTile, super.key});
+  const ChatBubble({required this.messageTile,required this.conversationTile ,super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -17,7 +20,7 @@ class ChatBubble extends ConsumerWidget {
 
     final isMine = messageTile.message.senderId == currentUser.uid;
 
-    // final List<String>? seenBy = messageTile.seenMessage?.seenBy;
+
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
@@ -47,25 +50,77 @@ class ChatBubble extends ConsumerWidget {
                   isMine ? Radius.zero : const Radius.circular(18),
                 ),
               ),
-              child: Row(
-                children: [
-                  Text(
-                    messageTile.message.text ?? "",
-                    style: TextStyle(
-                      fontSize: 15,
-                      height: 1.35,
-                      color: isMine ? Colors.black87 : Colors.black87,
+
+                child :Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      messageTile.message.text ?? "",
+                      style: const TextStyle(
+                        fontSize: 15,
+                        height: 1.35,
+                        color: Colors.black87,
+                      ),
                     ),
-                  ),
 
+                    const SizedBox(height: 4),
 
-                ],
-              ),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          _formatTime(messageTile.message.createdAt),
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: Colors.black45,
+                            fontSize: 11,
+                          ),
+                        ),
+
+                        if (isMine) ...[
+                          const SizedBox(width: 4),
+
+                          // isSeenByOtherUser?Icon(
+                          //   Icons.done_all,
+                          //   size: 16,
+                          //   color: Colors.white,
+                          // ):
+                          Icon(
+                            Icons.done_all,
+                            size: 16,
+                            color:  Colors.white,
+                          ),
+                        ]
+                      ],
+                    )
+                  ],
+                )
+              // child: Column(
+              //   children: [
+              //     Text(
+              //       messageTile.message.text ?? "",
+              //       style: TextStyle(
+              //         fontSize: 15,
+              //         height: 1.35,
+              //         color: isMine ? Colors.black87 : Colors.black87,
+              //       ),
+              //     ),
+              //     if (isMine && isSeenByOtherUser) Text("seen", style: Theme.of(context).textTheme.bodySmall),
+              //   ],
+              // ),
             ),
           ),
         ],
       ),
     );
+  }
+
+  String _formatTime(Timestamp timestamp) {
+    final date = timestamp.toDate();
+    final hour = date.hour.toString().padLeft(2, '0');
+    final minute = date.minute.toString().padLeft(2, '0');
+
+    return "$hour:$minute";
   }
 }
 

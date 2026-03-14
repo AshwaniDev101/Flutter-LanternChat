@@ -1,7 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:lanternchat/models/conversations/conversation.dart';
-import 'package:lanternchat/models/conversations/enums/conversation_type.dart';
-
 import 'edit_history.dart';
 import 'enums/message_type.dart';
 import 'message_media.dart';
