@@ -10,7 +10,6 @@ import 'reply_to.dart';
 enum ReactionType { thumbs, heart, laugh, wow, tears, fire, lol, namaste }
 
 class _Field {
-  static const String messageId = 'messageId';
   static const String senderId = 'senderId';
   static const String messageType = 'messageType';
   static const String messageMedia = 'messageMedia';

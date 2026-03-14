@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lanternchat/features/auth/provider/auth_provider.dart';
-import 'package:lanternchat/models/messages/message.dart';
 
 import '../../../../../core/theme/chat_theme.dart';
 import '../../../../../models/messages/message_tile.dart';
@@ -18,7 +17,7 @@ class ChatBubble extends ConsumerWidget {
 
     final isMine = messageTile.message.senderId == currentUser.uid;
 
-    final List<String>? seenBy = messageTile.seenMessage?.seenBy;
+    // final List<String>? seenBy = messageTile.seenMessage?.seenBy;
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
@@ -60,8 +59,6 @@ class ChatBubble extends ConsumerWidget {
                   ),
 
 
-                  if(seenBy!=null)
-                    Icon(Icons.check)
                 ],
               ),
             ),

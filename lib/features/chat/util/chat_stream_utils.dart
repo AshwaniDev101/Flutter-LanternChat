@@ -14,7 +14,7 @@ class ChatStreamUtils {
       List<SeenMessage>? seenMessages,
     ) {
       // Build fast lookup map
-      final seenMap = {for (final seen in (seenMessages ?? [])) seen.messageId: seen};
+      final seenMap = {for (final seen in (seenMessages ?? [])) seen.lastSeenMessageId: seen};
 
       return messages.map((message) {
         return MessageTile(message: message, seenMessage: seenMap[message.messageId]);

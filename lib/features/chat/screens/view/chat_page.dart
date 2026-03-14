@@ -54,7 +54,6 @@ class ChatPage extends ConsumerStatefulWidget {
   // conversation.empty == true if ChatPage is open from profile page
   final ConversationTile conversationTile;
 
-
   const ChatPage({super.key, required this.conversationTile});
 
   @override
@@ -69,15 +68,9 @@ class _ChatPageState extends ConsumerState<ChatPage> {
     super.initState();
 
     _init();
-
   }
 
-
-
-
   Future<void> _init() async {
-
-
     newConversation = widget.conversationTile.conversation;
     // if conversation is null
     if (widget.conversationTile.conversation == null) {
@@ -108,47 +101,54 @@ class _ChatPageState extends ConsumerState<ChatPage> {
   }
 
 
+  String? _lastHandledMessageId;
+  int? _lastKnowNumberOfMessages;
+
   void _seenLister() {
 
-    ref.listenManual(
-      seenMessageMergeSteamProvider(newConversation?.conversationId),
-          (previous, next) {
-        next.whenData((messages) {
-          if (messages.isEmpty || newConversation == null) return;
+    // TODO: Replace per-message seenBy updates with a conversation-level lastSeen pointer.
 
-          final lastMessage = messages.last.message;
-
-          final chatService = ref.read(chatServiceProvider);
-          final currentUser = ref.read(currentUserProvider);
+    ref.listenManual(seenMessageMergeSteamProvider(newConversation?.conversationId), (previous, next) {
+      next.whenData((messages) {
+        if (messages.isEmpty || newConversation == null) return;
 
 
 
-          if (lastMessage.senderId == currentUser.uid) return;
-          if (lastMessage.seenBy.containsKey(currentUser.uid)) return;
+        // structural guard
+        if(_lastKnowNumberOfMessages==messages.length) return;
+        _lastKnowNumberOfMessages = messages.length;
 
-          chatService.seenMessage(
-            newConversation!.conversationId,
-            lastMessage.messageId,
-            currentUser.uid,
-          );
-        });
-      },
-    );
+        final lastMessage = messages.last.message;
+
+        // message guard, Prevent reprocessing same message
+        if(_lastHandledMessageId == lastMessage.messageId) return;
+        _lastHandledMessageId = lastMessage.messageId;
+
+
+
+        final chatService = ref.read(chatServiceProvider);
+        final currentUser = ref.read(currentUserProvider);
+
+        if (lastMessage.senderId == currentUser.uid) return;
+        if (lastMessage.seenBy.containsKey(currentUser.uid)) return;
+
+        chatService.seenMessage(newConversation!.conversationId, lastMessage.messageId, currentUser.uid);
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-
     final ChatService chatService = ref.read(chatServiceProvider);
     final AppUser currentUser = ref.watch(currentUserProvider);
 
     // Old chatting Stream
     // final chatStream = ref.watch(chatStreamProvider(newConversation?.conversationId));
-    final  AsyncValue<List<MessageTile>> chatStream = ref.watch(seenMessageMergeSteamProvider(newConversation?.conversationId));
+    final AsyncValue<List<MessageTile>> chatStream = ref.watch(
+      seenMessageMergeSteamProvider(newConversation?.conversationId),
+    );
 
     final typingService = ref.read(typingServiceProvider);
-
-
 
     return Scaffold(
       appBar: _appBar(context),
@@ -173,7 +173,9 @@ class _ChatPageState extends ConsumerState<ChatPage> {
 
                     //Updating last seen message every time new message comes
 
-                    AppLogger.i('[chat_page] $index ${messageTiles[index].message.text} ${messageTiles[index].message.messageId}  ${messageTiles[index].message.seenBy.values.toString()}');
+                    AppLogger.i(
+                      '[chat_page] $index ${messageTiles[index].message.text} ${messageTiles[index].message.messageId}  ${messageTiles[index].message.seenBy.values.toString()}',
+                    );
 
                     return ChatBubble(messageTile: messageTile);
                   },
@@ -264,5 +266,4 @@ class _ChatPageState extends ConsumerState<ChatPage> {
       ],
     );
   }
-
 }
