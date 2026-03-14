@@ -32,10 +32,10 @@ final seenMessageMergeSteamProvider = StreamProvider.family<List<MessageTile>, S
   }
 
   // currentUid is to filter where 'memberIds'
-  final contactsStream = ref.watch(chatServiceProvider).watchChatStream(conversationId);
+  final chatStream = ref.watch(chatServiceProvider).watchChatStream(conversationId);
   // currentUid is need to fetch user contact list
   // final conversationsStream = ref.watch(seenMessageServiceProvider).watchSeenMessageStream(conversationId);
-  final conversationsStream = ref.watch(seenMessageServiceProvider).watchSeenMessageStream(conversationId);
+  final seenMessageStream = ref.watch(seenMessageServiceProvider).watchSeenMessageStream(conversationId);
 
-  return ChatStreamUtils.messageTileStream(contactsStream, conversationsStream);
+  return ChatStreamUtils.messageTileStream(chatStream, seenMessageStream);
 });

@@ -20,8 +20,6 @@ class ChatBubble extends ConsumerWidget {
 
     final isMine = messageTile.message.senderId == currentUser.uid;
 
-
-
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
       child: Row(
@@ -57,10 +55,10 @@ class ChatBubble extends ConsumerWidget {
                   children: [
                     Text(
                       messageTile.message.text ?? "",
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 15,
                         height: 1.35,
-                        color: Colors.black87,
+                        color: isMine?Colors.black:Colors.black,
                       ),
                     ),
 
@@ -72,7 +70,7 @@ class ChatBubble extends ConsumerWidget {
                         Text(
                           _formatTime(messageTile.message.createdAt),
                           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Colors.black45,
+                            color: Colors.blueGrey.shade800,
                             fontSize: 11,
                           ),
                         ),
@@ -85,10 +83,11 @@ class ChatBubble extends ConsumerWidget {
                           //   size: 16,
                           //   color: Colors.white,
                           // ):
+                          // Text('seen',style: Theme.of(context).textTheme.bodySmall,),
                           Icon(
                             Icons.done_all,
                             size: 16,
-                            color:  Colors.white,
+                            color:  Colors.blueGrey.shade900,
                           ),
                         ]
                       ],

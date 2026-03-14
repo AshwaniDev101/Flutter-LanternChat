@@ -29,37 +29,13 @@ class SeenMessageService {
   }
 
   /// Sent message to conversationId as well updates the conversation summary
-  Future<void> sendMessageTo({required String conversationId, required SeenMessage seemMessage}) async {
-    // print("#### Sending message on ${contact.conversationId}, ${message.text}");
-
-    // create conversation doc with id
-
+  Future<void> setMessageSeen({required String conversationId, required SeenMessage seemMessage}) async {
     final convRef = _getConversationsRef().doc(conversationId).collection(_ServiceConstants.seenMessages);
-
-    convRef.doc(seemMessage.lastSeenMessageId).set(seemMessage.toMap());
+    convRef.doc(seemMessage.uid).set(seemMessage.toMap());
   }
 
   CollectionReference<Map<String, dynamic>> _getConversationsRef() {
     return firestore.collection(_ServiceConstants.conversations);
   }
 
-  // Stream<DatabaseEvent> watchSeenMessage({required String conversationId, required String uid}) {
-  //   final ref = firebaseDatabase
-  //       .ref()
-  //       .child(_ServiceConstants.conversations)
-  //       .child(conversationId)
-  //       .child(_ServiceConstants.seenMessage).child(uid);
-  //
-  //   return ref.onValue;
-  // }
-
-  // void sendLastMessageSeenID({required String conversationId, required String uid, required String messageId}) {
-  //   firebaseDatabase
-  //       .ref()
-  //       .child(_ServiceConstants.conversations)
-  //       .child(conversationId)
-  //       .child(_ServiceConstants.seenMessage)
-  //       .child(uid)
-  //       .set({_ServiceConstants.lastSeenMessageId: messageId});
-  // }
 }

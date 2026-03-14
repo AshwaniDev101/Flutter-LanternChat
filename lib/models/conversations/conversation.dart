@@ -10,6 +10,7 @@ class _Field {
   static const String lastMessageTime = 'lastMessageTime';
   static const String conversationType = 'conversationType';
   static const String pairID = 'pairID';
+  static const String lastMessageIndex = 'lastMessageIndex';
 }
 
 class Conversation {
@@ -21,6 +22,7 @@ class Conversation {
   final String? pairID;
 
   final String lastMessagePreview;
+  final int lastMessageIndex;
   final String lastSenderId;
   final Timestamp lastMessageTime;
 
@@ -30,43 +32,27 @@ class Conversation {
     required this.conversationType,
     this.pairID,
     required this.lastMessagePreview,
+    required this.lastMessageIndex,
     required this.lastSenderId,
     required this.lastMessageTime,
   });
 
   /// Creates a new conversation summary after a message is sent
-  factory Conversation.summary({required Conversation conversation, required Message message}) {
+  factory Conversation.summary({
+    required Conversation conversation,
+    required Message message,
+  }) {
     return Conversation(
       conversationId: conversation.conversationId,
       memberIds: conversation.memberIds,
       conversationType: conversation.conversationType,
       pairID: conversation.pairID,
       lastMessagePreview: message.text ?? '',
+      lastMessageIndex: message.messageIndex,
       lastSenderId: message.senderId,
       lastMessageTime: message.createdAt,
     );
   }
-
-  /// Creates a new conversation summary which is empty
-  // factory Conversation.empty({ConversationType? type}) {
-  //   return Conversation(
-  //     conversationId: '',
-  //     memberIds: [],
-  //     conversationType: type??ConversationType.solo,
-  //     pairID: null,
-  //     lastMessagePreview: '',
-  //     lastSenderId: '',
-  //     lastMessageTime: Timestamp.now(),
-  //   );
-  // }
-  //
-  // bool get isEmpty {
-  //   return conversationId.isEmpty;
-  // }
-  //
-  // bool get isNotEmpty => !isEmpty;
-
-
 
   Map<String, dynamic> toMap() {
     return {
@@ -75,6 +61,7 @@ class Conversation {
       _Field.conversationType: conversationType.name,
       _Field.pairID: pairID,
       _Field.lastMessagePreview: lastMessagePreview,
+      _Field.lastMessageIndex: lastMessageIndex,
       _Field.lastSenderId: lastSenderId,
       _Field.lastMessageTime: lastMessageTime,
     };
@@ -84,21 +71,30 @@ class Conversation {
     return Conversation(
       conversationId: map[_Field.conversationId] ?? '',
       memberIds: List<String>.from(map[_Field.memberIds] ?? []),
-      conversationType: ConversationType.values.asNameMap()[map[_Field.conversationType]] ?? ConversationType.solo,
+      conversationType:
+      ConversationType.values.asNameMap()[map[_Field.conversationType]] ??
+          ConversationType.solo,
       pairID: map[_Field.pairID],
       lastMessagePreview: map[_Field.lastMessagePreview] ?? '',
+      lastMessageIndex: map[_Field.lastMessageIndex] ?? 0,
       lastSenderId: map[_Field.lastSenderId] ?? '',
       lastMessageTime: map[_Field.lastMessageTime] ?? Timestamp.now(),
     );
   }
 
-  Conversation copyWith({String? lastMessagePreview, String? lastSenderId, Timestamp? lastMessageTime}) {
+  Conversation copyWith({
+    String? lastMessagePreview,
+    int? lastMessageIndex,
+    String? lastSenderId,
+    Timestamp? lastMessageTime,
+  }) {
     return Conversation(
       conversationId: conversationId,
       memberIds: memberIds,
       conversationType: conversationType,
       pairID: pairID,
       lastMessagePreview: lastMessagePreview ?? this.lastMessagePreview,
+      lastMessageIndex: lastMessageIndex ?? this.lastMessageIndex,
       lastSenderId: lastSenderId ?? this.lastSenderId,
       lastMessageTime: lastMessageTime ?? this.lastMessageTime,
     );

@@ -10,10 +10,13 @@ class AppColors {
   static const Color muteColor = Color(0xFF9AA4AE);   // modern muted grey
 
   // Chat
-  static const Color senderBubble = Color(0xFF7FB4DC);   // derived from secondary
+  static const Color senderBubble = Color(0xFF96ACBF);   // derived from secondary
+  // static const Color senderBubble = Color(0xFF4F7FA3);   // derived from secondary
   static const Color receivedBubble = Color(0xFFDDDADA); // subtle neutral
   // static const Color receivedBubble = Color(0xFFE3E7EB); // subtle neutral
 }
+
+
 // class AppColors {
 //   static const Color statusBar = Color(0xFF1C3345);
 //   static const Color primary = Color(0xFF355872);

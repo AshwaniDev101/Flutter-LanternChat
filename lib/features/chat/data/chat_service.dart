@@ -7,10 +7,6 @@ import '../../../models/conversations/enums/conversation_type.dart';
 import '../../../models/messages/message.dart';
 import '../../../models/users/contact.dart';
 
-//  ================== Note Keep in mind =================
-// Use docChanges change only what needed keep the app fast
-// Track message delivery with hasPendingWrites (✔) Animate properly
-
 class _ServiceConstants {
   static const String conversations = 'conversations';
   static const String messages = 'messages';
@@ -65,10 +61,12 @@ class ChatService {
 
     final conversation = Conversation(
       conversationId: docRef.id,
+
       memberIds: [senderUid, sentToUid],
       conversationType: ConversationType.solo,
       pairID: IdHelper.generatePairId(senderUid, sentToUid),
       lastMessagePreview: message.text.toString(),
+      lastMessageIndex: 0,
       lastSenderId: senderUid,
       lastMessageTime: Timestamp.now(),
     );
@@ -86,28 +84,22 @@ class ChatService {
     return conversation;
   }
 
-  void seenMessage(String conversationID, String messageID, String uid) {
-    final singleMessagesRef =
-    _getMessagesReference(conversationId: conversationID).doc(messageID);
+  void setMessageSeen(String conversationID, String messageID, String uid) {
+    final singleMessagesRef = _getMessagesReference(conversationId: conversationID).doc(messageID);
 
-    singleMessagesRef.update({
-      'seenBy.$uid': Timestamp.now(),
-    });
+    singleMessagesRef.update({'seenBy.$uid': Timestamp.now()});
   }
-
-
-
 
   CollectionReference<Map<String, dynamic>> _getConversationsRef() {
     return firestore.collection(_ServiceConstants.conversations);
   }
 
-CollectionReference<Map<String, dynamic>> _getMessagesReference({required String conversationId}) {
-  return firestore
-      .collection(_ServiceConstants.conversations)
-      .doc(conversationId)
-      .collection(_ServiceConstants.messages);
-}
+  CollectionReference<Map<String, dynamic>> _getMessagesReference({required String conversationId}) {
+    return firestore
+        .collection(_ServiceConstants.conversations)
+        .doc(conversationId)
+        .collection(_ServiceConstants.messages);
+  }
 
   //
   // void deleteMessage(String conversationID, String messageID) {

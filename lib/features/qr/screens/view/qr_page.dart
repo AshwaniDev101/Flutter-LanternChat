@@ -10,9 +10,10 @@ class QrCodePage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('QR code'),
+        centerTitle: true,
         actions: [
           IconButton(onPressed: () {}, icon: Icon(Icons.share)),
-          IconButton(onPressed: () {}, icon: Icon(Icons.more_vert_rounded)),
+          // IconButton(onPressed: () {}, icon: Icon(Icons.more_vert_rounded)),
         ],
       ),
       body: DefaultTabController(

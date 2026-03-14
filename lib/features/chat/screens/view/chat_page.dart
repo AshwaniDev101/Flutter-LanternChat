@@ -10,6 +10,7 @@ import 'package:lanternchat/features/chat/screens/view/widgets/typing_indicator.
 import 'package:lanternchat/features/conversation/provider/conversation_provider.dart';
 import 'package:lanternchat/models/conversations/conversation.dart';
 import 'package:lanternchat/models/conversations/conversation_tile.dart';
+import 'package:lanternchat/models/messages/seen_message.dart';
 
 import '../../../../models/messages/enums/message_type.dart';
 import '../../../../models/messages/message.dart';
@@ -106,6 +107,10 @@ class _ChatPageState extends ConsumerState<ChatPage> {
   void _seenLister() {
     // TODO: Replace per-message seenBy updates with a conversation-level lastSeen pointer.
 
+    final chatService = ref.read(chatServiceProvider);
+    final seenMessageService = ref.read(seenMessageServiceProvider);
+    final currentUser = ref.read(currentUserProvider);
+
     ref.listenManual(seenMessageMergeSteamProvider(newConversation?.conversationId), (previous, next) {
       next.whenData((messages) {
         if (messages.isEmpty || newConversation == null) return;
@@ -120,13 +125,17 @@ class _ChatPageState extends ConsumerState<ChatPage> {
         if (_lastHandledMessageId == lastMessage.messageId) return;
         _lastHandledMessageId = lastMessage.messageId;
 
-        final chatService = ref.read(chatServiceProvider);
-        final currentUser = ref.read(currentUserProvider);
+        // final chatService = ref.read(chatServiceProvider);
+        // final currentUser = ref.read(currentUserProvider);
 
         if (lastMessage.senderId == currentUser.uid) return;
         if (lastMessage.seenBy.containsKey(currentUser.uid)) return;
 
-        chatService.seenMessage(newConversation!.conversationId, lastMessage.messageId, currentUser.uid);
+        seenMessageService.setMessageSeen(
+          conversationId: newConversation!.conversationId,
+          seemMessage: SeenMessage(lastSeenMessageId: lastMessage.messageId, lastSeenIndex: 0, uid: currentUser.uid, seenAt: Timestamp.now()),
+        );
+        chatService.setMessageSeen(newConversation!.conversationId, lastMessage.messageId, currentUser.uid);
       });
     });
   }
@@ -167,9 +176,9 @@ class _ChatPageState extends ConsumerState<ChatPage> {
 
                     //Updating last seen message every time new message comes
 
-                    AppLogger.i(
-                      '[chat_page] $index ${messageTiles[index].message.text} ${messageTiles[index].message.messageId}  ${messageTiles[index].message.seenBy.values.toString()}',
-                    );
+                    // AppLogger.i(
+                    //   '[chat_page] $index ${messageTiles[index].message.text} ${messageTiles[index].message.messageId}  ${messageTiles[index].message.seenBy.values.toString()}',
+                    // );
 
                     final isMine = messageTile.message.senderId == currentUser.uid;
 
@@ -177,9 +186,8 @@ class _ChatPageState extends ConsumerState<ChatPage> {
                       widget.conversationTile.contact.uid,
                     );
                     return Column(
-
                       children: [
-                        ChatBubble(messageTile: messageTile, conversationTile: widget.conversationTile,),
+                        ChatBubble(messageTile: messageTile, conversationTile: widget.conversationTile),
 
                         // if (isMine && isSeenByOtherUser) Text("seen", style: Theme.of(context).textTheme.bodySmall),
                         // if (isMine && isSeenByOtherUser) Text("Seen ${messageTile.message.seenBy.containsKey(widget.conversationTile.contact.uid)}", style: Theme.of(context).textTheme.bodySmall),
@@ -211,6 +219,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
             onSend: (String text) async {
               final message = Message(
                 messageId: '',
+                messageIndex: 0,
                 senderId: currentUser.uid,
                 messageType: MessageType.text,
                 createdAt: Timestamp.now(),

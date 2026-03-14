@@ -22,11 +22,13 @@ class _Field {
   static const String editHistory = 'editHistory';
 
   static const String text = 'text';
+  static const String messageIndex = 'messageIndex';
 }
 
 class Message {
   // Message MetaData
   final String messageId;
+  final int messageIndex;
   final String senderId;
   final MessageType messageType;
   final MessageMedia? messageMedia;
@@ -47,6 +49,7 @@ class Message {
 
   Message({
     required this.messageId,
+    required this.messageIndex,
     required this.senderId,
     required this.messageType,
     this.messageMedia,
@@ -62,6 +65,7 @@ class Message {
 
   Map<String, dynamic> toMap() {
     return {
+      _Field.messageIndex: messageIndex,
       _Field.senderId: senderId,
       _Field.messageType: messageType.name,
       _Field.messageMedia: messageMedia?.toMap(),
@@ -71,7 +75,7 @@ class Message {
       _Field.editedAt: editedAt,
       _Field.editHistory: editHistory.map((e) => e.toMap()).toList(),
       _Field.replyTo: replyTo?.toMap(),
-      _Field.reactions: reactions.map((key, value) => MapEntry(key, value.name)),
+      _Field.reactions: reactions.map((k, v) => MapEntry(k, v.name)),
       _Field.text: text,
     };
   }
@@ -85,6 +89,7 @@ class Message {
 
     return Message(
       messageId: messageId,
+      messageIndex: map[_Field.messageIndex] ?? 0,
       senderId: map[_Field.senderId] ?? '',
       messageType: MessageType.values.asNameMap()[map[_Field.messageType]] ?? MessageType.text,
       messageMedia: mediaMap != null ? MessageMedia.fromMap(mediaMap) : null,
@@ -94,23 +99,13 @@ class Message {
       deletedFor: deletedForMap.map((k, v) => MapEntry(k, v as Timestamp)),
       seenBy: seenByMap.map((k, v) => MapEntry(k, v as Timestamp)),
       editHistory: editHistoryList.whereType<Map<String, dynamic>>().map(EditHistory.fromMap).toList(),
-      replyTo: map[_Field.replyTo] != null ? ReplyTo.fromMap(map[_Field.replyTo] as Map<String, dynamic>) : null,
+      replyTo: map[_Field.replyTo] != null
+          ? ReplyTo.fromMap(map[_Field.replyTo] as Map<String, dynamic>)
+          : null,
       reactions: reactionMap.map(
-        (key, value) => MapEntry(key, ReactionType.values.asNameMap()[value] ?? ReactionType.thumbs),
+            (key, value) =>
+            MapEntry(key, ReactionType.values.asNameMap()[value] ?? ReactionType.thumbs),
       ),
     );
   }
-
-  // Map<String, dynamic> toSummary(String conversationId,) {
-  //   final conv = Conversation(
-  //     id: conversationId,
-  //     memberIds: [senderId,],
-  //     lastMessagePreview: text.toString(),
-  //     lastSenderId: senderId,
-  //     lastMessageTime: createdAt,
-  //     type: ConversationType.solo,
-  //   );
-  //
-  //   return conv.toMap();
-  // }
 }

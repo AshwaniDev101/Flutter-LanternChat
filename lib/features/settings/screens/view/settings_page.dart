@@ -15,7 +15,7 @@ class SettingsPage extends ConsumerWidget {
     final user = ref.watch(currentUserProvider);
 
     return Scaffold(
-      appBar: AppBar(title: Text("Settings")),
+      appBar: AppBar(title: Text("Settings"), centerTitle: true,),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(8.0),

@@ -17,91 +17,102 @@ class ProfilePage extends ConsumerWidget {
     final user = ref.watch(currentUserProvider);
 
     return Scaffold(
+
+      appBar: AppBar(
+        title: Text('Profile'),
+        centerTitle: true,
+
+        // actions: [
+        //   IconButton(onPressed: () {}, icon: Icon(Icons.notifications)),
+        // ],
+      ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-
-                child: CircularUserAvatar(radius: 60, imageUrl: user.photoURL),
-              ),
-
-              Padding(
-                padding: const EdgeInsets.all(8),
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(user.name, style: Theme.of(context).textTheme.titleLarge),
-                        Text(user.email, style: Theme.of(context).textTheme.titleSmall),
-                      ],
-                    ),
-
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: IconButton(onPressed: (){
-                        context.push(AppRoute.qrCode);
-                      }, icon: Icon(Icons.qr_code,color: Colors.grey[500],size: 32,)),
-                    )
-                  ],
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+          
+                  child: CircularUserAvatar(radius: 60, imageUrl: user.photoURL),
                 ),
-              ),
-
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  // crossAxisAlignment: CrossAxisAlignment.baseline,
-                  children: [
-                    Expanded(
-                      child: RowButton(icon: Icons.message_outlined, title: 'Message'),
-                    ),
-                    SizedBox(width: 10),
-                    Expanded(
-                      child: RowButton(icon: Icons.call_outlined, title: 'Audio'),
-                    ),
-                    SizedBox(width: 10),
-                    Expanded(
-                      child: RowButton(icon: Icons.videocam_outlined, title: 'Video'),
-                    ),
-                    SizedBox(width: 10),
-                    Expanded(
-                      child: RowButton(icon: Icons.note_alt_outlined, title: 'Note'),
-                    ),
-                  ],
+          
+                Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(user.name, style: Theme.of(context).textTheme.titleLarge),
+                          Text(user.email, style: Theme.of(context).textTheme.titleSmall),
+                        ],
+                      ),
+          
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: IconButton(onPressed: (){
+                          context.push(AppRoute.qrCode);
+                        }, icon: Icon(Icons.qr_code,color: Colors.grey[500],size: 32,)),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-
-              ColumnButton(icon: Icons.notifications_none_outlined, title: 'Notifications'),
-              ColumnButton(icon: Icons.star_border_outlined, title: 'Starred messages'),
-              ColumnButton(
-                icon: Icons.lock_outline_rounded,
-                title: 'Encryption',
-                subtitle: "Messages and _calls are end-to-end encrypted. Tap to verify",
-              ),
-              ColumnButton(icon: Icons.timer_outlined, title: 'Disappearing messages', subtitle: 'Off'),
-              ColumnButton(
-                icon: Icons.mail_lock_outlined,
-                title: 'Chat lock',
-                subtitle: "Lock and hide this chat on this device",
-                showToggle: true,
-              ),
-              ColumnButton(icon: Icons.privacy_tip_outlined, title: 'Advance chat privacy', subtitle: "Off"),
-
-              // ColumnButton(icon:Icons.logout,title:'Logout',),
-              ElevatedButton(
-                onPressed: () {
-                  ref.read(authManagerProvider).signOut();
-                },
-                child: Text('Logout'),
-              ),
-            ],
+          
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    // crossAxisAlignment: CrossAxisAlignment.baseline,
+                    children: [
+                      Expanded(
+                        child: RowButton(icon: Icons.message_outlined, title: 'Message'),
+                      ),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: RowButton(icon: Icons.call_outlined, title: 'Audio'),
+                      ),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: RowButton(icon: Icons.videocam_outlined, title: 'Video'),
+                      ),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: RowButton(icon: Icons.note_alt_outlined, title: 'Note'),
+                      ),
+                    ],
+                  ),
+                ),
+          
+                ColumnButton(icon: Icons.notifications_none_outlined, title: 'Notifications'),
+                ColumnButton(icon: Icons.star_border_outlined, title: 'Starred messages'),
+                ColumnButton(
+                  icon: Icons.lock_outline_rounded,
+                  title: 'Encryption',
+                  subtitle: "Messages and _calls are end-to-end encrypted. Tap to verify",
+                ),
+                ColumnButton(icon: Icons.timer_outlined, title: 'Disappearing messages', subtitle: 'Off'),
+                ColumnButton(
+                  icon: Icons.mail_lock_outlined,
+                  title: 'Chat lock',
+                  subtitle: "Lock and hide this chat on this device",
+                  showToggle: true,
+                ),
+                ColumnButton(icon: Icons.privacy_tip_outlined, title: 'Advance chat privacy', subtitle: "Off"),
+          
+                // ColumnButton(icon:Icons.logout,title:'Logout',),
+                ElevatedButton(
+                  onPressed: () {
+                    ref.read(authManagerProvider).signOut();
+                  },
+                  child: Text('Logout'),
+                ),
+              ],
+            ),
           ),
         ),
       ),

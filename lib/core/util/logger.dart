@@ -9,13 +9,17 @@ class AppLogger {
   /// Internal logger instance configured for development-friendly output.
   static final Logger _logger = Logger(
     filter: DevelopmentFilter(),          // Suppress most logs in release builds
-    printer: PrettyPrinter(
-        methodCount: 1,                     // Show limited stack trace for readability
-        errorMethodCount: 8,                // Show more stack info for errors
-        lineLength: 120,                    // Max line width
-        colors: true,                       // Colored logs in supported terminals
-        printEmojis: true,                  // Adds emojis for log level indicators
-        dateTimeFormat: DateTimeFormat.none // Disable timestamp printing
+    // printer: PrettyPrinter(
+    //     methodCount: 1,                     // Show limited stack trace for readability
+    //     errorMethodCount: 8,                // Show more stack info for errors
+    //     lineLength: 120,                    // Max line width
+    //     colors: true,                       // Colored logs in supported terminals
+    //     printEmojis: true,                  // Adds emojis for log level indicators
+    //     dateTimeFormat: DateTimeFormat.none // Disable timestamp printing
+    // ),
+    printer: SimplePrinter(
+      colors: true,
+      printTime: false,
     ),
     level: kDebugMode ? Level.debug : Level.warning, // Less verbose logging in release
   );

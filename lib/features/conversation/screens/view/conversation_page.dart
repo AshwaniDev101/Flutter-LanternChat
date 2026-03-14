@@ -20,6 +20,15 @@ class ConversationPage extends ConsumerWidget {
     final conversationSteam = ref.watch(conversationContactMergeSteamProvider(currentUser.uid));
 
     return Scaffold(
+
+      appBar: AppBar(
+        title: Text('Chat'),
+        centerTitle: true,
+
+        actions: [
+          IconButton(onPressed: () {}, icon: Icon(Icons.notifications)),
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8),
         child: Column(
