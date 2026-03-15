@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
 
 /// Central logging utility used across the app.
-/// Wraps the `logger` package so logging behavior can be controlled
+/// Wraps the 'logger' package so logging behavior can be controlled
 /// from a single place (levels, formatting, debug filtering).
 class AppLogger {
 

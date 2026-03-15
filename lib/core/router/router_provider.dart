@@ -4,8 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lanternchat/features/group_chat/group_setup_page.dart';
 import 'package:lanternchat/models/conversations/conversation_tile.dart';
-import 'package:lanternchat/models/users/contact.dart';
 
 import '../../features/auth/provider/auth_provider.dart';
 import '../../features/chat/screens/view/chat_page.dart';
@@ -43,6 +43,7 @@ class AppRoute {
   static const selectContact = '/select-contact';
   static const chat = '/conversation-window';
   static const qrCode = '/qr-code';
+  static const groupSetup = '/group-setup';
 }
 
 final goRouterProvider = Provider((ref) {
@@ -117,6 +118,13 @@ final goRouterProvider = Provider((ref) {
         path: AppRoute.qrCode,
         builder: (BuildContext context, GoRouterState state) {
           return QrCodePage();
+        },
+      ),
+
+      GoRoute(
+        path: AppRoute.groupSetup,
+        builder: (BuildContext context, GoRouterState state) {
+          return GroupSetupPage();
         },
       ),
     ],
