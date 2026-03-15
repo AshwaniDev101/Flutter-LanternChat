@@ -16,7 +16,7 @@ class _Field {
 class Conversation {
   final String conversationId;
 
-  final List<String> memberIds;
+  final Set<String> memberIds;
   final ConversationType conversationType;
 
   final String? pairID;
@@ -70,7 +70,7 @@ class Conversation {
   factory Conversation.fromMap(Map<String, dynamic> map) {
     return Conversation(
       conversationId: map[_Field.conversationId] ?? '',
-      memberIds: List<String>.from(map[_Field.memberIds] ?? []),
+      memberIds: Set<String>.from(map[_Field.memberIds] ?? []),
       conversationType:
       ConversationType.values.asNameMap()[map[_Field.conversationType]] ??
           ConversationType.solo,
