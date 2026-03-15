@@ -62,7 +62,7 @@ class ChatPage extends ConsumerStatefulWidget {
 }
 
 class _ChatPageState extends ConsumerState<ChatPage> {
-  Conversation? newConversation;
+  Conversation? currentConversation;
 
   @override
   void initState() {
@@ -72,7 +72,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
   }
 
   Future<void> _init() async {
-    newConversation = widget.conversationTile.conversation;
+    currentConversation = widget.conversationTile.conversation;
     // if conversation is null
     if (widget.conversationTile.conversation == null) {
       // It's possible conversation id exist, if it does, we can find it using 'pairId'
@@ -91,7 +91,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
         // widget.conversationTile.conversation = conversation;
 
         setState(() {
-          newConversation = conversation;
+          currentConversation = conversation;
           _seenLister();
         });
       }
@@ -111,9 +111,9 @@ class _ChatPageState extends ConsumerState<ChatPage> {
     final seenMessageService = ref.read(seenMessageServiceProvider);
     final currentUser = ref.read(currentUserProvider);
 
-    ref.listenManual(seenMessageMergeSteamProvider(newConversation?.conversationId), (previous, next) {
+    ref.listenManual(seenMessageMergeSteamProvider(currentConversation?.conversationId), (previous, next) {
       next.whenData((messages) {
-        if (messages.isEmpty || newConversation == null) return;
+        if (messages.isEmpty || currentConversation == null) return;
 
         // structural guard
         if (_lastKnowNumberOfMessages == messages.length) return;
@@ -132,10 +132,15 @@ class _ChatPageState extends ConsumerState<ChatPage> {
         if (lastMessage.seenBy.containsKey(currentUser.uid)) return;
 
         seenMessageService.setMessageSeen(
-          conversationId: newConversation!.conversationId,
-          seemMessage: SeenMessage(lastSeenMessageId: lastMessage.messageId, lastSeenIndex: 0, uid: currentUser.uid, seenAt: Timestamp.now()),
+          conversationId: currentConversation!.conversationId,
+          seemMessage: SeenMessage(
+            lastSeenMessageId: lastMessage.messageId,
+            lastSeenIndex: 0,
+            uid: currentUser.uid,
+            seenAt: Timestamp.now(),
+          ),
         );
-        chatService.setMessageSeen(newConversation!.conversationId, lastMessage.messageId, currentUser.uid);
+        chatService.setMessageSeen(currentConversation!.conversationId, lastMessage.messageId, currentUser.uid);
       });
     });
   }
@@ -148,7 +153,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
     // Old chatting Stream
     // final chatStream = ref.watch(chatStreamProvider(newConversation?.conversationId));
     final AsyncValue<List<MessageTile>> chatStream = ref.watch(
-      seenMessageMergeSteamProvider(newConversation?.conversationId),
+      seenMessageMergeSteamProvider(currentConversation?.conversationId),
     );
 
     final typingService = ref.read(typingServiceProvider);
@@ -208,43 +213,40 @@ class _ChatPageState extends ConsumerState<ChatPage> {
             ),
           ),
 
-          if (newConversation != null)
+          if (currentConversation != null)
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: TypingIndicator(conversationId: newConversation!.conversationId, uid: currentUser.uid),
+              child: TypingIndicator(conversationId: currentConversation!.conversationId, uid: currentUser.uid),
             ),
 
           TextArea(
-            conversationId: newConversation?.conversationId,
             onSend: (String text) async {
               final message = Message(
-                messageId: '',
-                messageIndex: 0,
                 senderId: currentUser.uid,
                 messageType: MessageType.text,
                 createdAt: Timestamp.now(),
                 text: text,
               );
 
-              if (newConversation != null) {
-                chatService.sendMessageTo(conversation: newConversation!, message: message);
+              if (currentConversation != null) {
+                chatService.sendMessageTo(conversationId: currentConversation!.conversationId, message: message);
               } else {
                 // create conversationId and send message
-                final conversation = await chatService.sendMessageToConversation(
+                final conversation = await chatService.sendMessageToNewConversation(
                   message: message,
                   senderUid: currentUser.uid,
-                  sentToUid: widget.conversationTile.contact.uid,
+                  receiverUid: widget.conversationTile.contact.uid,
                 );
 
                 setState(() {
-                  newConversation = conversation;
+                  currentConversation = conversation;
                 });
               }
             },
 
             onTyping: (text) {
-              if (newConversation != null) {
-                typingService.sendData(conversationId: newConversation!.conversationId, uid: currentUser.uid);
+              if (currentConversation != null) {
+                typingService.sendData(conversationId: currentConversation!.conversationId, uid: currentUser.uid);
               }
             },
           ),

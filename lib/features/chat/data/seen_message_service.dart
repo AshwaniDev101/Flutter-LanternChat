@@ -9,8 +9,6 @@ class _ServiceConstants {
 }
 
 class SeenMessageService {
-  // final FirebaseDatabase firebaseDatabase;
-  // SeenMessageService(this.firebaseDatabase);
 
   final FirebaseFirestore firestore;
 
@@ -28,7 +26,15 @@ class SeenMessageService {
     });
   }
 
-  /// Sent message to conversationId as well updates the conversation summary
+  /// Marks a message as seen by a specific user.
+  ///
+  /// Updates the 'seenBy' map inside the message document by adding
+  /// the user's 'uid' with the current timestamp.
+  ///
+  /// Example structure:
+  /// messages/{messageId}
+  ///   seenBy:
+  ///     {uid}: seenBy.toMap()
   Future<void> setMessageSeen({required String conversationId, required SeenMessage seemMessage}) async {
     final convRef = _getConversationsRef().doc(conversationId).collection(_ServiceConstants.seenMessages);
     convRef.doc(seemMessage.uid).set(seemMessage.toMap());

@@ -33,7 +33,11 @@ class ContactPage extends ConsumerWidget {
           children: [
             Column(
               children: [
-                NewButton(icon: Icons.group_add, title: 'New group', onTap: () {}),
+                NewButton(icon: Icons.group_add, title: 'New group', onTap: () {
+
+                  context.pushReplacement(AppRoute.groupSetup);
+
+                }),
 
                 NewButton(
                   icon: Icons.person_add_alt_1,

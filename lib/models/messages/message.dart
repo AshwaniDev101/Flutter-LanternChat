@@ -28,7 +28,7 @@ class _Field {
 class Message {
   // Message MetaData
   final String messageId;
-  final int messageIndex;
+  int messageIndex;
   final String senderId;
   final MessageType messageType;
   final MessageMedia? messageMedia;
@@ -48,8 +48,8 @@ class Message {
   final String? text;
 
   Message({
-    required this.messageId,
-    required this.messageIndex,
+    this.messageId='',
+    this.messageIndex=0,
     required this.senderId,
     required this.messageType,
     this.messageMedia,
@@ -106,6 +106,46 @@ class Message {
             (key, value) =>
             MapEntry(key, ReactionType.values.asNameMap()[value] ?? ReactionType.thumbs),
       ),
+    );
+  }
+
+  Message copyWith({
+    String? messageId,
+    int? messageIndex,
+    String? senderId,
+    MessageType? messageType,
+    MessageMedia? messageMedia,
+
+    Map<String, Timestamp>? deletedFor,
+    Map<String, Timestamp>? seenBy,
+
+    Timestamp? createdAt,
+    Timestamp? editedAt,
+
+    List<EditHistory>? editHistory,
+    ReplyTo? replyTo,
+    Map<String, ReactionType>? reactions,
+
+    String? text,
+  }) {
+    return Message(
+      messageId: messageId ?? this.messageId,
+      messageIndex: messageIndex ?? this.messageIndex,
+      senderId: senderId ?? this.senderId,
+      messageType: messageType ?? this.messageType,
+      messageMedia: messageMedia ?? this.messageMedia,
+
+      deletedFor: deletedFor ?? this.deletedFor,
+      seenBy: seenBy ?? this.seenBy,
+
+      createdAt: createdAt ?? this.createdAt,
+      editedAt: editedAt ?? this.editedAt,
+
+      editHistory: editHistory ?? this.editHistory,
+      replyTo: replyTo ?? this.replyTo,
+      reactions: reactions ?? this.reactions,
+
+      text: text ?? this.text,
     );
   }
 }

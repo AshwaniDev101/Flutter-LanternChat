@@ -11,15 +11,12 @@ import '../../../../auth/provider/auth_provider.dart';
 
 
 
-
-
 class TextArea extends ConsumerStatefulWidget {
   // final ConversationTile conversationTile;
   final Function(String) onSend;
   final Function(String) onTyping;
-  final String? conversationId;
 
-  const TextArea({required this.conversationId, required this.onSend, required this.onTyping, super.key,});
+  const TextArea({ required this.onSend, required this.onTyping, super.key,});
   @override
   ConsumerState<TextArea> createState() => _TextAreaState();
 }
