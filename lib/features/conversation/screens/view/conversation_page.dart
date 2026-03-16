@@ -9,8 +9,11 @@ import '../../../../../core/router/router_provider.dart';
 import '../../../../shared/widgets/circular_user_avatar.dart';
 import '../../provider/conversation_provider.dart';
 
+final searchTextProvider = StateProvider<String>((ref) => '');
+
 class ConversationPage extends ConsumerWidget {
   const ConversationPage({super.key});
+
 
   @override
   Widget build(BuildContext context, ref) {
@@ -30,12 +33,27 @@ class ConversationPage extends ConsumerWidget {
         padding: const EdgeInsets.symmetric(horizontal: 8),
         child: Column(
           children: [
-            _searchBar(),
+            _searchBar(ref),
 
             conversationSteam.when(
               data: (List<ConversationEntry> conversationEntry) {
-                // print("##### ${data.length}");
-                return _getConversionList(conversationEntry);
+
+                // Search bar logic
+                final String searchText = ref.watch(searchTextProvider);
+                final filteredList = conversationEntry.where((entry) {
+                  String name;
+                  if (entry.conversation != null && entry.conversation!.groupInfo != null) {
+                    name = entry.conversation!.groupInfo!.title;
+                  } else if (entry.contact != null) {
+                    name = entry.contact!.name;
+                  } else {
+                    name = 'O_O user'; // fallback
+                  }
+
+                  return name.toLowerCase().contains(searchText.toLowerCase());
+                }).toList();
+
+                return _getConversionList(filteredList);
               },
               error: (e, t) {
                 print("Error there is an Error $e : $t");
@@ -57,12 +75,14 @@ class ConversationPage extends ConsumerWidget {
     );
   }
 
-  Widget _searchBar() {
+  Widget _searchBar(WidgetRef ref) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       child: SizedBox(
         height: 42,
         child: TextField(
+
+          onChanged: (value) => ref.read(searchTextProvider.notifier).state = value,
           decoration: InputDecoration(
             hintText: 'Search',
             hintStyle: TextStyle(color: Colors.grey.shade500),
