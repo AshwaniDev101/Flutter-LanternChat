@@ -8,6 +8,7 @@ import 'package:lanternchat/models/conversations/conversation.dart';
 import 'package:lanternchat/models/conversations/conversation_tile.dart';
 import 'package:lanternchat/models/messages/seen_message.dart';
 
+import '../../../../../core/util/logger.dart';
 import '../../../../../models/messages/enums/message_type.dart';
 import '../../../../../models/messages/message.dart';
 import '../../../../../models/messages/message_tile.dart';
@@ -53,7 +54,7 @@ class ChatPage extends ConsumerStatefulWidget {
 
   final ConversationTile conversationTile;
 
-  // i have notice this page only requires a conversationId and 'Contact' info,
+  // i have notice this page only requires a 'conversationId' and 'Contact' info,
   // where 'conversationID' to can be null
   // if wanna add group chat support i would need 'GroupInfo'
   const ChatPage({super.key, required this.conversationTile});
@@ -76,28 +77,48 @@ class _ChatPageState extends ConsumerState<ChatPage> {
     currentConversation = widget.conversationTile.conversation;
     // if conversation is null
     if (widget.conversationTile.conversation == null) {
-      // It's possible conversation id exist, if it does, we can find it using 'pairId'
-      final currentUser = ref.read(currentUserProvider);
-      final pairId = IdHelper.generatePairId(currentUser.uid, widget.conversationTile.contact.uid);
+      if( widget.conversationTile.contact!=null)
+        {
+          // It's possible conversation id exist, if it does, we can find it using 'pairId'
+          final currentUser = ref.read(currentUserProvider);
+          final pairId = IdHelper.generatePairId(currentUser.uid, widget.conversationTile.contact!.uid);
 
-      final conversationService = ref.read(conversationServiceProvider);
-      final Conversation? conversation = await conversationService.getConversationUsingPairId(pairId: pairId);
+          final conversationService = ref.read(conversationServiceProvider);
+          final Conversation? conversation = await conversationService.getConversationUsingPairId(pairId: pairId);
 
-      // if conversation is not found
-      if (conversation == null) {
-        debugPrint('#### Conversation was not found');
-      } else {
-        print("####  conversationService.getConversationUsingPairId ${conversation.conversationId}");
+          // if conversation is not found
+          if (conversation == null) {
+            debugPrint('#### Conversation was not found');
+          } else {
+            print("####  conversationService.getConversationUsingPairId ${conversation.conversationId}");
 
-        // widget.conversationTile.conversation = conversation;
+            // widget.conversationTile.conversation = conversation;
 
-        setState(() {
-          currentConversation = conversation;
-          _seenLister();
-        });
-      }
+            setState(() {
+              currentConversation = conversation;
+              _seenLister();
+            });
+          }
+        }else
+          {
+            throw Exception("Error : Both Conversation and Contact can't be null");
+          }
+
     } else {
-      print("####  conversationTile have conversation ${widget.conversationTile.conversation!.conversationId}");
+      AppLogger.i("####  conversationTile have conversation ${widget.conversationTile.conversation!.conversationId}");
+
+      // we have conversation its group conversation
+      // if(widget.conversationTile.conversation!.groupInfo !=null)
+      //   { // It's group convo
+      //
+      //   }else
+      //     { // It's solo
+      //
+      //     }
+
+
+
+
       _seenLister();
     }
   }
@@ -188,9 +209,9 @@ class _ChatPageState extends ConsumerState<ChatPage> {
 
                     final isMine = messageTile.message.senderId == currentUser.uid;
 
-                    final isSeenByOtherUser = messageTile.message.seenBy.containsKey(
-                      widget.conversationTile.contact.uid,
-                    );
+                    // final isSeenByOtherUser = messageTile.message.seenBy.containsKey(
+                    //   widget.conversationTile.contact.uid,
+                    // );
 
                     //
 
@@ -234,12 +255,12 @@ class _ChatPageState extends ConsumerState<ChatPage> {
 
               if (currentConversation != null) {
                 chatService.sendMessageTo(conversationId: currentConversation!.conversationId, message: message);
-              } else {
+              } else if(widget.conversationTile.contact !=null) {
                 // create conversationId and send message
                 final conversation = await chatService.sendMessageToNewConversation(
                   message: message,
                   senderUid: currentUser.uid,
-                  receiverUid: widget.conversationTile.contact.uid,
+                  receiverUid: widget.conversationTile.contact!.uid,
                 );
 
                 setState(() {
@@ -266,10 +287,10 @@ class _ChatPageState extends ConsumerState<ChatPage> {
       titleSpacing: 4, // removes extra gap before title
       title: Row(
         children: [
-          CircularUserAvatar(imageUrl: widget.conversationTile.contact.photoURL, radius: 20),
+          CircularUserAvatar(imageUrl: _getImageUrl(), radius: 20),
           SizedBox(width: 8),
           Text(
-            widget.conversationTile.contact.name,
+            _getName(),
             style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.white),
             softWrap: false,
             overflow: TextOverflow.ellipsis,
@@ -290,4 +311,30 @@ class _ChatPageState extends ConsumerState<ChatPage> {
       ],
     );
   }
+
+
+  String _getImageUrl() {
+
+    final tile = widget.conversationTile;
+    if (tile.contact != null) {
+      return tile.contact!.photoURL;
+    } else if (tile.conversation != null && tile.conversation!.groupInfo != null) {
+      return tile.conversation!.groupInfo!.imageUrl;
+    } else {
+      return 'https://ui-avatars.com/api/?name=X';
+    }
+  }
+
+  String _getName() {
+
+    final tile = widget.conversationTile;
+    if (tile.contact != null) {
+      return tile.contact!.name;
+    } else if (tile.conversation != null && tile.conversation!.groupInfo != null) {
+      return tile.conversation!.groupInfo!.title;
+    } else {
+      return 'O_O user';
+    }
+  }
+
 }

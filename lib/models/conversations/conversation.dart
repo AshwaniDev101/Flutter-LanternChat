@@ -83,7 +83,9 @@ class Conversation {
       lastMessageTime: map[_Field.lastMessageTime] ?? Timestamp.now(),
 
       pairID: map[_Field.pairID],
-      groupInfo: GroupInfo.fromMap(map[_Field.groupInfo]),
+      groupInfo: map[_Field.groupInfo] != null
+          ? GroupInfo.fromMap(Map<String, dynamic>.from(map[_Field.groupInfo]))
+          : null,
     );
   }
 

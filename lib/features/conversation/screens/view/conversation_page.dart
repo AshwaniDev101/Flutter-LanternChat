@@ -20,14 +20,11 @@ class ConversationPage extends ConsumerWidget {
     final conversationSteam = ref.watch(conversationContactMergeSteamProvider(currentUser.uid));
 
     return Scaffold(
-
       appBar: AppBar(
         title: Text('Chat'),
         centerTitle: true,
 
-        actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.notifications)),
-        ],
+        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.notifications))],
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -111,11 +108,11 @@ class ConversationPage extends ConsumerWidget {
 class _Card extends StatelessWidget {
   final ConversationTile tile;
 
-  const _Card({required this.tile});
+  _Card({required this.tile});
 
   @override
   Widget build(BuildContext context) {
-    // tile.
+    if (tile.contact != null) {}
 
     return InkWell(
       onTap: () {
@@ -127,7 +124,7 @@ class _Card extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.all(4.0),
-              child: CircularUserAvatar(imageUrl: tile.contact.photoURL),
+              child: CircularUserAvatar(imageUrl: _getImageUrl()),
             ),
             SizedBox(width: 10),
             Expanded(
@@ -135,7 +132,7 @@ class _Card extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Text(tile.contact.name, style: Theme.of(context).textTheme.titleSmall),
+                      Text(_getName(), style: Theme.of(context).textTheme.titleSmall),
                       Spacer(),
                       if (tile.conversation != null)
                         Text(TimerFormateHelper.formatMessageDate(tile.conversation!.lastMessageTime)),
@@ -157,5 +154,37 @@ class _Card extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  /*
+    contact is null mean it's group conversation group info is not null and type is group
+    contact and conversation exist mean is solo conversation existing
+    if contact but no conversation mean it new solo conversation
+     */
+
+  // if (tile.conversation != null) {
+  //   if (tile.conversation!.groupInfo != null) {
+  //
+  //   }
+  // }
+
+  String _getImageUrl() {
+    if (tile.contact != null) {
+      return tile.contact!.photoURL;
+    } else if (tile.conversation != null && tile.conversation!.groupInfo != null) {
+      return tile.conversation!.groupInfo!.imageUrl;
+    } else {
+      return 'https://ui-avatars.com/api/?name=X';
+    }
+  }
+
+  String _getName() {
+    if (tile.contact != null) {
+      return tile.contact!.name;
+    } else if (tile.conversation != null && tile.conversation!.groupInfo != null) {
+      return tile.conversation!.groupInfo!.title;
+    } else {
+      return 'O_O user';
+    }
   }
 }

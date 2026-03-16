@@ -17,6 +17,7 @@ import '../../features/auth/screens/view/auth_page.dart';
 import '../../features/profile/screens/view/profile_page.dart';
 import '../../features/qr/screens/view/qr_page.dart';
 import '../../features/settings/screens/view/settings_page.dart';
+import '../../models/conversations/conversation_starter.dart';
 
 class GoRouterRefreshStream extends ChangeNotifier {
   late final StreamSubscription<dynamic> _subscription;
@@ -46,7 +47,7 @@ class AppRoute {
   static const chat = '/conversation-window';
   static const qrCode = '/qr-code';
   static const groupSetup = '/group-setup';
-  static const groupChat = '/group-chat';
+  // static const groupChat = '/group-chat';
 }
 
 final goRouterProvider = Provider((ref) {
@@ -131,13 +132,13 @@ final goRouterProvider = Provider((ref) {
         },
       ),
 
-      GoRoute(
-        path: AppRoute.groupChat,
-        builder: (BuildContext context, GoRouterState state) {
-          final groupInfo = state.extra as GroupInfo;
-          return GroupChatPage(groupInfo: groupInfo);
-        },
-      ),
+      // GoRoute(
+      //   path: AppRoute.groupChat,
+      //   builder: (BuildContext context, GoRouterState state) {
+      //     final conversationStarter = state.extra as ConversationStarter;
+      //     return GroupChatPage(conversationStarter: conversationStarter);
+      //   },
+      // ),
     ],
   );
 });

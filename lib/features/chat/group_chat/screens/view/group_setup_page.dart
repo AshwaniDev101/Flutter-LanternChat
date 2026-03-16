@@ -1,8 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lanternchat/features/auth/provider/auth_provider.dart';
 import 'package:lanternchat/features/chat/group_chat/screens/view/widgets/selectable_contact_tile.dart';
+import 'package:lanternchat/models/conversations/conversation.dart';
+import 'package:lanternchat/models/conversations/conversation_tile.dart';
+import 'package:lanternchat/models/conversations/enums/conversation_type.dart';
 import 'package:lanternchat/models/conversations/group_info.dart';
 
 import '../../../../../core/router/router_provider.dart';
@@ -31,13 +35,12 @@ class _GroupSetupPageState extends ConsumerState<GroupSetupPage> {
     titleController.text = "${currentUser.name.split(' ').first}'s Group";
   }
 
-  Future<String> _createGroupConversation() async {
+  Future<ConversationTile> _createGroupConversation() async {
     final chatService = ref.read(chatServiceProvider);
 
     final currentUser = ref.watch(currentUserProvider);
 
     selectedContactIds.add(currentUser.uid);
-
 
     // Creating image for group according to the name
     String imageUrl = 'https://api.dicebear.com/7.x/initials/png?seed=Z';
@@ -57,7 +60,19 @@ class _GroupSetupPageState extends ConsumerState<GroupSetupPage> {
     // Todo creating an async value provider is great way to process loading state here
     String conversationId = await chatService.createGroupChat(groupInfo: groupInfo, memberIds: selectedContactIds);
 
-    return conversationId;
+    return ConversationTile(
+      conversation: Conversation(
+        conversationId: conversationId,
+        memberIds: selectedContactIds,
+        conversationType: ConversationType.group,
+        lastMessagePreview: "${currentUser.name}' started Group",
+        lastMessageIndex: 0,
+        lastSenderId: currentUser.uid,
+        lastMessageTime: Timestamp.now(),
+        groupInfo: groupInfo
+      ), contact: null,
+
+    );
   }
 
   @override
@@ -79,15 +94,11 @@ class _GroupSetupPageState extends ConsumerState<GroupSetupPage> {
       ),
 
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: (){
-
-          _createGroupConversation().then((conversationId){
+        onPressed: () {
+          _createGroupConversation().then((conversationTile) {
             if (!mounted) return;
-            context.pushReplacement(AppRoute.groupChat, extra: conversationId);
+            context.pushReplacement(AppRoute.chat, extra: conversationTile);
           });
-
-
-
         },
         label: Text('Create'),
         // child: Icon(Icons.arrow_forward_rounded),

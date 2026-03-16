@@ -7,7 +7,7 @@ class _Field {
 }
 
 class ConversationTile {
-  final Contact contact;
+  final Contact? contact;
   final Conversation? conversation;
 
   ConversationTile({
