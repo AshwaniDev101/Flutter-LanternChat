@@ -8,6 +8,7 @@ import 'package:lanternchat/models/conversations/group_info.dart';
 import '../../../../../core/router/router_provider.dart';
 import '../../../../../models/users/contact.dart';
 import '../../../../contact/provider/contact_providers.dart';
+import '../../../solo_chat/provider/chat_provider.dart';
 
 class GroupSetupPage extends ConsumerStatefulWidget {
   const GroupSetupPage({super.key});
@@ -23,6 +24,43 @@ class _GroupSetupPageState extends ConsumerState<GroupSetupPage> {
   final descriptionController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+
+    final currentUser = ref.read(currentUserProvider);
+    titleController.text = "${currentUser.name.split(' ').first}'s Group";
+  }
+
+  Future<String> _createGroupConversation() async {
+    final chatService = ref.read(chatServiceProvider);
+
+    final currentUser = ref.watch(currentUserProvider);
+
+    selectedContactIds.add(currentUser.uid);
+
+
+    // Creating image for group according to the name
+    String imageUrl = 'https://api.dicebear.com/7.x/initials/png?seed=Z';
+    if (titleController.text.isNotEmpty) {
+      final firstLetter = titleController.text.substring(0, 1).toUpperCase();
+      imageUrl = 'https://api.dicebear.com/7.x/initials/png?seed=$firstLetter';
+    }
+    // final imageUrl = 'https://ui-avatars.com/api/?name=A';
+    // example 'https://ui-avatars.com/api/?name=LanternChat'
+
+    final groupInfo = GroupInfo(
+      title: titleController.text,
+      imageUrl: imageUrl,
+      description: descriptionController.text,
+      createdBy: currentUser,
+    );
+    // Todo creating an async value provider is great way to process loading state here
+    String conversationId = await chatService.createGroupChat(groupInfo: groupInfo, memberIds: selectedContactIds);
+
+    return conversationId;
+  }
+
+  @override
   void dispose() {
     super.dispose();
     titleController.dispose();
@@ -31,8 +69,6 @@ class _GroupSetupPageState extends ConsumerState<GroupSetupPage> {
   @override
   Widget build(BuildContext context) {
     final connectionStreamProvider = ref.watch(contactStreamProvider);
-
-    final currentUser = ref.watch(currentUserProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -43,29 +79,15 @@ class _GroupSetupPageState extends ConsumerState<GroupSetupPage> {
       ),
 
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          selectedContactIds.add(currentUser.uid);
+        onPressed: (){
 
-          String imageUrl = 'https://api.dicebear.com/7.x/initials/png?seed=Z';
+          _createGroupConversation().then((conversationId){
+            if (!mounted) return;
+            context.pushReplacement(AppRoute.groupChat, extra: conversationId);
+          });
 
-          if (titleController.text.isNotEmpty) {
-            final firstLetter = titleController.text.substring(0, 1).toUpperCase();
-            imageUrl = 'https://api.dicebear.com/7.x/initials/png?seed=$firstLetter';
-          }
 
-          // final imageUrl = 'https://ui-avatars.com/api/?name=A';
-          // example 'https://ui-avatars.com/api/?name=LanternChat'
 
-          context.pushReplacement(
-            AppRoute.groupChat,
-            extra: GroupInfo(
-              name: titleController.text,
-              imageUrl: imageUrl,
-              description: descriptionController.text,
-              createdBy: currentUser,
-              selectedContactIds: selectedContactIds,
-            ),
-          );
         },
         label: Text('Create'),
         // child: Icon(Icons.arrow_forward_rounded),

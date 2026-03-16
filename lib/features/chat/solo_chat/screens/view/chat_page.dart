@@ -50,10 +50,12 @@ extension on ChatPagePopupMenu {
 }
 
 class ChatPage extends ConsumerStatefulWidget {
-  // ConversationTile(contact, conversation)
-  // conversation.empty == true if ChatPage is open from profile page
+
   final ConversationTile conversationTile;
 
+  // i have notice this page only requires a conversationId and 'Contact' info,
+  // where 'conversationID' to can be null
+  // if wanna add group chat support i would need 'GroupInfo'
   const ChatPage({super.key, required this.conversationTile});
 
   @override

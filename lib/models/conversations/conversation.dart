@@ -68,7 +68,7 @@ class Conversation {
       _Field.lastSenderId: lastSenderId,
       _Field.lastMessageTime: lastMessageTime,
       _Field.pairID: pairID,
-      _Field.groupInfo: groupInfo,
+      _Field.groupInfo: groupInfo?.toMap(),
     };
   }
 
@@ -83,7 +83,7 @@ class Conversation {
       lastMessageTime: map[_Field.lastMessageTime] ?? Timestamp.now(),
 
       pairID: map[_Field.pairID],
-      groupInfo: map[_Field.groupInfo],
+      groupInfo: GroupInfo.fromMap(map[_Field.groupInfo]),
     );
   }
 

@@ -132,7 +132,7 @@ final goRouterProvider = Provider((ref) {
       ),
 
       GoRoute(
-        path: AppRoute.groupSetup,
+        path: AppRoute.groupChat,
         builder: (BuildContext context, GoRouterState state) {
           final groupInfo = state.extra as GroupInfo;
           return GroupChatPage(groupInfo: groupInfo);

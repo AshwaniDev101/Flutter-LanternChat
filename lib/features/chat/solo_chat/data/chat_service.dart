@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:lanternchat/core/helpers/id_helper.dart';
 import 'package:lanternchat/models/conversations/group_info.dart';
 
+import '../../../../core/util/logger.dart';
 import '../../../../models/conversations/conversation.dart';
 import '../../../../models/conversations/enums/conversation_type.dart';
 import '../../../../models/messages/message.dart';
@@ -119,7 +120,7 @@ class ChatService {
 
   Future<String> createGroupChat({
 
-    required GroupInfo groupInfo
+    required GroupInfo groupInfo, required Set<String> memberIds,
   }) async {
 
     final conversationRef = _getConversationsRef().doc();
@@ -130,18 +131,19 @@ class ChatService {
     // Creating a new conversation
     final newlyCreatedGroupConversation = Conversation(
       conversationId: newGeneratedConversationID,
-      memberIds: groupInfo.selectedContactIds,
+      memberIds: memberIds,
       conversationType: ConversationType.group,
       pairID: null,
       lastMessagePreview: '${groupInfo.createdBy.name} create group',
       lastMessageIndex: 0,
       lastSenderId: groupInfo.createdBy.uid,
       lastMessageTime: Timestamp.now(),
+      groupInfo: groupInfo,
     );
 
+
+    AppLogger.i('CreateGroupChat ${groupInfo.title}');
     conversationRef.set(newlyCreatedGroupConversation.toMap());
-
-
 
     return newGeneratedConversationID;
   }
