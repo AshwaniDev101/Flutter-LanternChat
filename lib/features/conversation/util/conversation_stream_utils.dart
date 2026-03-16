@@ -5,6 +5,9 @@ import '../../../../models/conversations/conversation_entry.dart';
 import '../../../../models/users/contact.dart';
 
 class ConversationStreamUtils {
+
+
+  // create a map to efficiency
   static Stream<List<ConversationEntry>> conversationsTileStream(
       Stream<List<Contact>> contactsStream,
       Stream<List<Conversation>> conversationsStream,
@@ -14,22 +17,52 @@ class ConversationStreamUtils {
       conversationsStream,
           (List<Contact> contacts, List<Conversation> conversations) {
 
+        final contactMap = {
+          for (final contact in contacts) contact.uid: contact
+        };
+
         return conversations.map((conversation) {
 
-          final contact = contacts.firstWhere(
-                (contact) => conversation.memberIds.contains(contact.uid),
-          );
+          final contact = conversation.memberIds
+              .map((id) => contactMap[id])
+              .firstWhere((c) => c != null);
 
           return ConversationEntry(
-            contact: contact,
+            contact: contact!,
             conversation: conversation,
           );
 
         }).toList();
-
       },
     );
   }
+
+
+  // static Stream<List<ConversationEntry>> conversationsTileStream(
+  //     Stream<List<Contact>> contactsStream,
+  //     Stream<List<Conversation>> conversationsStream,
+  //     ) {
+  //   return Rx.combineLatest2(
+  //     contactsStream,
+  //     conversationsStream,
+  //         (List<Contact> contacts, List<Conversation> conversations) {
+  //
+  //       return conversations.map((conversation) {
+  //
+  //         final contact = contacts.firstWhere(
+  //               (contact) => conversation.memberIds.contains(contact.uid),
+  //         );
+  //
+  //         return ConversationEntry(
+  //           contact: contact,
+  //           conversation: conversation,
+  //         );
+  //
+  //       }).toList();
+  //
+  //     },
+  //   );
+  // }
 
 
 

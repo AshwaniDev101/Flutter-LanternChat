@@ -5,6 +5,7 @@ import 'package:lanternchat/core/helpers/id_helper.dart';
 import 'package:lanternchat/features/chat/screens/view/widgets/chat_bubble.dart';
 import 'package:lanternchat/features/chat/screens/view/widgets/text_area.dart';
 import 'package:lanternchat/features/chat/screens/view/widgets/typing_indicator.dart';
+import 'package:lanternchat/features/contact/provider/contact_providers.dart';
 import 'package:lanternchat/features/conversation/provider/conversation_provider.dart';
 import 'package:lanternchat/models/conversations/conversation.dart';
 import 'package:lanternchat/models/conversations/conversation_entry.dart';
@@ -16,6 +17,7 @@ import '../../../../../models/messages/message.dart';
 import '../../../../../models/messages/message_tile.dart';
 import '../../../../../models/users/app_user.dart';
 import '../../../../../shared/widgets/circular_user_avatar.dart';
+import '../../../../models/users/contact.dart';
 import '../../../auth/provider/auth_provider.dart';
 import '../../data/chat_service.dart';
 import '../../provider/chat_provider.dart';
@@ -165,6 +167,9 @@ class _ChatPageState extends ConsumerState<ChatPage> {
     final ChatService chatService = ref.read(chatServiceProvider);
     final AppUser currentUser = ref.watch(currentUserProvider);
 
+    // String is uid
+
+
     // Old chatting Stream
     // final chatStream = ref.watch(chatStreamProvider(newConversation?.conversationId));
     final AsyncValue<List<MessageTile>> chatStream = ref.watch(
@@ -200,7 +205,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
                     //   '[chat_page] $index ${messageTiles[index].message.text} ${messageTiles[index].message.messageId}  ${messageTiles[index].message.seenBy.values.toString()}',
                     // );
 
-                    final isMine = messageTile.message.senderId == currentUser.uid;
+
 
                     // final isSeenByOtherUser = messageTile.message.seenBy.containsKey(
                     //   widget.conversationEntry.contact.uid,
@@ -210,12 +215,8 @@ class _ChatPageState extends ConsumerState<ChatPage> {
 
                     return Column(
                       children: [
-                        ChatBubble(isMine: isMine, message: messageTile.message),
-
-                        // if (isMine && isSeenByOtherUser) Text("seen", style: Theme.of(context).textTheme.bodySmall),
-                        // if (isMine && isSeenByOtherUser) Text("Seen ${messageTile.message.seenBy.containsKey(widget.conversationEntry.contact.uid)}", style: Theme.of(context).textTheme.bodySmall),
-                        // if(!messageTiles[index].message.seenBy.containsKey(currentUser.uid))
-                        //   Text('seen',style: Theme.of(context).textTheme.bodySmall,)
+                        if(currentConversation!=null)
+                          ChatBubble(conversationType: currentConversation!.conversationType, message: messageTile.message),
                       ],
                     );
                   },
