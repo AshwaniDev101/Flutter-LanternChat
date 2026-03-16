@@ -4,20 +4,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lanternchat/models/conversations/conversation_tile.dart';
-import 'package:lanternchat/models/conversations/group_info.dart';
+import 'package:lanternchat/models/conversations/conversation_entry.dart';
 
 import '../../features/auth/provider/auth_provider.dart';
-import '../../features/chat/group_chat/screens/view/group_chat_page.dart';
-import '../../features/chat/group_chat/screens/view/group_setup_page.dart';
-import '../../features/chat/solo_chat/screens/view/chat_page.dart';
+import '../../features/chat/screens/view/chat_page.dart';
+import '../../features/chat/screens/view/group_setup_page.dart';
 import '../../features/contact/screens/view/contact_page.dart';
 import '../../features/home/screens/view/home_page.dart';
 import '../../features/auth/screens/view/auth_page.dart';
 import '../../features/profile/screens/view/profile_page.dart';
 import '../../features/qr/screens/view/qr_page.dart';
 import '../../features/settings/screens/view/settings_page.dart';
-import '../../models/conversations/conversation_starter.dart';
 
 class GoRouterRefreshStream extends ChangeNotifier {
   late final StreamSubscription<dynamic> _subscription;
@@ -47,7 +44,6 @@ class AppRoute {
   static const chat = '/conversation-window';
   static const qrCode = '/qr-code';
   static const groupSetup = '/group-setup';
-  // static const groupChat = '/group-chat';
 }
 
 final goRouterProvider = Provider((ref) {
@@ -69,7 +65,6 @@ final goRouterProvider = Provider((ref) {
       }
       if (user != null && isOnLoginPage) {
         return AppRoute.home;
-        // return AppRoute.qrCode;
       }
 
       return null;
@@ -113,8 +108,8 @@ final goRouterProvider = Provider((ref) {
       GoRoute(
         path: AppRoute.chat,
         builder: (BuildContext context, GoRouterState state) {
-          final conversationTile = state.extra as ConversationTile;
-          return ChatPage(conversationTile: conversationTile);
+          final conversationEntry = state.extra as ConversationEntry;
+          return ChatPage(conversationEntry: conversationEntry);
         },
       ),
 
@@ -132,13 +127,7 @@ final goRouterProvider = Provider((ref) {
         },
       ),
 
-      // GoRoute(
-      //   path: AppRoute.groupChat,
-      //   builder: (BuildContext context, GoRouterState state) {
-      //     final conversationStarter = state.extra as ConversationStarter;
-      //     return GroupChatPage(conversationStarter: conversationStarter);
-      //   },
-      // ),
+
     ],
   );
 });

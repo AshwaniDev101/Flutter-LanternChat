@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TextArea extends ConsumerStatefulWidget {
-  // final ConversationTile conversationTile;
+  // final ConversationTile conversationEntry;
   final Function(String) onSend;
   final Function(String) onTyping;
 
@@ -58,7 +58,7 @@ class _TextAreaState extends ConsumerState<TextArea> {
 
               if (text.isEmpty) return;
 
-              // chatService.sendMessageTo(conversation: widget.conversationTile.conversation, message: message);
+              // chatService.sendMessageTo(conversation: widget.conversationEntry.conversation, message: message);
 
               widget.onSend(text);
               // _sendMessage(message);
@@ -81,7 +81,7 @@ class _TextAreaState extends ConsumerState<TextArea> {
           //             text: text,
           //           );
           //
-          //           chatService.sendMessageTo(conversation: widget.conversationTile.conversation, message: message);
+          //           chatService.sendMessageTo(conversation: widget.conversationEntry.conversation, message: message);
           //
           //           textEditingController.clear();
           //         },

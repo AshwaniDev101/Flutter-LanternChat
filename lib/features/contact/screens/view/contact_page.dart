@@ -6,7 +6,7 @@ import 'package:lanternchat/core/router/router_provider.dart';
 import 'package:lanternchat/features/contact/screens/view/widgets/contact_tile.dart';
 import 'package:lanternchat/features/contact/screens/view/widgets/new_button.dart';
 import 'package:lanternchat/features/conversation/provider/conversation_provider.dart';
-import 'package:lanternchat/models/conversations/conversation_tile.dart';
+import 'package:lanternchat/models/conversations/conversation_entry.dart';
 import 'package:lanternchat/models/conversations/enums/conversation_type.dart';
 
 import '../../../../models/conversations/conversation.dart';
@@ -66,8 +66,8 @@ class ContactPage extends ConsumerWidget {
                         contact: contacts[index],
                         onClick: () {
 
-                          final conversationTile = ConversationTile(contact: contacts[index], conversation: null);
-                          context.pushReplacement(AppRoute.chat, extra: conversationTile);
+                          final conversationEntry = ConversationEntry(contact: contacts[index], conversation: null);
+                          context.pushReplacement(AppRoute.chat, extra: conversationEntry);
 
 
                         },

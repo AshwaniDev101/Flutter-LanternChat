@@ -1,11 +1,11 @@
 import 'package:rxdart/rxdart.dart';
 
 import '../../../../models/conversations/conversation.dart';
-import '../../../../models/conversations/conversation_tile.dart';
+import '../../../../models/conversations/conversation_entry.dart';
 import '../../../../models/users/contact.dart';
 
 class ConversationStreamUtils {
-  static Stream<List<ConversationTile>> conversationsTileStream(
+  static Stream<List<ConversationEntry>> conversationsTileStream(
       Stream<List<Contact>> contactsStream,
       Stream<List<Conversation>> conversationsStream,
       ) {
@@ -20,7 +20,7 @@ class ConversationStreamUtils {
                 (contact) => conversation.memberIds.contains(contact.uid),
           );
 
-          return ConversationTile(
+          return ConversationEntry(
             contact: contact,
             conversation: conversation,
           );

@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lanternchat/models/messages/message.dart';
 
-import '../../../core/theme/chat_theme.dart';
+import '../../../../../core/theme/chat_theme.dart';
+
 
 class ChatBubble extends ConsumerWidget {
   final bool isMine;

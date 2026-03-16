@@ -3,16 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lanternchat/features/auth/provider/auth_provider.dart';
-import 'package:lanternchat/features/chat/group_chat/screens/view/widgets/selectable_contact_tile.dart';
+import 'package:lanternchat/features/chat/screens/view/widgets/selectable_contact_tile.dart';
 import 'package:lanternchat/models/conversations/conversation.dart';
-import 'package:lanternchat/models/conversations/conversation_tile.dart';
+import 'package:lanternchat/models/conversations/conversation_entry.dart';
 import 'package:lanternchat/models/conversations/enums/conversation_type.dart';
 import 'package:lanternchat/models/conversations/group_info.dart';
 
 import '../../../../../core/router/router_provider.dart';
+import '../../../../../core/theme/app_colors.dart';
 import '../../../../../models/users/contact.dart';
-import '../../../../contact/provider/contact_providers.dart';
-import '../../../solo_chat/provider/chat_provider.dart';
+import '../../../contact/provider/contact_providers.dart';
+import '../../provider/chat_provider.dart';
 
 class GroupSetupPage extends ConsumerStatefulWidget {
   const GroupSetupPage({super.key});
@@ -35,7 +36,7 @@ class _GroupSetupPageState extends ConsumerState<GroupSetupPage> {
     titleController.text = "${currentUser.name.split(' ').first}'s Group";
   }
 
-  Future<ConversationTile> _createGroupConversation() async {
+  Future<ConversationEntry> _createGroupConversation() async {
     final chatService = ref.read(chatServiceProvider);
 
     final currentUser = ref.watch(currentUserProvider);
@@ -45,7 +46,7 @@ class _GroupSetupPageState extends ConsumerState<GroupSetupPage> {
     // Creating image for group according to the name
     String imageUrl = 'https://api.dicebear.com/7.x/initials/png?seed=Z';
     if (titleController.text.isNotEmpty) {
-      final firstLetter = titleController.text.substring(0, 1).toUpperCase();
+      final firstLetter = titleController.text.substring(0, 1).toLowerCase();
       imageUrl = 'https://api.dicebear.com/7.x/initials/png?seed=$firstLetter';
     }
     // final imageUrl = 'https://ui-avatars.com/api/?name=A';
@@ -60,7 +61,7 @@ class _GroupSetupPageState extends ConsumerState<GroupSetupPage> {
     // Todo creating an async value provider is great way to process loading state here
     String conversationId = await chatService.createGroupChat(groupInfo: groupInfo, memberIds: selectedContactIds);
 
-    return ConversationTile(
+    return ConversationEntry(
       conversation: Conversation(
         conversationId: conversationId,
         memberIds: selectedContactIds,
@@ -94,11 +95,17 @@ class _GroupSetupPageState extends ConsumerState<GroupSetupPage> {
       ),
 
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          _createGroupConversation().then((conversationTile) {
+        onPressed: selectedContactIds.isNotEmpty? () {
+          _createGroupConversation().then((conversationEntry) {
             if (!mounted) return;
-            context.pushReplacement(AppRoute.chat, extra: conversationTile);
+            context.pushReplacement(AppRoute.chat, extra: conversationEntry);
           });
+        }:(){
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Select least 1 Contact'),
+            ),
+          );
         },
         label: Text('Create'),
         // child: Icon(Icons.arrow_forward_rounded),
@@ -110,6 +117,11 @@ class _GroupSetupPageState extends ConsumerState<GroupSetupPage> {
             padding: const EdgeInsets.all(8.0),
             child: TextField(
               controller: titleController,
+              style: const TextStyle(
+                color: AppColors.primary, // color of typed text
+                fontWeight: FontWeight.bold,
+              ),
+
               decoration: InputDecoration(
                 hintText: 'Group name',
                 border: OutlineInputBorder(),

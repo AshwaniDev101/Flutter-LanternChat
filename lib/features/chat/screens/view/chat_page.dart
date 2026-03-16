@@ -2,10 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lanternchat/core/helpers/id_helper.dart';
-import 'package:lanternchat/features/chat/widgets/chat_bubble.dart';
+import 'package:lanternchat/features/chat/screens/view/widgets/chat_bubble.dart';
+import 'package:lanternchat/features/chat/screens/view/widgets/text_area.dart';
+import 'package:lanternchat/features/chat/screens/view/widgets/typing_indicator.dart';
 import 'package:lanternchat/features/conversation/provider/conversation_provider.dart';
 import 'package:lanternchat/models/conversations/conversation.dart';
-import 'package:lanternchat/models/conversations/conversation_tile.dart';
+import 'package:lanternchat/models/conversations/conversation_entry.dart';
 import 'package:lanternchat/models/messages/seen_message.dart';
 
 import '../../../../../core/util/logger.dart';
@@ -14,9 +16,7 @@ import '../../../../../models/messages/message.dart';
 import '../../../../../models/messages/message_tile.dart';
 import '../../../../../models/users/app_user.dart';
 import '../../../../../shared/widgets/circular_user_avatar.dart';
-import '../../../../auth/provider/auth_provider.dart';
-import '../../../widgets/text_area.dart';
-import '../../../widgets/typing_indicator.dart';
+import '../../../auth/provider/auth_provider.dart';
 import '../../data/chat_service.dart';
 import '../../provider/chat_provider.dart';
 import '../../provider/seen_message_provider.dart';
@@ -51,13 +51,12 @@ extension on ChatPagePopupMenu {
 }
 
 class ChatPage extends ConsumerStatefulWidget {
-
-  final ConversationTile conversationTile;
+  final ConversationEntry conversationEntry;
 
   // i have notice this page only requires a 'conversationId' and 'Contact' info,
   // where 'conversationID' to can be null
   // if wanna add group chat support i would need 'GroupInfo'
-  const ChatPage({super.key, required this.conversationTile});
+  const ChatPage({super.key, required this.conversationEntry});
 
   @override
   ConsumerState<ChatPage> createState() => _ChatPageState();
@@ -74,50 +73,44 @@ class _ChatPageState extends ConsumerState<ChatPage> {
   }
 
   Future<void> _init() async {
-    currentConversation = widget.conversationTile.conversation;
+    currentConversation = widget.conversationEntry.conversation;
     // if conversation is null
-    if (widget.conversationTile.conversation == null) {
-      if( widget.conversationTile.contact!=null)
-        {
-          // It's possible conversation id exist, if it does, we can find it using 'pairId'
-          final currentUser = ref.read(currentUserProvider);
-          final pairId = IdHelper.generatePairId(currentUser.uid, widget.conversationTile.contact!.uid);
+    if (widget.conversationEntry.conversation == null) {
+      if (widget.conversationEntry.contact != null) {
+        // It's possible conversation id exist, if it does, we can find it using 'pairId'
+        final currentUser = ref.read(currentUserProvider);
+        final pairId = IdHelper.generatePairId(currentUser.uid, widget.conversationEntry.contact!.uid);
 
-          final conversationService = ref.read(conversationServiceProvider);
-          final Conversation? conversation = await conversationService.getConversationUsingPairId(pairId: pairId);
+        final conversationService = ref.read(conversationServiceProvider);
+        final Conversation? conversation = await conversationService.getConversationUsingPairId(pairId: pairId);
 
-          // if conversation is not found
-          if (conversation == null) {
-            debugPrint('#### Conversation was not found');
-          } else {
-            print("####  conversationService.getConversationUsingPairId ${conversation.conversationId}");
+        // if conversation is not found
+        if (conversation == null) {
+          debugPrint('#### Conversation was not found');
+        } else {
+          print("####  conversationService.getConversationUsingPairId ${conversation.conversationId}");
 
-            // widget.conversationTile.conversation = conversation;
+          // widget.conversationEntry.conversation = conversation;
 
-            setState(() {
-              currentConversation = conversation;
-              _seenLister();
-            });
-          }
-        }else
-          {
-            throw Exception("Error : Both Conversation and Contact can't be null");
-          }
-
+          setState(() {
+            currentConversation = conversation;
+            _seenLister();
+          });
+        }
+      } else {
+        throw Exception("Error : Both Conversation and Contact can't be null");
+      }
     } else {
-      AppLogger.i("####  conversationTile have conversation ${widget.conversationTile.conversation!.conversationId}");
+      AppLogger.i("####  conversationEntry have conversation ${widget.conversationEntry.conversation!.conversationId}");
 
       // we have conversation its group conversation
-      // if(widget.conversationTile.conversation!.groupInfo !=null)
+      // if(widget.conversationEntry.conversation!.groupInfo !=null)
       //   { // It's group convo
       //
       //   }else
       //     { // It's solo
       //
       //     }
-
-
-
 
       _seenLister();
     }
@@ -210,17 +203,17 @@ class _ChatPageState extends ConsumerState<ChatPage> {
                     final isMine = messageTile.message.senderId == currentUser.uid;
 
                     // final isSeenByOtherUser = messageTile.message.seenBy.containsKey(
-                    //   widget.conversationTile.contact.uid,
+                    //   widget.conversationEntry.contact.uid,
                     // );
 
                     //
 
                     return Column(
                       children: [
-                        ChatBubble(isMine:isMine, message: messageTile.message),
+                        ChatBubble(isMine: isMine, message: messageTile.message),
 
                         // if (isMine && isSeenByOtherUser) Text("seen", style: Theme.of(context).textTheme.bodySmall),
-                        // if (isMine && isSeenByOtherUser) Text("Seen ${messageTile.message.seenBy.containsKey(widget.conversationTile.contact.uid)}", style: Theme.of(context).textTheme.bodySmall),
+                        // if (isMine && isSeenByOtherUser) Text("Seen ${messageTile.message.seenBy.containsKey(widget.conversationEntry.contact.uid)}", style: Theme.of(context).textTheme.bodySmall),
                         // if(!messageTiles[index].message.seenBy.containsKey(currentUser.uid))
                         //   Text('seen',style: Theme.of(context).textTheme.bodySmall,)
                       ],
@@ -255,12 +248,12 @@ class _ChatPageState extends ConsumerState<ChatPage> {
 
               if (currentConversation != null) {
                 chatService.sendMessageTo(conversationId: currentConversation!.conversationId, message: message);
-              } else if(widget.conversationTile.contact !=null) {
+              } else if (widget.conversationEntry.contact != null) {
                 // create conversationId and send message
                 final conversation = await chatService.sendMessageToNewConversation(
                   message: message,
                   senderUid: currentUser.uid,
-                  receiverUid: widget.conversationTile.contact!.uid,
+                  receiverUid: widget.conversationEntry.contact!.uid,
                 );
 
                 setState(() {
@@ -312,29 +305,27 @@ class _ChatPageState extends ConsumerState<ChatPage> {
     );
   }
 
-
   String _getImageUrl() {
+    final conversationEntry = widget.conversationEntry;
 
-    final tile = widget.conversationTile;
-    if (tile.contact != null) {
-      return tile.contact!.photoURL;
-    } else if (tile.conversation != null && tile.conversation!.groupInfo != null) {
-      return tile.conversation!.groupInfo!.imageUrl;
+    if (conversationEntry.conversation != null && conversationEntry.conversation!.groupInfo != null) {
+      return conversationEntry.conversation!.groupInfo!.imageUrl;
+    } else if (conversationEntry.contact != null) {
+      return conversationEntry.contact!.photoURL;
     } else {
       return 'https://ui-avatars.com/api/?name=X';
     }
   }
 
   String _getName() {
+    final conversationEntry = widget.conversationEntry;
 
-    final tile = widget.conversationTile;
-    if (tile.contact != null) {
-      return tile.contact!.name;
-    } else if (tile.conversation != null && tile.conversation!.groupInfo != null) {
-      return tile.conversation!.groupInfo!.title;
+    if (conversationEntry.conversation != null && conversationEntry.conversation!.groupInfo != null) {
+      return conversationEntry.conversation!.groupInfo!.title;
+    } else if (conversationEntry.contact != null) {
+      return conversationEntry.contact!.name;
     } else {
       return 'O_O user';
     }
   }
-
 }

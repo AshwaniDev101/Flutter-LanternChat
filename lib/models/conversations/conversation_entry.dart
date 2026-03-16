@@ -6,17 +6,17 @@ class _Field {
   static const String conversation = 'conversation';
 }
 
-class ConversationTile {
+class ConversationEntry {
   final Contact? contact;
   final Conversation? conversation;
 
-  ConversationTile({
+  ConversationEntry({
     required this.contact,
     required this.conversation,
   });
 
-  factory ConversationTile.fromMap(Map<String, dynamic> map) {
-    return ConversationTile(
+  factory ConversationEntry.fromMap(Map<String, dynamic> map) {
+    return ConversationEntry(
       contact: Contact.fromMap(map[_Field.contact] as Map<String, dynamic>? ?? {}),
       conversation: Conversation.fromMap(map[_Field.conversation] as Map<String, dynamic>? ?? {}),
     );

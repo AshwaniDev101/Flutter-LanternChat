@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lanternchat/core/helpers/timer_formate_helper.dart';
 import 'package:lanternchat/features/auth/provider/auth_provider.dart';
-import 'package:lanternchat/models/conversations/conversation_tile.dart';
+import 'package:lanternchat/models/conversations/conversation_entry.dart';
 
 import '../../../../../core/router/router_provider.dart';
 import '../../../../shared/widgets/circular_user_avatar.dart';
@@ -33,9 +33,9 @@ class ConversationPage extends ConsumerWidget {
             _searchBar(),
 
             conversationSteam.when(
-              data: (List<ConversationTile> tile) {
+              data: (List<ConversationEntry> conversationEntry) {
                 // print("##### ${data.length}");
-                return _getConversionList(tile);
+                return _getConversionList(conversationEntry);
               },
               error: (e, t) {
                 print("Error there is an Error $e : $t");
@@ -93,12 +93,12 @@ class ConversationPage extends ConsumerWidget {
     );
   }
 
-  Widget _getConversionList(List<ConversationTile> conversationTileList) {
+  Widget _getConversionList(List<ConversationEntry> conversationEntryList) {
     return Expanded(
       child: ListView.builder(
-        itemCount: conversationTileList.length,
+        itemCount: conversationEntryList.length,
         itemBuilder: (context, index) {
-          return _Card(tile: conversationTileList[index]);
+          return _Card(conversationEntry: conversationEntryList[index]);
         },
       ),
     );
@@ -106,17 +106,17 @@ class ConversationPage extends ConsumerWidget {
 }
 
 class _Card extends StatelessWidget {
-  final ConversationTile tile;
+  final ConversationEntry conversationEntry;
 
-  _Card({required this.tile});
+  _Card({required this.conversationEntry});
 
   @override
   Widget build(BuildContext context) {
-    if (tile.contact != null) {}
+    if (conversationEntry.contact != null) {}
 
     return InkWell(
       onTap: () {
-        context.push(AppRoute.chat, extra: tile);
+        context.push(AppRoute.chat, extra: conversationEntry);
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -134,15 +134,15 @@ class _Card extends StatelessWidget {
                     children: [
                       Text(_getName(), style: Theme.of(context).textTheme.titleSmall),
                       Spacer(),
-                      if (tile.conversation != null)
-                        Text(TimerFormateHelper.formatMessageDate(tile.conversation!.lastMessageTime)),
+                      if (conversationEntry.conversation != null)
+                        Text(TimerFormateHelper.formatMessageDate(conversationEntry.conversation!.lastMessageTime)),
                     ],
                   ),
 
                   Row(
                     children: [
-                      if (tile.conversation != null)
-                        Text(tile.conversation!.lastMessagePreview, style: Theme.of(context).textTheme.bodyMedium),
+                      if (conversationEntry.conversation != null)
+                        Text(conversationEntry.conversation!.lastMessagePreview, style: Theme.of(context).textTheme.bodyMedium),
                       Spacer(),
                       Icon(Icons.push_pin_rounded, size: 16),
                     ],
@@ -162,27 +162,27 @@ class _Card extends StatelessWidget {
     if contact but no conversation mean it new solo conversation
      */
 
-  // if (tile.conversation != null) {
-  //   if (tile.conversation!.groupInfo != null) {
+  // if (conversationEntry.conversation != null) {
+  //   if (conversationEntry.conversation!.groupInfo != null) {
   //
   //   }
   // }
 
   String _getImageUrl() {
-    if (tile.contact != null) {
-      return tile.contact!.photoURL;
-    } else if (tile.conversation != null && tile.conversation!.groupInfo != null) {
-      return tile.conversation!.groupInfo!.imageUrl;
+    if (conversationEntry.conversation != null && conversationEntry.conversation!.groupInfo != null) {
+      return conversationEntry.conversation!.groupInfo!.imageUrl;
+    } else if (conversationEntry.contact != null) {
+      return conversationEntry.contact!.photoURL;
     } else {
       return 'https://ui-avatars.com/api/?name=X';
     }
   }
 
   String _getName() {
-    if (tile.contact != null) {
-      return tile.contact!.name;
-    } else if (tile.conversation != null && tile.conversation!.groupInfo != null) {
-      return tile.conversation!.groupInfo!.title;
+    if (conversationEntry.conversation != null && conversationEntry.conversation!.groupInfo != null) {
+      return conversationEntry.conversation!.groupInfo!.title;
+    } else if (conversationEntry.contact != null) {
+      return conversationEntry.contact!.name;
     } else {
       return 'O_O user';
     }
