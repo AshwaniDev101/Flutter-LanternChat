@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:lanternchat/core/helpers/id_helper.dart';
 import 'package:lanternchat/models/conversations/group_info.dart';
-import 'package:lanternchat/models/users/app_user.dart';
-import '../../../models/conversations/conversation.dart';
-import '../../../models/conversations/enums/conversation_type.dart';
-import '../../../models/messages/message.dart';
+
+import '../../../../models/conversations/conversation.dart';
+import '../../../../models/conversations/enums/conversation_type.dart';
+import '../../../../models/messages/message.dart';
 
 class _ServiceConstants {
   static const String conversations = 'conversations';
@@ -96,7 +96,7 @@ class ChatService {
     // Creating a new conversation
     final newlyCreateConversationSummary = Conversation(
       conversationId: newGeneratedConversationID,
-      memberIds: [senderUid, receiverUid],
+      memberIds: {senderUid, receiverUid},
       conversationType: ConversationType.solo,
       pairID: IdHelper.generatePairId(senderUid, receiverUid),
       lastMessagePreview: message.text.toString(),

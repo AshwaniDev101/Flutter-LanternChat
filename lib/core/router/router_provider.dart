@@ -4,13 +4,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lanternchat/features/group_chat/screens/view/group_chat_page.dart';
-import 'package:lanternchat/features/group_chat/screens/view/group_setup_page.dart';
 import 'package:lanternchat/models/conversations/conversation_tile.dart';
 import 'package:lanternchat/models/conversations/group_info.dart';
 
 import '../../features/auth/provider/auth_provider.dart';
-import '../../features/chat/screens/view/chat_page.dart';
+import '../../features/chat/group_chat/screens/view/group_chat_page.dart';
+import '../../features/chat/group_chat/screens/view/group_setup_page.dart';
+import '../../features/chat/solo_chat/screens/view/chat_page.dart';
 import '../../features/contact/screens/view/contact_page.dart';
 import '../../features/home/screens/view/home_page.dart';
 import '../../features/auth/screens/view/auth_page.dart';

@@ -1,8 +1,8 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:lanternchat/features/chat/data/typing_service.dart';
 
-import '../../../core/firebase/provider/firebase_providers.dart';
+import '../../../../core/firebase/provider/firebase_providers.dart';
+import '../data/typing_service.dart';
 
 final typingServiceProvider = Provider((ref) {
   final realtimeDb = ref.watch(realtimeDbProvider);

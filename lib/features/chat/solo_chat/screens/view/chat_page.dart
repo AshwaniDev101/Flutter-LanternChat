@@ -2,23 +2,22 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lanternchat/core/helpers/id_helper.dart';
-import 'package:lanternchat/core/util/logger.dart';
-import 'package:lanternchat/features/chat/provider/chat_provider.dart';
-import 'package:lanternchat/features/chat/screens/view/widgets/chat_bubble.dart';
-import 'package:lanternchat/features/chat/screens/view/widgets/text_area.dart';
-import 'package:lanternchat/features/chat/screens/view/widgets/typing_indicator.dart';
+import 'package:lanternchat/features/chat/widgets/chat_bubble.dart';
 import 'package:lanternchat/features/conversation/provider/conversation_provider.dart';
 import 'package:lanternchat/models/conversations/conversation.dart';
 import 'package:lanternchat/models/conversations/conversation_tile.dart';
 import 'package:lanternchat/models/messages/seen_message.dart';
 
-import '../../../../models/messages/enums/message_type.dart';
-import '../../../../models/messages/message.dart';
-import '../../../../models/messages/message_tile.dart';
-import '../../../../models/users/app_user.dart';
-import '../../../../shared/widgets/circular_user_avatar.dart';
-import '../../../auth/provider/auth_provider.dart';
+import '../../../../../models/messages/enums/message_type.dart';
+import '../../../../../models/messages/message.dart';
+import '../../../../../models/messages/message_tile.dart';
+import '../../../../../models/users/app_user.dart';
+import '../../../../../shared/widgets/circular_user_avatar.dart';
+import '../../../../auth/provider/auth_provider.dart';
+import '../../../widgets/text_area.dart';
+import '../../../widgets/typing_indicator.dart';
 import '../../data/chat_service.dart';
+import '../../provider/chat_provider.dart';
 import '../../provider/seen_message_provider.dart';
 import '../../provider/typing_provider.dart';
 
@@ -190,9 +189,12 @@ class _ChatPageState extends ConsumerState<ChatPage> {
                     final isSeenByOtherUser = messageTile.message.seenBy.containsKey(
                       widget.conversationTile.contact.uid,
                     );
+
+                    //
+
                     return Column(
                       children: [
-                        ChatBubble(messageTile: messageTile, conversationTile: widget.conversationTile),
+                        ChatBubble(isMine:isMine, message: messageTile.message),
 
                         // if (isMine && isSeenByOtherUser) Text("seen", style: Theme.of(context).textTheme.bodySmall),
                         // if (isMine && isSeenByOtherUser) Text("Seen ${messageTile.message.seenBy.containsKey(widget.conversationTile.contact.uid)}", style: Theme.of(context).textTheme.bodySmall),

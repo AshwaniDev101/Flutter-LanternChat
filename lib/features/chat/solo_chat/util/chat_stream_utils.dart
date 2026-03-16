@@ -2,7 +2,7 @@ import 'package:lanternchat/models/messages/message.dart';
 import 'package:lanternchat/models/messages/seen_message.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../../models/messages/message_tile.dart';
+import '../../../../models/messages/message_tile.dart';
 
 class ChatStreamUtils {
   static Stream<List<MessageTile>> messageTileStream(

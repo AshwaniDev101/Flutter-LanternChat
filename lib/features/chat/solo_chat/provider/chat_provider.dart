@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:lanternchat/models/messages/message.dart';
-import '../../../core/firebase/provider/firebase_providers.dart';
+import '../../../../core/firebase/provider/firebase_providers.dart';
 import '../data/chat_service.dart';
 
 final chatServiceProvider = Provider((ref) {

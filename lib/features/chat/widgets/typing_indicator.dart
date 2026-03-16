@@ -2,8 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:lanternchat/features/chat/provider/typing_provider.dart';
-import 'package:lanternchat/features/chat/screens/view/widgets/chat_bubble.dart';
+import 'package:lanternchat/features/chat/widgets/chat_bubble.dart';
+
+import '../solo_chat/provider/typing_provider.dart';
 
 class _ServiceConstants {
   static const String uid = 'uid';

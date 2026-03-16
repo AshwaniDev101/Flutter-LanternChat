@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lanternchat/features/auth/provider/auth_provider.dart';
-import 'package:lanternchat/features/group_chat/screens/view/widgets/selectable_contact_tile.dart';
+import 'package:lanternchat/features/chat/group_chat/screens/view/widgets/selectable_contact_tile.dart';
 import 'package:lanternchat/models/conversations/group_info.dart';
-import '../../../../core/router/router_provider.dart';
-import '../../../../models/users/contact.dart';
-import '../../../contact/provider/contact_providers.dart';
+
+import '../../../../../core/router/router_provider.dart';
+import '../../../../../models/users/contact.dart';
+import '../../../../contact/provider/contact_providers.dart';
 
 class GroupSetupPage extends ConsumerStatefulWidget {
   const GroupSetupPage({super.key});

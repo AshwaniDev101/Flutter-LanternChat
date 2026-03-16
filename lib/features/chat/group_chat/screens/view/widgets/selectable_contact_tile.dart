@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../models/users/contact.dart';
-import '../../../../../shared/widgets/circular_user_avatar.dart';
+import '../../../../../../models/users/contact.dart';
+import '../../../../../../shared/widgets/circular_user_avatar.dart';
 
 class SelectableContactTile extends StatelessWidget {
   final Contact contact;
