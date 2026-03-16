@@ -11,8 +11,8 @@ import '../../provider/conversation_provider.dart';
 
 final searchTextProvider = StateProvider<String>((ref) => '');
 
-class ConversationPage extends ConsumerWidget {
-  const ConversationPage({super.key});
+class GroupsPage extends ConsumerWidget {
+  const GroupsPage({super.key});
 
 
   @override
@@ -24,8 +24,7 @@ class ConversationPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('All Chats'),
-        // title: Text('All Conversations'),
+        title: Text('Groups'),
         centerTitle: true,
 
         actions: [IconButton(onPressed: () {}, icon: Icon(Icons.notifications))],
@@ -41,18 +40,14 @@ class ConversationPage extends ConsumerWidget {
 
                 // Search bar logic
                 final String searchText = ref.watch(searchTextProvider);
-                final filteredList = conversationEntry.where((entry) {
-                  String name;
-                  if (entry.conversation != null && entry.conversation!.groupInfo != null) {
-                    name = entry.conversation!.groupInfo!.title;
-                  } else if (entry.contact != null) {
-                    name = entry.contact!.name;
-                  } else {
-                    name = 'O_O user'; // fallback
-                  }
-
+                final filteredList = conversationEntry
+                    .where((entry) => entry.conversation?.groupInfo != null) // only groups
+                    .where((entry) {
+                  // Get the group name safely
+                  final name = entry.conversation!.groupInfo!.title;
                   return name.toLowerCase().contains(searchText.toLowerCase());
-                }).toList();
+                })
+                    .toList();
 
                 return _getConversionList(filteredList);
               },

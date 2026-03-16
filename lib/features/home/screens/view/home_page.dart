@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lanternchat/core/theme/app_colors.dart';
 import 'package:lanternchat/features/conversation/screens/view/conversation_page.dart';
+import 'package:lanternchat/features/conversation/screens/view/group_page.dart';
 import 'package:lanternchat/features/profile/screens/view/profile_page.dart';
 import 'package:lanternchat/features/qr/screens/view/qr_page.dart';
 import 'package:lanternchat/features/settings/screens/view/settings_page.dart';
@@ -50,8 +51,9 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _pages = [
 
     ConversationPage(),
+    GroupsPage(),
     QrCodePage(),
-    ProfilePage(),
+    // ProfilePage(),
     SettingsPage(),
 
 
@@ -140,8 +142,8 @@ class _HomePageState extends State<HomePage> {
       unselectedItemColor: AppColors.muteColor,
       items: [
         BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Chat'),
+        BottomNavigationBarItem(icon: Icon(Icons.group), label: 'Groups'),
         BottomNavigationBarItem(icon: Icon(Icons.qr_code), label: 'QR Code'),
-        BottomNavigationBarItem(icon: Icon(Icons.verified_user), label: 'User'),
         BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
       ],
 
