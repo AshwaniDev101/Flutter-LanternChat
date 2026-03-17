@@ -55,59 +55,62 @@ class _ScanQrTabState extends ConsumerState<ScanQrTab> {
       );
     }
 
-    return Center(
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          return MobileScanner(
-            controller: controller,
-            scanWindow: null,
-            // transparent black overlay for qr code just for visuals no functionality
-            overlayBuilder: (context, constraints) {
-              return ShadedOverlay(
-                boxConstraints: constraints,
-                onClickGallery: () {},
-                onClickFlash: () {
-                  controller.toggleTorch();
-                },
-              );
-            },
+    return Scaffold(
 
-            onDetect: (BarcodeCapture capture) async {
-              // this is the avoid qr detection spamming Snack bar
-              if (scanStateProvider.isCoolDown) return;
+      body: Center(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return MobileScanner(
+              controller: controller,
+              scanWindow: null,
+              // transparent black overlay for qr code just for visuals no functionality
+              overlayBuilder: (context, constraints) {
+                return ShadedOverlay(
+                  boxConstraints: constraints,
+                  onClickGallery: () {},
+                  onClickFlash: () {
+                    controller.toggleTorch();
+                  },
+                );
+              },
 
-              final barcode = capture.barcodes.first;
-              final String? code = barcode.rawValue;
+              onDetect: (BarcodeCapture capture) async {
+                // this is the avoid qr detection spamming Snack bar
+                if (scanStateProvider.isCoolDown) return;
 
-              // We have code
-              if (code != null && code.isNotEmpty) {
-                // print("==== Qr Detected $code");
-                ref.read(qrScanStateNotifier.notifier).startCooldown();
+                final barcode = capture.barcodes.first;
+                final String? code = barcode.rawValue;
 
-                // Separating the appName (fullCode[0]) and userID (fullCode[1])
-                final fullCode = code.split('/');
+                // We have code
+                if (code != null && code.isNotEmpty) {
+                  // print("==== Qr Detected $code");
+                  ref.read(qrScanStateNotifier.notifier).startCooldown();
 
-                // Is this QR is for my own app?
-                // Yes
-                if (fullCode[0].contains(ConstantString.appName)) {
-                  // final AppUser? foundAppUser = await userFirestoreProvider.fetchUser(fullCode[1]);
-                  final Contact? contact = await contactService.fetchUser(fullCode[1]);
+                  // Separating the appName (fullCode[0]) and userID (fullCode[1])
+                  final fullCode = code.split('/');
 
-                  if (contact != null) {
-                    // print("==== Fetched users ${foundAppUser.name.toString()}");
-                    ref.read(qrScanStateNotifier.notifier).setContact(contact);
-                    ref.read(qrScanStateNotifier.notifier).userFound(true);
-                    controller.stop();
+                  // Is this QR is for my own app?
+                  // Yes
+                  if (fullCode[0].contains(ConstantString.appName)) {
+                    // final AppUser? foundAppUser = await userFirestoreProvider.fetchUser(fullCode[1]);
+                    final Contact? contact = await contactService.fetchUser(fullCode[1]);
+
+                    if (contact != null) {
+                      // print("==== Fetched users ${foundAppUser.name.toString()}");
+                      ref.read(qrScanStateNotifier.notifier).setContact(contact);
+                      ref.read(qrScanStateNotifier.notifier).userFound(true);
+                      controller.stop();
+                    } else {
+                      showSnackBar("User Not Found: $code");
+                    }
                   } else {
-                    showSnackBar("User Not Found: $code");
+                    showSnackBar("Invalid QR Code: $code");
                   }
-                } else {
-                  showSnackBar("Invalid QR Code: $code");
                 }
-              }
-            },
-          );
-        },
+              },
+            );
+          },
+        ),
       ),
     );
   }

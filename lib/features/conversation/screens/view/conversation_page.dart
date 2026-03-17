@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:lanternchat/core/helpers/timer_formate_helper.dart';
 import 'package:lanternchat/features/auth/provider/auth_provider.dart';
 import 'package:lanternchat/models/conversations/conversation_entry.dart';
+import 'package:lanternchat/models/conversations/enums/conversation_type.dart';
+import 'package:lanternchat/shared/widgets/online_status.dart';
 
 import '../../../../../core/router/router_provider.dart';
 import '../../../../shared/widgets/circular_user_avatar.dart';
@@ -15,7 +17,6 @@ final searchTextProvider = StateProvider<String>((ref) => '');
 class ConversationPage extends ConsumerWidget {
   const ConversationPage({super.key});
 
-
   @override
   Widget build(BuildContext context, ref) {
     final currentUser = ref.watch(currentUserProvider);
@@ -23,12 +24,9 @@ class ConversationPage extends ConsumerWidget {
     // return a list of contact and conversation link by memberIds
     final conversationSteam = ref.watch(conversationContactMergeSteamProvider(currentUser.uid));
 
-
     // Setting User presence Online
     final up = ref.read(presenceServiceProvider);
     up.setOnlineStatus(uid: currentUser.uid);
-
-
 
     return Scaffold(
       appBar: AppBar(
@@ -42,11 +40,11 @@ class ConversationPage extends ConsumerWidget {
         padding: const EdgeInsets.symmetric(horizontal: 8),
         child: Column(
           children: [
+            SizedBox(height: 12,),
             _searchBar(ref),
 
             conversationSteam.when(
               data: (List<ConversationEntry> conversationEntry) {
-
                 // Search bar logic
                 final String searchText = ref.watch(searchTextProvider);
                 final filteredList = conversationEntry.where((entry) {
@@ -90,7 +88,6 @@ class ConversationPage extends ConsumerWidget {
       child: SizedBox(
         height: 42,
         child: TextField(
-
           onChanged: (value) => ref.read(searchTextProvider.notifier).state = value,
           decoration: InputDecoration(
             hintText: 'Search',
@@ -162,18 +159,30 @@ class _Card extends StatelessWidget {
                   Row(
                     children: [
                       Text(_getName(), style: Theme.of(context).textTheme.titleSmall),
+                      if (conversationEntry.contact != null &&
+                          conversationEntry.conversation != null &&
+                          conversationEntry.conversation!.conversationType == ConversationType.solo)
+                        Padding(
+                          padding: const EdgeInsets.only(left: 4),
+                          child: OnlineUserPresence(uid: conversationEntry.contact!.uid, showTextOnly: true, size: 10,),
+                        ),
                       Spacer(),
-                      if (conversationEntry.conversation != null)
-                        Text(TimerFormateHelper.formatMessageDate(conversationEntry.conversation!.lastMessageTime)),
+                      Icon(Icons.push_pin_rounded, size: 16),
+
                     ],
                   ),
 
                   Row(
                     children: [
                       if (conversationEntry.conversation != null)
-                        Text(conversationEntry.conversation!.lastMessagePreview, style: Theme.of(context).textTheme.bodyMedium),
+                        Text(
+                          conversationEntry.conversation!.lastMessagePreview,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
                       Spacer(),
-                      Icon(Icons.push_pin_rounded, size: 16),
+                      if (conversationEntry.conversation != null)
+                        Text(TimeFormatHelper.formatMessageDate(conversationEntry.conversation!.lastMessageTime), style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.grey),),
+
                     ],
                   ),
                 ],

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:lanternchat/core/router/router_provider.dart';
 import 'package:lanternchat/features/auth/provider/auth_provider.dart';
-import 'package:lanternchat/features/qr/screens/view/scan_qr/qr_scan_tab.dart';
-import 'package:lanternchat/features/qr/screens/view/show_qr/qr_show_tab.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:share_plus/share_plus.dart';
+
+import '../../../../core/constants/constant_strings.dart';
+import '../../../../shared/widgets/circular_user_avatar.dart';
 
 class QrCodePage extends ConsumerWidget {
   const QrCodePage({super.key});
@@ -11,6 +15,9 @@ class QrCodePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final currentUser = ref.read(currentUserProvider);
+
+    final avtarRadius = 40.0;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('QR code'),
@@ -27,22 +34,78 @@ class QrCodePage extends ConsumerWidget {
           // IconButton(onPressed: () {}, icon: Icon(Icons.more_vert_rounded)),
         ],
       ),
-      body: DefaultTabController(
-        length: 2,
-        // initialIndex: 1,
-        // A scrollable widgets MUST know its size in the non-scroll direction.
+
+      body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TabBar(
-              tabs: [
-                Tab(child: Text("QR CODE")),
-                Tab(child: Text("SCAN CODE")),
-              ],
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Stack(
+                clipBehavior: Clip.none,
+                alignment: Alignment.topCenter,
+                children: [
+                  Card(
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(20, 20 + avtarRadius, 20, 20),
+                      child: Column(
+                        children: [
+                          // SizedBox(height: avtarRadius,),
+                          Text(currentUser.name, style: Theme.of(context).textTheme.titleMedium),
+                          Text("LanternChat Contact", style: Theme.of(context).textTheme.bodySmall),
+                          SizedBox(
+                            height: 200,
+                            width: 200,
+                            child: QrImageView(data: "${ConstantString.appName}/${currentUser.uid}"),
+                            // child: Image.network(
+                            //   'https://www.freepnglogos.com/uploads/qr-code-png/qr-code-file-bangla-mobile-code-0.png',
+                            // ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  Positioned(
+                    top: -avtarRadius,
+                    child: CircularUserAvatar(imageUrl: currentUser.photoURL, radius: avtarRadius),
+                  ),
+                ],
+              ),
             ),
-            Expanded(child: TabBarView(children: [ShowQrTab(), ScanQrTab()])),
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Text(
+                'Your QR code is private. If you share it with someone, they can scan it with their LanternChat Camera to add you as a contact',
+              ),
+            ),
+
+            ElevatedButton(
+              onPressed: () {
+                context.push(AppRoute.qrScan);
+              },
+              child: Text("Scan QR"),
+            ),
           ],
         ),
       ),
+
+      // body: DefaultTabController(
+      //   length: 2,
+      //   // initialIndex: 1,
+      //   // A scrollable widgets MUST know its size in the non-scroll direction.
+      //   child: Column(
+      //     children: [
+      //       TabBar(
+      //         tabs: [
+      //           Tab(child: Text("QR CODE")),
+      //           Tab(child: Text("SCAN CODE")),
+      //         ],
+      //       ),
+      //       Expanded(child: TabBarView(children: [ShowQrTab(), ScanQrTab()])),
+      //     ],
+      //   ),
+      // ),
     );
   }
 }

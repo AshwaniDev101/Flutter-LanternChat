@@ -151,7 +151,7 @@ class _Card extends StatelessWidget {
                       Text(_getName(), style: Theme.of(context).textTheme.titleSmall),
                       Spacer(),
                       if (conversationEntry.conversation != null)
-                        Text(TimerFormateHelper.formatMessageDate(conversationEntry.conversation!.lastMessageTime)),
+                        Text(TimeFormatHelper.formatMessageDate(conversationEntry.conversation!.lastMessageTime)),
                     ],
                   ),
 

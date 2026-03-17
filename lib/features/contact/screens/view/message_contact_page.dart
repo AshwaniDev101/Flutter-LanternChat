@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -11,14 +10,14 @@ import 'package:lanternchat/features/conversation/provider/conversation_provider
 import 'package:lanternchat/models/conversations/conversation_entry.dart';
 import 'package:lanternchat/models/conversations/enums/conversation_type.dart';
 
-import '../../../../../models/conversations/conversation.dart';
-import '../../../../../models/users/contact.dart';
-import '../../../../../models/users/user_presence.dart';
+import '../../../../models/conversations/conversation.dart';
+import '../../../../models/users/contact.dart';
+import '../../../../models/users/user_presence.dart';
+import '../../../auth/provider/auth_provider.dart';
 import '../../provider/contact_providers.dart';
 
-
-class ContactPage extends ConsumerWidget {
-  const ContactPage({super.key});
+class MessageContactPage extends ConsumerWidget {
+  const MessageContactPage({super.key});
 
   @override
   Widget build(BuildContext context, ref) {
@@ -28,20 +27,37 @@ class ContactPage extends ConsumerWidget {
     final AsyncValue<List<Contact>> connectionStreamProvider = ref.watch(contactStreamProvider);
 
 
-
     return Scaffold(
-      appBar: AppBar(title: Text('Contacts (${_getCount(connectionStreamProvider)})'), centerTitle: true,actions: [
-
-
-
-      ],),
+      appBar: AppBar(title: Text('Select Contacts')),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Column(
+              children: [
+                NewButton(icon: Icons.group_add, title: 'New group', onTap: () {
 
-            SizedBox(height: 12,),
+                  context.pushReplacement(AppRoute.groupSetup);
+
+                }),
+
+                NewButton(
+                  icon: Icons.person_add_alt_1,
+                  title: 'New contact',
+                  onTap: () {},
+                  additionalOption: (
+                    icon: Icons.qr_code,
+                    onTap: () {
+                      context.pushReplacement(AppRoute.qrCode);
+                    },
+                  ),
+                ),
+                // NewButton(icon: Icons.groups, title: 'New Community', onTap: () {}),
+              ],
+            ),
+
+            Padding(padding: const EdgeInsets.all(8), child: Text('Contact on LanternChat')),
             Expanded(
               child: connectionStreamProvider.when(
                 data: (List<Contact> contacts) {
@@ -54,7 +70,7 @@ class ContactPage extends ConsumerWidget {
                         onClick: () {
 
                           final conversationEntry = ConversationEntry(contact: contacts[index], conversation: null);
-                          context.push(AppRoute.chat, extra: conversationEntry);
+                          context.pushReplacement(AppRoute.chat, extra: conversationEntry);
 
 
                         },
@@ -77,17 +93,5 @@ class ContactPage extends ConsumerWidget {
         ),
       ),
     );
-  }
-
-  String _getCount(AsyncValue<List<Contact>> connectionStreamProvider) {
-
-    if(connectionStreamProvider.value!=null)
-      {
-        return connectionStreamProvider.value!.length.toString();
-      }else
-        {
-          return '';
-        }
-
   }
 }

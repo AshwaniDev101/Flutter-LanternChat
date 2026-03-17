@@ -6,6 +6,7 @@ import 'package:lanternchat/core/theme/app_colors.dart';
 import 'package:lanternchat/features/settings/screens/view/widgets/list_item.dart';
 import 'package:lanternchat/models/users/app_user.dart';
 import 'package:lanternchat/shared/widgets/circular_user_avatar.dart';
+import 'package:lanternchat/shared/widgets/online_status.dart';
 
 import '../../../../models/users/user_presence.dart';
 import '../../../auth/provider/auth_provider.dart';
@@ -42,7 +43,9 @@ class SettingsPage extends ConsumerWidget {
                       Row(
                         children: [
 
-                          _isOnlineWidget(presenceMap[currentUser.uid]),
+                          // _isOnlineWidget(presenceMap[currentUser.uid]),
+
+                          OnlineUserPresence(uid: currentUser.uid),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 40),
                             child: CircularUserAvatar(imageUrl: currentUser.photoURL, radius: 40),
@@ -99,26 +102,26 @@ class SettingsPage extends ConsumerWidget {
     );
   }
 
-  Widget _isOnlineWidget(UserPresence? userPresence) {
-
-
-
-    if (userPresence != null && userPresence.isOnline == true) {
-      return     Row(
-        children: [
-          Icon(Icons.circle,size: 12,color: Colors.green,),
-          SizedBox(width: 4,),
-          Text('Online',style: TextStyle(color:Colors.green, fontSize: 14, fontWeight: FontWeight.w500),)
-        ],
-      );
-    } else {
-      return Row(
-        children: [
-          Icon(Icons.circle,size: 12,color: Colors.red,),
-          SizedBox(width: 4,),
-          Text('Online',style: TextStyle(color:Colors.red, fontSize: 14, fontWeight: FontWeight.w500),)
-        ],
-      );
-    }
-  }
+  // Widget _isOnlineWidget(UserPresence? userPresence) {
+  //
+  //
+  //
+  //   if (userPresence != null && userPresence.isOnline == true) {
+  //     return     Row(
+  //       children: [
+  //         Icon(Icons.circle,size: 12,color: Colors.green,),
+  //         SizedBox(width: 4,),
+  //         Text('Online',style: TextStyle(color:Colors.green, fontSize: 14, fontWeight: FontWeight.w500),)
+  //       ],
+  //     );
+  //   } else {
+  //     return Row(
+  //       children: [
+  //         Icon(Icons.circle,size: 12,color: Colors.red,),
+  //         SizedBox(width: 4,),
+  //         Text('Online',style: TextStyle(color:Colors.red, fontSize: 14, fontWeight: FontWeight.w500),)
+  //       ],
+  //     );
+  //   }
+  // }
 }

@@ -15,6 +15,7 @@ import '../../features/home/screens/view/home_page.dart';
 import '../../features/auth/screens/view/auth_page.dart';
 import '../../features/profile/screens/view/profile_page.dart';
 import '../../features/qr/screens/view/qr_page.dart';
+import '../../features/qr/screens/view/scan_qr/qr_scan_tab.dart';
 import '../../features/settings/screens/view/settings_page.dart';
 
 class GoRouterRefreshStream extends ChangeNotifier {
@@ -45,6 +46,7 @@ class AppRoute {
   static const contacts = '/contacts';
   static const chat = '/conversation-window';
   static const qrCode = '/qr-code';
+  static const qrScan = '/qr-scan';
   static const groupSetup = '/group-setup';
 }
 
@@ -123,6 +125,13 @@ final goRouterProvider = Provider((ref) {
         path: AppRoute.qrCode,
         builder: (BuildContext context, GoRouterState state) {
           return QrCodePage();
+        },
+      ),
+
+      GoRoute(
+        path: AppRoute.qrScan,
+        builder: (BuildContext context, GoRouterState state) {
+          return ScanQrTab();
         },
       ),
 
