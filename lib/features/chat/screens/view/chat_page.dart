@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lanternchat/core/helpers/id_helper.dart';
+import 'package:lanternchat/features/auth/provider/presence_provider.dart';
 import 'package:lanternchat/features/chat/screens/view/widgets/chat_bubble.dart';
 import 'package:lanternchat/features/chat/screens/view/widgets/text_area.dart';
 import 'package:lanternchat/features/chat/screens/view/widgets/typing_indicator.dart';
@@ -166,9 +167,6 @@ class _ChatPageState extends ConsumerState<ChatPage> {
   Widget build(BuildContext context) {
     final ChatService chatService = ref.read(chatServiceProvider);
     final AppUser currentUser = ref.watch(currentUserProvider);
-
-    // String is uid
-
 
     // Old chatting Stream
     // final chatStream = ref.watch(chatStreamProvider(newConversation?.conversationId));

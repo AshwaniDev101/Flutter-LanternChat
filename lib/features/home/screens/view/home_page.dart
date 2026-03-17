@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lanternchat/core/theme/app_colors.dart';
+import 'package:lanternchat/features/contact/screens/view/contact_page.dart';
 import 'package:lanternchat/features/conversation/screens/view/conversation_page.dart';
 import 'package:lanternchat/features/conversation/screens/view/group_page.dart';
 import 'package:lanternchat/features/profile/screens/view/profile_page.dart';
@@ -51,7 +52,8 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _pages = [
 
     ConversationPage(),
-    GroupsPage(),
+    ContactPage(),
+    // GroupsPage(),
     QrCodePage(),
     // ProfilePage(),
     SettingsPage(),
@@ -64,41 +66,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-      // appBar: AppBar(
-      //   title: Text('LanternChat'),
-      //
-      //   actions: [
-      //     IconButton(onPressed: () {}, icon: Icon(Icons.notifications)),
-      //     IconButton(onPressed: () {}, icon: Icon(Icons.qr_code_scanner_rounded)),
-      //     IconButton(onPressed: () {}, icon: Icon(Icons.camera_alt_outlined)),
-      //     PopupMenuButton<_HomepagePopupMenu>(
-      //       itemBuilder: (context) {
-      //         return _HomepagePopupMenu.values.map((menuAction) {
-      //           return PopupMenuItem(
-      //             padding: const EdgeInsets.symmetric(horizontal: 8),
-      //             value: menuAction,
-      //             child: Row(
-      //               children: [
-      //                 Icon(
-      //                   Icons.circle,
-      //                   size: 10,
-      //                   color: menuAction.isAttention ? Colors.amberAccent : Colors.transparent,
-      //                 ),
-      //                 SizedBox(width: 5),
-      //                 Text(menuAction.label),
-      //               ],
-      //             ),
-      //           );
-      //         }).toList();
-      //       },
-      //
-      //       onSelected: (value) {
-      //         _handleMenuAction(value);
-      //       },
-      //     ),
-      //   ],
-      // ),
 
       body: IndexedStack(
         index: _currentIndex,
@@ -142,7 +109,7 @@ class _HomePageState extends State<HomePage> {
       unselectedItemColor: AppColors.muteColor,
       items: [
         BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Chat'),
-        BottomNavigationBarItem(icon: Icon(Icons.group), label: 'Groups'),
+        BottomNavigationBarItem(icon: Icon(Icons.group), label: 'Contacts'),
         BottomNavigationBarItem(icon: Icon(Icons.qr_code), label: 'QR Code'),
         BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
       ],

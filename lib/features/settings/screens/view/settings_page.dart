@@ -2,69 +2,92 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lanternchat/core/router/router_provider.dart';
+import 'package:lanternchat/core/theme/app_colors.dart';
 import 'package:lanternchat/features/settings/screens/view/widgets/list_item.dart';
+import 'package:lanternchat/models/users/app_user.dart';
 import 'package:lanternchat/shared/widgets/circular_user_avatar.dart';
 
+import '../../../../models/users/user_presence.dart';
 import '../../../auth/provider/auth_provider.dart';
+import '../../../auth/provider/presence_provider.dart';
 
 class SettingsPage extends ConsumerWidget {
   const SettingsPage({super.key});
 
   @override
   Widget build(BuildContext context, ref) {
-    final user = ref.watch(currentUserProvider);
+    final currentUser = ref.watch(currentUserProvider);
+
+    final Map<String, UserPresence> presenceMap = ref.watch(presenceMapProvider);
 
     return Scaffold(
-      appBar: AppBar(title: Text("Settings"), centerTitle: true,),
+      appBar: AppBar(title: Text("Settings"), centerTitle: true),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              SizedBox(height: 20),
+              SizedBox(height: 18),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  CircularUserAvatar(imageUrl: user.photoURL, radius: 40),
-                  SizedBox(width: 10),
                   Column(
                     children: [
-                      // User name
-                      Text(user.name, style: Theme.of(context).textTheme.titleMedium),
-                      ElevatedButton(onPressed: () {}, child: Text('status')),
+
+
                     ],
                   ),
-                  Spacer(),
+                  Column(
+                    children: [
+                      Row(
+                        children: [
 
-                  IconButton(
-                    onPressed: () {
-                      // Open QR code Scanning Page
-                      context.pushReplacement(AppRoute.qrCode);
-                    },
-                    icon: Icon(Icons.qr_code),
+                          _isOnlineWidget(presenceMap[currentUser.uid]),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 40),
+                            child: CircularUserAvatar(imageUrl: currentUser.photoURL, radius: 40),
+                          ),
+
+                          ElevatedButton(
+                            onPressed: () {
+                              ref.read(authManagerProvider).signOut();
+                            },
+                            child: Text('Logout'),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 8),
+                      Text(currentUser.name, style: Theme.of(context).textTheme.titleMedium),
+                      Text(currentUser.email, style: Theme.of(context).textTheme.bodyMedium),
+                    ],
                   ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.add_circle_outline_rounded, color: Theme.of(context).primaryColor),
+                  Column(
+                    children: [
+
+
+                      // ElevatedButton(onPressed: () {}, child: Text('status')),
+                    ],
                   ),
                 ],
               ),
+
               SizedBox(height: 10),
 
-              ListItem(icon: Icons.vpn_key_outlined, title: "Account", subtitle: "Security notification, change email"),
+              ListItem(icon: Icons.dark_mode_outlined, title: "Themes", subtitle: "Change look and feel"),
               ListItem(
-                icon: Icons.lock_outline_rounded,
-                title: "Privacy",
-                subtitle: "Block contacts, disappearing messages",
+                icon: Icons.remove_red_eye_outlined,
+                title: "Status",
+                subtitle: "Hide your online status",
               ),
-              ListItem(icon: Icons.face, title: "Avatar", subtitle: "Create, edit, profile photo"),
-              ListItem(icon: Icons.list_alt, title: "Lists", subtitle: "Manage people and groups"),
-              ListItem(icon: Icons.chat_outlined, title: "Chats", subtitle: "Theme, wallpapers, chat history"),
+              ListItem(icon: Icons.face, title: "Avatar", subtitle: "Change, hide, profile photo"),
+              ListItem(icon: Icons.list_alt, title: "Contacts", subtitle: "Manage people and groups"),
+              // ListItem(icon: Icons.chat_outlined, title: "Chats", subtitle: "Theme, wallpapers, chat history"),
               ListItem(
                 icon: Icons.notifications_none_outlined,
                 title: "Notification",
-                subtitle: "Message, group & call tones",
+                subtitle: "Manage Notifications",
               ),
-              ListItem(icon: Icons.security_update, title: "App _update"),
+              ListItem(icon: Icons.security_update, title: "Check updates", subtitle: "Keep you app up-to date"),
 
               SizedBox(height: 20),
               Text("Thanks for using this app", style: Theme.of(context).textTheme.bodySmall),
@@ -74,5 +97,28 @@ class SettingsPage extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  Widget _isOnlineWidget(UserPresence? userPresence) {
+
+
+
+    if (userPresence != null && userPresence.isOnline == true) {
+      return     Row(
+        children: [
+          Icon(Icons.circle,size: 12,color: Colors.green,),
+          SizedBox(width: 4,),
+          Text('Online',style: TextStyle(color:Colors.green, fontSize: 14, fontWeight: FontWeight.w500),)
+        ],
+      );
+    } else {
+      return Row(
+        children: [
+          Icon(Icons.circle,size: 12,color: Colors.red,),
+          SizedBox(width: 4,),
+          Text('Online',style: TextStyle(color:Colors.red, fontSize: 14, fontWeight: FontWeight.w500),)
+        ],
+      );
+    }
   }
 }

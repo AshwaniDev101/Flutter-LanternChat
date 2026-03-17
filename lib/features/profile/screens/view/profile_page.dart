@@ -105,12 +105,12 @@ class ProfilePage extends ConsumerWidget {
                 ColumnButton(icon: Icons.privacy_tip_outlined, title: 'Advance chat privacy', subtitle: "Off"),
           
                 // ColumnButton(icon:Icons.logout,title:'Logout',),
-                ElevatedButton(
-                  onPressed: () {
-                    ref.read(authManagerProvider).signOut();
-                  },
-                  child: Text('Logout'),
-                ),
+                // ElevatedButton(
+                //   onPressed: () {
+                //     ref.read(authManagerProvider).signOut();
+                //   },
+                //   child: Text('Logout'),
+                // ),
               ],
             ),
           ),

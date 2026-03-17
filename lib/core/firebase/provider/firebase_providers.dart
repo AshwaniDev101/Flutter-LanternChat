@@ -9,7 +9,7 @@ final firestoreProvider = Provider<FirebaseFirestore>((ref) {
   return FirebaseFirestore.instance;
 });
 
-final realtimeDbProvider = Provider<FirebaseDatabase>((ref) {
+final firebaseDatabaseProvider = Provider<FirebaseDatabase>((ref) {
 
   return FirebaseDatabase.instanceFor(
     app: Firebase.app(),

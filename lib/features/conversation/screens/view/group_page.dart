@@ -65,7 +65,7 @@ class GroupsPage extends ConsumerWidget {
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add_comment_rounded),
         onPressed: () {
-          context.push(AppRoute.selectContact);
+          context.push(AppRoute.messageContact);
         },
       ),
     );

@@ -10,6 +10,7 @@ import '../../features/auth/provider/auth_provider.dart';
 import '../../features/chat/screens/view/chat_page.dart';
 import '../../features/chat/screens/view/group_setup_page.dart';
 import '../../features/contact/screens/view/contact_page.dart';
+import '../../features/contact/screens/view/message_contact_page.dart';
 import '../../features/home/screens/view/home_page.dart';
 import '../../features/auth/screens/view/auth_page.dart';
 import '../../features/profile/screens/view/profile_page.dart';
@@ -40,7 +41,8 @@ class AppRoute {
   static const auth = '/login';
   static const profile = '/profile';
   static const settings = '/settings';
-  static const selectContact = '/select-contact';
+  static const messageContact = '/message-contact';
+  static const contacts = '/contacts';
   static const chat = '/conversation-window';
   static const qrCode = '/qr-code';
   static const groupSetup = '/group-setup';
@@ -55,12 +57,10 @@ final goRouterProvider = Provider((ref) {
     initialLocation: AppRoute.auth,
     // redirect run on every route change.
     redirect: (BuildContext context, GoRouterState state) {
-
       final User? user = auth.currentUser;
       final isOnLoginPage = state.matchedLocation == AppRoute.auth;
 
       if (user == null && !isOnLoginPage) {
-
         return AppRoute.auth;
       }
       if (user != null && isOnLoginPage) {
@@ -99,12 +99,18 @@ final goRouterProvider = Provider((ref) {
       ),
 
       GoRoute(
-        path: AppRoute.selectContact,
+        path: AppRoute.messageContact,
+        builder: (BuildContext context, GoRouterState state) {
+          return const MessageContactPage();
+        },
+      ),
+
+      GoRoute(
+        path: AppRoute.contacts,
         builder: (BuildContext context, GoRouterState state) {
           return const ContactPage();
         },
       ),
-
       GoRoute(
         path: AppRoute.chat,
         builder: (BuildContext context, GoRouterState state) {
@@ -126,8 +132,6 @@ final goRouterProvider = Provider((ref) {
           return GroupSetupPage();
         },
       ),
-
-
     ],
   );
 });

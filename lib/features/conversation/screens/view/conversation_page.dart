@@ -7,6 +7,7 @@ import 'package:lanternchat/models/conversations/conversation_entry.dart';
 
 import '../../../../../core/router/router_provider.dart';
 import '../../../../shared/widgets/circular_user_avatar.dart';
+import '../../../auth/provider/presence_provider.dart';
 import '../../provider/conversation_provider.dart';
 
 final searchTextProvider = StateProvider<String>((ref) => '');
@@ -21,6 +22,13 @@ class ConversationPage extends ConsumerWidget {
 
     // return a list of contact and conversation link by memberIds
     final conversationSteam = ref.watch(conversationContactMergeSteamProvider(currentUser.uid));
+
+
+    // Setting User presence Online
+    final up = ref.read(presenceServiceProvider);
+    up.setOnlineStatus(uid: currentUser.uid);
+
+
 
     return Scaffold(
       appBar: AppBar(
@@ -70,7 +78,7 @@ class ConversationPage extends ConsumerWidget {
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add_comment_rounded),
         onPressed: () {
-          context.push(AppRoute.selectContact);
+          context.push(AppRoute.messageContact);
         },
       ),
     );

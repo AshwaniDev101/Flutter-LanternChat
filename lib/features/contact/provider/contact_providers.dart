@@ -8,14 +8,14 @@ import '../../auth/provider/auth_provider.dart';
 import '../../chat/provider/chat_provider.dart';
 import '../data/contact_service.dart';
 
-final contactServiceProvider = Provider((ref) {
+final Provider<ContactService> contactServiceProvider = Provider((ref) {
   final firestore = ref.watch(firestoreProvider);
   return ContactService(firestore: firestore);
 });
 
 
 // Todo we can get rid of contactStreamProvider since we have contact lookup table
-final contactStreamProvider = StreamProvider<List<Contact>>((ref) {
+final StreamProvider<List<Contact>> contactStreamProvider = StreamProvider<List<Contact>>((ref) {
   // final currentUser = ref.watch(firebaseAuthProvider).currentUser;
   final currentUser = ref.watch(currentUserProvider);
 
@@ -25,7 +25,7 @@ final contactStreamProvider = StreamProvider<List<Contact>>((ref) {
 
 
 /// Return a nice Map of contacts
-final contactsMapProvider = Provider<Map<String, Contact>>((ref) {
+final Provider<Map<String, Contact>> contactsMapProvider = Provider<Map<String, Contact>>((ref) {
   final List<Contact> contacts = ref.watch(contactStreamProvider).value ?? [];
 
   return {for (final c in contacts) c.uid: c};
