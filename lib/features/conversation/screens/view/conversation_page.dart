@@ -26,7 +26,7 @@ class ConversationPage extends ConsumerWidget {
 
     // Setting User presence Online
     final up = ref.read(presenceServiceProvider);
-    up.setOnlineStatus(uid: currentUser.uid);
+    up.setOnlineStatus(uid: currentUser.uid, isOnline: true);
 
     return Scaffold(
       appBar: AppBar(

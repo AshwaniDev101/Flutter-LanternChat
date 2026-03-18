@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lanternchat/features/auth/screens/view/widgets/sign_in_button.dart';
 
-import '../../../../core/firebase/provider/firebase_providers.dart';
+import '../../../../core/services/firebase/provider/firebase_providers.dart';
 import '../../../../models/users/app_user.dart';
 import '../../provider/auth_provider.dart';
 

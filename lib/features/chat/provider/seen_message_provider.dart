@@ -5,7 +5,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lanternchat/models/messages/message_tile.dart';
 
-import '../../../../core/firebase/provider/firebase_providers.dart';
+import '../../../../core/services/firebase/provider/firebase_providers.dart';
 import '../data/seen_message_service.dart';
 import '../util/chat_stream_utils.dart';
 import 'chat_provider.dart';

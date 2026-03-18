@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:lanternchat/core/router/router_provider.dart';
-import 'package:lanternchat/core/theme/app_colors.dart';
 import 'package:lanternchat/features/settings/screens/view/widgets/list_item.dart';
-import 'package:lanternchat/models/users/app_user.dart';
 import 'package:lanternchat/shared/widgets/circular_user_avatar.dart';
 import 'package:lanternchat/shared/widgets/online_status.dart';
 
+import '../../../../core/theme/providers/theme_mode_provider.dart';
 import '../../../../models/users/user_presence.dart';
 import '../../../auth/provider/auth_provider.dart';
 import '../../../auth/provider/presence_provider.dart';
@@ -32,19 +29,12 @@ class SettingsPage extends ConsumerWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Column(
-                    children: [
-
-
-                    ],
-                  ),
+                  Column(children: []),
                   Column(
                     children: [
                       Row(
                         children: [
-
                           // _isOnlineWidget(presenceMap[currentUser.uid]),
-
                           OnlineUserPresence(uid: currentUser.uid),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 40),
@@ -55,6 +45,10 @@ class SettingsPage extends ConsumerWidget {
                             onPressed: () {
                               ref.read(authManagerProvider).signOut();
                             },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.redAccent,
+                              foregroundColor: Colors.white,
+                            ),
                             child: Text('Logout'),
                           ),
                         ],
@@ -66,8 +60,6 @@ class SettingsPage extends ConsumerWidget {
                   ),
                   Column(
                     children: [
-
-
                       // ElevatedButton(onPressed: () {}, child: Text('status')),
                     ],
                   ),
@@ -76,14 +68,23 @@ class SettingsPage extends ConsumerWidget {
 
               SizedBox(height: 10),
 
-              ListItem(icon: Icons.dark_mode_outlined, title: "Themes", subtitle: "Change look and feel"),
               ListItem(
-                icon: Icons.remove_red_eye_outlined,
-                title: "Status",
-                subtitle: "Hide your online status",
+                icon: Icons.dark_mode,
+                title: "Dark Theme",
+                subtitle: "Switch between light and dark mode",
+                onTap: () {
+                  final current = ref.read(themeModeProvider);
+
+                  ref.read(themeModeProvider.notifier).state = current == ThemeMode.dark
+                      ? ThemeMode.light
+                      : ThemeMode.dark;
+                },
               ),
+              ListItem(icon: Icons.remove_red_eye_outlined, title: "Status", subtitle: "Hide your online status",onTap: (){
+
+              },),
               ListItem(icon: Icons.face, title: "Avatar", subtitle: "Change, hide, profile photo"),
-              ListItem(icon: Icons.list_alt, title: "Contacts", subtitle: "Manage people and groups"),
+              // ListItem(icon: Icons.list_alt, title: "Contacts", subtitle: "Manage people and groups"),
               // ListItem(icon: Icons.chat_outlined, title: "Chats", subtitle: "Theme, wallpapers, chat history"),
               ListItem(
                 icon: Icons.notifications_none_outlined,

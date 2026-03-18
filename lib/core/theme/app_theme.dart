@@ -39,4 +39,42 @@ class Themes {
       ),
     ),
   );
+
+  static ThemeData get darkThemeData => ThemeData(
+    useMaterial3: true,
+    brightness: Brightness.dark,
+
+    colorScheme: ColorScheme(
+      brightness: Brightness.dark,
+      primary: DarkAppColors.primary,
+      onPrimary: Colors.white,
+      secondary: DarkAppColors.secondary,
+      onSecondary: Colors.black,
+      error: Colors.redAccent,
+      onError: Colors.black,
+      surface: DarkAppColors.surface,
+      onSurface: Colors.white70,
+    ),
+
+    scaffoldBackgroundColor: DarkAppColors.background,
+
+    extensions: [
+      ChatTheme(
+        senderBubble: DarkAppColors.senderBubble,
+        receivedBubble: DarkAppColors.receivedBubble,
+        muteColor: DarkAppColors.muteColor,
+      ),
+    ],
+
+    appBarTheme: AppBarTheme(
+      backgroundColor: DarkAppColors.primary,
+      foregroundColor: Colors.white,
+      elevation: 0,
+      systemOverlayStyle: SystemUiOverlayStyle(
+        statusBarColor: DarkAppColors.statusBar,
+        statusBarIconBrightness: Brightness.light,
+        statusBarBrightness: Brightness.dark,
+      ),
+    ),
+  );
 }

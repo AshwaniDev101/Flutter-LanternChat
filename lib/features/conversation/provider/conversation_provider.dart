@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lanternchat/features/conversation/util/conversation_stream_utils.dart';
 import 'package:lanternchat/features/contact/provider/contact_providers.dart';
 import 'package:lanternchat/models/conversations/conversation_entry.dart';
-import '../../../core/firebase/provider/firebase_providers.dart';
+import '../../../core/services/firebase/provider/firebase_providers.dart';
 import '../data/conversation_service.dart';
 
 final conversationServiceProvider = Provider((ref) {

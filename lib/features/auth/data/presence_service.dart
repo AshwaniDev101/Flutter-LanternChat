@@ -46,7 +46,7 @@ class PresenceService {
     });
   }
 
-  Future<void> setOnlineStatus({required String uid}) async {
+  Future<void> setOnlineStatus({required String uid, required bool isOnline}) async {
     final ref = firebaseDatabase.ref().child(_ServiceConstants.users).child(_ServiceConstants.onlineStatus).child(uid);
 
     final onDisconnect = ref.onDisconnect();
@@ -61,7 +61,7 @@ class PresenceService {
     // Set Online
     await ref.set({
       _ServiceConstants.uid: uid,
-      _ServiceConstants.isOnline: true,
+      _ServiceConstants.isOnline: isOnline,
       _ServiceConstants.lastSeen: ServerValue.timestamp,
     });
 

@@ -17,6 +17,21 @@ class AppColors {
 }
 
 
+
+class DarkAppColors {
+  static const Color statusBar = Color(0xFF0D1B2A);   // deep navy (not pure black)
+  static const Color primary = Color(0xFF1B3A4B);     // muted dark blue
+  static const Color secondary = Color(0xFF4EA8DE);   // vibrant accent blue
+  static const Color background = Color(0xFF0F172A);  // soft dark (eye-friendly)
+
+  static const Color surface = Color(0xFF1E293B);     // cards / containers
+  static const Color muteColor = Color(0xFF94A3B8);   // soft grey text
+
+  // Chat
+  static const Color senderBubble = Color(0xFF2563EB);   // strong blue (you)
+  static const Color receivedBubble = Color(0xFF1E293B); // dark neutral
+}
+
 // class AppColors {
 //   static const Color statusBar = Color(0xFF1C3345);
 //   static const Color primary = Color(0xFF355872);

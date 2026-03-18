@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lanternchat/features/auth/data/presence_service.dart';
 import 'package:lanternchat/models/users/user_presence.dart';
 
-import '../../../core/firebase/provider/firebase_providers.dart';
+import '../../../core/services/firebase/provider/firebase_providers.dart';
 
 final Provider<PresenceService> presenceServiceProvider = Provider((ref) {
   final firebaseDatabase = ref.watch(firebaseDatabaseProvider);
@@ -31,8 +31,3 @@ final Provider<Map<String, UserPresence>> presenceMapProvider = Provider<Map<Str
     );
   });
 });
-
-// final StreamProviderFamily<Map<String, dynamic>?, String> userPresenceProvider = StreamProvider.family<Map<String, dynamic>?, String>((ref, uid) {
-//   final presenceService = ref.watch(presenceServiceProvider);
-//   return presenceService.watchUserStatus(uid);
-// });

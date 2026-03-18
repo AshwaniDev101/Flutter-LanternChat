@@ -2,8 +2,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:lanternchat/core/services/shared_preference/provider/shared_preference_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'core/router/router_provider.dart';
 import 'core/theme/app_theme.dart';
+import 'core/theme/providers/theme_mode_provider.dart';
 import 'firebase_options.dart';
 
 // Build a release version
@@ -16,19 +19,29 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  // await UserManager().initializeGoogleSignIn();
-  // Initialize Google Sign-In here
-  // Get this id from google-services.json (in android/app/), Copy the "client_id" where "client_type": 3
-  // ? why : New google_sign_in package (v7+) uses Android Credential Manager. It often can't auto-read the ID from google-services.json, so manual initialization is required.
+  // NOTE:
+  // - The 'serverClientId' MUST be provided manually.
+  // - Find it in: android/app/google-services.json
+  //   Look for the entry where "client_type": 3
+  //
+  // WHY?:
+  // - google_sign_in (v7+) uses Android Credential Manager
+  // - It may NOT automatically read the client ID from google-services.json
+  // - Without manual initialization, sign-in can fail silently or behave inconsistently
+
   await GoogleSignIn.instance.initialize(
     serverClientId: '352733183524-lpcgkaktk59qifrgk1m2glh9h494s26n.apps.googleusercontent.com',
   );
-  runApp(ProviderScope(child: const LanternChat()));
+
+  // Initializing the SharedPreferences
+  final prefs = await SharedPreferences.getInstance();
+
+  runApp(ProviderScope(overrides: [sharedPreferencesProvider.overrideWithValue(prefs)], child: const LanternChat()));
 }
 
 // Todo implement paging
 // Introduce paging
-//User scrolls up
+// User scrolls up
 // ScrollController detects threshold
 // loadOlderMessages()
 // Firestore query (startAfterDocument)
@@ -41,13 +54,25 @@ class LanternChat extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
+    final themeMode = ref.watch(themeModeProvider);
+
     return MaterialApp.router(
       routerConfig: ref.watch(goRouterProvider),
-      themeMode: ThemeMode.light,
-      darkTheme: Themes.lightThemeData,
+      themeMode: themeMode,
       theme: Themes.lightThemeData,
+      darkTheme: Themes.darkThemeData,
+
       debugShowCheckedModeBanner: false,
       title: 'Lantern Chat',
+
+      builder: (context, child) {
+        return AnimatedTheme(
+          data: themeMode == ThemeMode.dark ? Themes.darkThemeData : Themes.lightThemeData,
+          duration: const Duration(milliseconds: 100),
+          curve: Curves.easeInOut,
+          child: child!,
+        );
+      },
     );
   }
 }

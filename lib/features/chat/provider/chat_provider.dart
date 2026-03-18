@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../core/firebase/provider/firebase_providers.dart';
+import '../../../../core/services/firebase/provider/firebase_providers.dart';
 import '../data/chat_service.dart';
 
 final chatServiceProvider = Provider((ref) {
