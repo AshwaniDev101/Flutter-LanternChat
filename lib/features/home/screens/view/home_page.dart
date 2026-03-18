@@ -109,7 +109,7 @@ class _HomePageState extends State<HomePage> {
       unselectedItemColor: AppColors.muteColor,
       items: [
         BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Chat'),
-        BottomNavigationBarItem(icon: Icon(Icons.group), label: 'Contacts'),
+        BottomNavigationBarItem(icon: Icon(Icons.call), label: 'Contacts'),
         BottomNavigationBarItem(icon: Icon(Icons.qr_code), label: 'QR Code'),
         BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
       ],

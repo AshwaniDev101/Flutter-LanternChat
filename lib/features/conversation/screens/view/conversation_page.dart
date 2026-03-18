@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lanternchat/core/helpers/timer_formate_helper.dart';
+import 'package:lanternchat/core/theme/app_colors.dart';
 import 'package:lanternchat/features/auth/provider/auth_provider.dart';
 import 'package:lanternchat/models/conversations/conversation_entry.dart';
 import 'package:lanternchat/models/conversations/enums/conversation_type.dart';
@@ -24,9 +25,7 @@ class ConversationPage extends ConsumerWidget {
     // return a list of contact and conversation link by memberIds
     final conversationSteam = ref.watch(conversationContactMergeSteamProvider(currentUser.uid));
 
-    // Setting User presence Online
-    final up = ref.read(presenceServiceProvider);
-    up.setOnlineStatus(uid: currentUser.uid, isOnline: true);
+
 
     return Scaffold(
       appBar: AppBar(
@@ -34,7 +33,12 @@ class ConversationPage extends ConsumerWidget {
         // title: Text('All Conversations'),
         centerTitle: true,
 
+        leading: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: OnlineUserPresence(uid: currentUser.uid, showOnlyDot: true,),
+        ),
         actions: [IconButton(onPressed: () {}, icon: Icon(Icons.notifications))],
+
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -158,7 +162,17 @@ class _Card extends StatelessWidget {
                 children: [
                   Row(
                     children: [
+
                       Text(_getName(), style: Theme.of(context).textTheme.titleSmall),
+
+                      if (conversationEntry.contact != null &&
+                          conversationEntry.conversation != null &&
+                          conversationEntry.conversation!.conversationType == ConversationType.group)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          child: Icon(Icons.group, size: 16, color: AppColors.primary,),
+                        ),
+
                       if (conversationEntry.contact != null &&
                           conversationEntry.conversation != null &&
                           conversationEntry.conversation!.conversationType == ConversationType.solo)

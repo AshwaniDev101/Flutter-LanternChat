@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lanternchat/core/services/shared_preference/data/shared_preference_manager.dart';
+import 'package:lanternchat/core/services/shared_preference/provider/shared_preference_provider.dart';
 import 'package:lanternchat/features/settings/screens/view/widgets/list_item.dart';
 import 'package:lanternchat/shared/widgets/circular_user_avatar.dart';
 import 'package:lanternchat/shared/widgets/online_status.dart';
@@ -15,8 +17,7 @@ class SettingsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final currentUser = ref.watch(currentUserProvider);
-
-    final Map<String, UserPresence> presenceMap = ref.watch(presenceMapProvider);
+    final spp = ref.read(sharedPreferencesProvider);
 
     return Scaffold(
       appBar: AppBar(title: Text("Settings"), centerTitle: true),
@@ -80,22 +81,33 @@ class SettingsPage extends ConsumerWidget {
                       : ThemeMode.dark;
                 },
               ),
-              ListItem(icon: Icons.remove_red_eye_outlined, title: "Status", subtitle: "Hide your online status",onTap: (){
+              ListItem(icon: Icons.remove_red_eye_outlined, title: "Online Visibility", subtitle: "Hide your online status from others",onTap: (){
+
+                final bool newValue = !(spp.getBool(SharedData.onlineStatus) ?? true);
+
+                spp.setBool(SharedData.onlineStatus, newValue);
+
+                ref.read(presenceServiceProvider).setOnlineStatus(
+                  uid: currentUser.uid,
+                  isOnline: newValue,
+                );
+
+
 
               },),
-              ListItem(icon: Icons.face, title: "Avatar", subtitle: "Change, hide, profile photo"),
+              // ListItem(icon: Icons.face, title: "Avatar", subtitle: "Change, hide, profile photo"),
               // ListItem(icon: Icons.list_alt, title: "Contacts", subtitle: "Manage people and groups"),
               // ListItem(icon: Icons.chat_outlined, title: "Chats", subtitle: "Theme, wallpapers, chat history"),
-              ListItem(
-                icon: Icons.notifications_none_outlined,
-                title: "Notification",
-                subtitle: "Manage Notifications",
-              ),
+              // ListItem(
+              //   icon: Icons.notifications_none_outlined,
+              //   title: "Notification",
+              //   subtitle: "Manage Notifications",
+              // ),
               ListItem(icon: Icons.security_update, title: "Check updates", subtitle: "Keep you app up-to date"),
 
               SizedBox(height: 20),
               Text("Thanks for using this app", style: Theme.of(context).textTheme.bodySmall),
-              Text("Drop a hello in any of my socials", style: Theme.of(context).textTheme.bodySmall),
+              Text("Drop a hello on any of my socials", style: Theme.of(context).textTheme.bodySmall),
             ],
           ),
         ),

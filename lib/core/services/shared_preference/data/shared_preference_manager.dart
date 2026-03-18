@@ -2,6 +2,12 @@
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+
+class SharedData
+{
+  static const String onlineStatus = 'onlineStatus';
+}
+
 class SharedPreferencesManager {
   final SharedPreferences prefs;
 

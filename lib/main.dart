@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:lanternchat/core/services/shared_preference/provider/shared_preference_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'app_lifecycle_handler.dart';
 import 'core/router/router_provider.dart';
 import 'core/theme/app_theme.dart';
 import 'core/theme/providers/theme_mode_provider.dart';
@@ -36,7 +37,12 @@ void main() async {
   // Initializing the SharedPreferences
   final prefs = await SharedPreferences.getInstance();
 
-  runApp(ProviderScope(overrides: [sharedPreferencesProvider.overrideWithValue(prefs)], child: const LanternChat()));
+  runApp(
+    ProviderScope(
+      overrides: [sharedPreferencesProvider.overrideWithValue(prefs)],
+      child: AppLifecycleHandler(child: const LanternChat()),
+    ),
+  );
 }
 
 // Todo implement paging

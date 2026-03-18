@@ -8,6 +8,7 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../../../core/constants/constant_strings.dart';
 import '../../../../shared/widgets/circular_user_avatar.dart';
+import '../../../../shared/widgets/online_status.dart';
 
 class QrCodePage extends ConsumerWidget {
   const QrCodePage({super.key});
@@ -20,7 +21,10 @@ class QrCodePage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('QR code'),
+        title: Text('QR code'), leading: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: OnlineUserPresence(uid: currentUser.uid, showOnlyDot: true),
+      ),
         centerTitle: true,
         actions: [
           IconButton(
