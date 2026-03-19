@@ -13,7 +13,6 @@ final conversationServiceProvider = Provider((ref) {
 // final conversationSteamProvider = StreamProvider.family<List<Conversation>, String>((ref, String memberIds) {
 //   return ref.watch(conversationServiceProvider).conversationStream(memberIds);
 // });
-//
 
 final conversationContactMergeSteamProvider = StreamProvider.family<List<ConversationEntry>, String>((ref, currentUid) {
   // currentUid is to filter where 'memberIds'

@@ -7,6 +7,7 @@ class _ServiceConstants {
   static const String lastMessageTime = 'lastMessageTime';
   static const String memberIds = 'memberIds';
   static const String lastSenderId = 'lastSenderId';
+  static const String pairID = 'pairID';
 }
 
 class ConversationService {
@@ -27,7 +28,7 @@ class ConversationService {
   }
 
   Future<Conversation?> getConversationUsingPairId({required String pairId}) async {
-    final snap = await _getConversationsRef().where('pairID', isEqualTo: pairId).limit(1).get();
+    final snap = await _getConversationsRef().where(_ServiceConstants.pairID, isEqualTo: pairId).limit(1).get();
 
     if (snap.docs.isEmpty) {
       return null;
@@ -38,8 +39,11 @@ class ConversationService {
     return Conversation.fromMap(data);
   }
 
-
-
+  Future<void> removeUser({required String conversationId, required String memberUid}) async {
+    await _getConversationsRef().doc(conversationId).update({
+      _ServiceConstants.memberIds: FieldValue.arrayRemove([memberUid]),
+    });
+  }
 
   CollectionReference<Map<String, dynamic>> _getConversationsRef() {
     return firestore.collection(_ServiceConstants.conversations);

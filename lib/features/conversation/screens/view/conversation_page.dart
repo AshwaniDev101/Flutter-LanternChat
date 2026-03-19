@@ -9,42 +9,78 @@ import 'package:lanternchat/models/conversations/enums/conversation_type.dart';
 import 'package:lanternchat/shared/widgets/online_status.dart';
 
 import '../../../../../core/router/router_provider.dart';
+import '../../../../core/util/logger.dart';
 import '../../../../shared/widgets/circular_user_avatar.dart';
-import '../../../auth/provider/presence_provider.dart';
 import '../../provider/conversation_provider.dart';
 
 final searchTextProvider = StateProvider<String>((ref) => '');
 
-class ConversationPage extends ConsumerWidget {
-  const ConversationPage({super.key});
+class ConversationPage extends ConsumerStatefulWidget {
+ const ConversationPage({super.key});
+
+
 
   @override
-  Widget build(BuildContext context, ref) {
+  ConsumerState<ConversationPage> createState() => _ConversationPageState();
+}
+
+class _ConversationPageState extends ConsumerState<ConversationPage> {
+
+
+  bool _isSelectionMode = false;
+  int _selectionCount = 0;
+
+  Set<String> _selectedConversations = {};
+
+@override
+  Widget build(BuildContext context) {
     final currentUser = ref.watch(currentUserProvider);
 
     // return a list of contact and conversation link by memberIds
     final conversationSteam = ref.watch(conversationContactMergeSteamProvider(currentUser.uid));
 
-
-
     return Scaffold(
-      appBar: AppBar(
-        title: Text('All Chats'),
-        // title: Text('All Conversations'),
-        centerTitle: true,
+      appBar: _isSelectionMode
+          ? AppBar(
+        leadingWidth: 100,
+              leading: Row(
+                children: [
+                  SizedBox(width: 8,),
+                  IconButton(onPressed: () {
 
-        leading: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: OnlineUserPresence(uid: currentUser.uid, showOnlyDot: true,),
-        ),
-        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.notifications))],
+                    setState(() {
+                      _isSelectionMode = false;
+                      _selectedConversations.clear();
+                      _selectionCount = 0;
+                      AppLogger.i('_selectedConversations {} $_selectedConversations');
+                    });
+                  }, icon: Icon(Icons.arrow_back_rounded)),
+                  SizedBox(width: 12,),
+                  Text(_selectionCount.toString(), style: TextStyle(fontSize: 18),),
+                ],
+              ),
 
-      ),
+              actions: [
+                IconButton(onPressed: () {}, icon: Icon(Icons.push_pin_outlined)),
+                IconButton(onPressed: () {}, icon: Icon(Icons.delete_outline_outlined)),
+              ],
+            )
+          : AppBar(
+              title: Text('All Chats'),
+              // title: Text('All Conversations'),
+              centerTitle: true,
+
+              leading: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: OnlineUserPresence(uid: currentUser.uid, showOnlyDot: true),
+              ),
+              actions: [IconButton(onPressed: () {}, icon: Icon(Icons.notifications))],
+            ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8),
         child: Column(
           children: [
-            SizedBox(height: 12,),
+            SizedBox(height: 12),
             _searchBar(ref),
 
             conversationSteam.when(
@@ -64,7 +100,7 @@ class ConversationPage extends ConsumerWidget {
                   return name.toLowerCase().contains(searchText.toLowerCase());
                 }).toList();
 
-                return _getConversionList(filteredList);
+                return _getConversionList(filteredList, ref);
               },
               error: (e, t) {
                 print("Error there is an Error $e : $t");
@@ -81,6 +117,7 @@ class ConversationPage extends ConsumerWidget {
         child: const Icon(Icons.add_comment_rounded),
         onPressed: () {
           context.push(AppRoute.messageContact);
+
         },
       ),
     );
@@ -123,86 +160,189 @@ class ConversationPage extends ConsumerWidget {
     );
   }
 
-  Widget _getConversionList(List<ConversationEntry> conversationEntryList) {
+  Widget _getConversionList(List<ConversationEntry> conversationEntryList, WidgetRef ref) {
     return Expanded(
       child: ListView.builder(
         itemCount: conversationEntryList.length,
         itemBuilder: (context, index) {
-          return _Card(conversationEntry: conversationEntryList[index]);
+          final entry = conversationEntryList[index];
+          final conversationId = entry.conversation?.conversationId;
+          final isSelected = conversationId != null &&
+              _selectedConversations.contains(conversationId);
+
+          return _Card(
+            conversationEntry: entry,
+
+            isSelected: isSelected,
+            onTap: () {
+              if (_isSelectionMode) {
+                if (conversationId == null) return;
+
+                setState(() {
+                  if (_selectedConversations.contains(conversationId)) {
+                    _selectedConversations.remove(conversationId);
+                  } else {
+                    _selectedConversations.add(conversationId);
+                  }
+
+                  _selectionCount = _selectedConversations.length;
+                  _isSelectionMode = _selectedConversations.isNotEmpty;
+                });
+              } else {
+                context.push(AppRoute.chat, extra: entry);
+              }
+
+            },
+            onLongPressStart: (details) async {
+
+
+              if(conversationEntryList[index].conversation!=null)
+                {
+
+                  if (conversationId == null) return;
+                  setState(() {
+                    _isSelectionMode = true;
+                    _selectedConversations.add(conversationId);
+                    _selectionCount = _selectedConversations.length;
+                  });
+                  AppLogger.i('_selectedConversations {} ${_selectedConversations}');
+                }
+
+
+
+              // final action = await _showPopupMenu(context, details);
+              //
+              // if (action == null) return;
+              //
+              // await _handleMenuAction(ref: ref, action: action, conversationEntry: conversationEntryList[index]);
+            },
+          );
         },
       ),
     );
+  }
+
+  Future<String?> _showPopupMenu(BuildContext context, LongPressStartDetails details) {
+    const horizontalOffset = 100.0;
+    const verticalOffset = 8.0;
+
+    return showMenu<String>(
+      context: context,
+      position: RelativeRect.fromLTRB(
+        details.globalPosition.dx - horizontalOffset,
+        details.globalPosition.dy - verticalOffset,
+        details.globalPosition.dx,
+        details.globalPosition.dy,
+      ),
+      items: const [PopupMenuItem(value: 'delete', child: Text('Delete'))],
+    );
+  }
+
+  Future<void> _handleMenuAction({
+    required WidgetRef ref,
+    required String action,
+    required ConversationEntry conversationEntry,
+  }) async {
+    switch (action) {
+      case 'delete':
+        final conversationId = conversationEntry.conversation?.conversationId;
+        final memberUid = ref.watch(currentUserProvider).uid;
+
+        if (conversationId == null) return;
+
+        await ref.read(conversationServiceProvider).removeUser(conversationId: conversationId, memberUid: memberUid);
+        break;
+    }
   }
 }
 
 class _Card extends StatelessWidget {
   final ConversationEntry conversationEntry;
+  final void Function(LongPressStartDetails details) onLongPressStart;
+  final VoidCallback onTap;
+  final bool isSelected;
 
-  _Card({required this.conversationEntry});
+
+  const _Card({
+    required this.conversationEntry,
+    required this.onLongPressStart,
+    required this.onTap,
+    required this.isSelected,
+  });
 
   @override
   Widget build(BuildContext context) {
     if (conversationEntry.contact != null) {}
 
-    return InkWell(
-      onTap: () {
-        context.push(AppRoute.chat, extra: conversationEntry);
-      },
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: CircularUserAvatar(imageUrl: _getImageUrl()),
-            ),
-            SizedBox(width: 10),
-            Expanded(
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-
-                      Text(_getName(), style: Theme.of(context).textTheme.titleSmall),
-
-                      if (conversationEntry.contact != null &&
-                          conversationEntry.conversation != null &&
-                          conversationEntry.conversation!.conversationType == ConversationType.group)
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 4),
-                          child: Icon(Icons.group, size: 16, color: AppColors.primary,),
-                        ),
-
-                      if (conversationEntry.contact != null &&
-                          conversationEntry.conversation != null &&
-                          conversationEntry.conversation!.conversationType == ConversationType.solo)
-                        Padding(
-                          padding: const EdgeInsets.only(left: 4),
-                          child: OnlineUserPresence(uid: conversationEntry.contact!.uid, showTextOnly: true, size: 10,),
-                        ),
-                      Spacer(),
-                      Icon(Icons.push_pin_rounded, size: 16),
-
-                    ],
-                  ),
-
-                  Row(
-                    children: [
-                      if (conversationEntry.conversation != null)
-                        Text(
-                          conversationEntry.conversation!.lastMessagePreview,
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                      Spacer(),
-                      if (conversationEntry.conversation != null)
-                        Text(TimeFormatHelper.formatMessageDate(conversationEntry.conversation!.lastMessageTime), style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.grey),),
-
-                    ],
-                  ),
-                ],
+    return GestureDetector(
+      onLongPressStart: onLongPressStart,
+      child: InkWell(
+        onTap: onTap,
+        // onTap: () {
+        //   context.push(AppRoute.chat, extra: conversationEntry);
+        // },
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                // child: CircularUserAvatar(imageUrl: _getImageUrl()),
+                child: CircularSelectable(selected: isSelected, child: CircularUserAvatar(imageUrl: _getImageUrl()),),
               ),
-            ),
-          ],
+
+              SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Text(_getName(), style: Theme.of(context).textTheme.titleSmall),
+
+                        if (conversationEntry.contact != null &&
+                            conversationEntry.conversation != null &&
+                            conversationEntry.conversation!.conversationType == ConversationType.group)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 4),
+                            child: Icon(Icons.group, size: 16, color: AppColors.primary),
+                          ),
+
+                        if (conversationEntry.contact != null &&
+                            conversationEntry.conversation != null &&
+                            conversationEntry.conversation!.conversationType == ConversationType.solo)
+                          Padding(
+                            padding: const EdgeInsets.only(left: 4),
+                            child: OnlineUserPresence(
+                              uid: conversationEntry.contact!.uid,
+                              showTextOnly: true,
+                              size: 10,
+                            ),
+                          ),
+                        Spacer(),
+                        Icon(Icons.push_pin_rounded, size: 16),
+                      ],
+                    ),
+
+                    Row(
+                      children: [
+                        if (conversationEntry.conversation != null)
+                          Text(
+                            conversationEntry.conversation!.lastMessagePreview,
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        Spacer(),
+                        if (conversationEntry.conversation != null)
+                          Text(
+                            TimeFormatHelper.formatMessageDate(conversationEntry.conversation!.lastMessageTime),
+                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.grey),
+                          ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
