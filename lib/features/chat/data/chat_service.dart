@@ -178,6 +178,52 @@ class ChatService {
         .collection(_ServiceConstants.messages);
   }
 
+
+  Future<void> softDeleteMessage({
+    required String conversationId,
+    required String messageId,
+    required String userId,
+  }) async {
+    final msgRef = _getMessagesReference(conversationId: conversationId).doc(messageId);
+
+    await msgRef.update({
+      'deletedFor.$userId': true,
+    });
+  }
+
+  Future<void> restoreMessage({
+    required String conversationId,
+    required String messageId,
+    required String userId,
+  }) async {
+    final msgRef = _getMessagesReference(conversationId: conversationId).doc(messageId);
+
+    await msgRef.update({
+      'deletedFor.$userId': FieldValue.delete(),
+    });
+  }
+
+  Future<void> editMessage({
+    required String conversationId,
+    required String messageId,
+    required String newText,
+  }) async {
+    final msgRef = _getMessagesReference(conversationId: conversationId).doc(messageId);
+
+    await msgRef.update({
+      'text': newText,
+      'editedAt': Timestamp.now(),
+    });
+  }
+
+  Future<void> hardDeleteMessage({
+    required String conversationId,
+    required String messageId,
+  }) async {
+    final msgRef = _getMessagesReference(conversationId: conversationId).doc(messageId);
+    await msgRef.delete();
+  }
+
   //
   // void deleteMessage(String conversationID, String messageID) {
   //   final singleMessagesRef = _getMessagesReference(conversationId: conversationID).doc(messageID);

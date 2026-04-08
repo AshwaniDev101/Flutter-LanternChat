@@ -49,6 +49,24 @@ class ConversationService {
     return firestore.collection(_ServiceConstants.conversations);
   }
 
+  Future<void> softDeleteConversation({
+    required String conversationId,
+    required String userId,
+  }) async {
+    await _getConversationsRef().doc(conversationId).update({
+      'deletedFor.$userId': true,
+    });
+  }
+
+  Future<void> restoreConversation({
+    required String conversationId,
+    required String userId,
+  }) async {
+    await _getConversationsRef().doc(conversationId).update({
+      'deletedFor.$userId': FieldValue.delete(),
+    });
+  }
+
   // Future<void> updateLastConversation(String conversationId, Conversation conversation) async {
   //   _getConversationsRef().doc(conversationId).set(conversation.toMap(), SetOptions(merge: true));
   // }
