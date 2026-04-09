@@ -16,53 +16,55 @@ import '../../provider/conversation_provider.dart';
 final searchTextProvider = StateProvider<String>((ref) => '');
 
 class ConversationPage extends ConsumerStatefulWidget {
- const ConversationPage({super.key});
-
-
+  const ConversationPage({super.key});
 
   @override
   ConsumerState<ConversationPage> createState() => _ConversationPageState();
 }
 
 class _ConversationPageState extends ConsumerState<ConversationPage> {
-
-
   bool _isSelectionMode = false;
   int _selectionCount = 0;
 
-  Set<String> _selectedConversations = {};
+  final Set<String> _selectedConversations = {};
 
-@override
+  @override
   Widget build(BuildContext context) {
     final currentUser = ref.watch(currentUserProvider);
 
     // return a list of contact and conversation link by memberIds
     final conversationSteam = ref.watch(conversationContactMergeSteamProvider(currentUser.uid));
+    final conversationService = ref.watch(conversationServiceProvider);
 
     return Scaffold(
       appBar: _isSelectionMode
           ? AppBar(
-        leadingWidth: 100,
+              leadingWidth: 100,
+              backgroundColor: AppColors.selectedTileTickColor,
               leading: Row(
                 children: [
-                  SizedBox(width: 8,),
-                  IconButton(onPressed: () {
-
-                    setState(() {
-                      _isSelectionMode = false;
-                      _selectedConversations.clear();
-                      _selectionCount = 0;
-                      AppLogger.i('_selectedConversations {} $_selectedConversations');
-                    });
-                  }, icon: Icon(Icons.arrow_back_rounded)),
-                  SizedBox(width: 12,),
-                  Text(_selectionCount.toString(), style: TextStyle(fontSize: 18),),
+                  SizedBox(width: 8),
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        _isSelectionMode = false;
+                        _selectedConversations.clear();
+                        _selectionCount = 0;
+                        AppLogger.i('_selectedConversations {} $_selectedConversations');
+                      });
+                    },
+                    icon: Icon(Icons.arrow_back_rounded),
+                  ),
+                  SizedBox(width: 12),
+                  Text(_selectionCount.toString(), style: TextStyle(fontSize: 18)),
                 ],
               ),
 
               actions: [
                 IconButton(onPressed: () {}, icon: Icon(Icons.push_pin_outlined)),
-                IconButton(onPressed: () {}, icon: Icon(Icons.delete_outline_outlined)),
+                IconButton(onPressed: () {
+                  conversationService.removeUserList(conversationIds: _selectedConversations, memberUid: currentUser.uid);
+                }, icon: Icon(Icons.delete_outline_outlined)),
               ],
             )
           : AppBar(
@@ -117,7 +119,6 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
         child: const Icon(Icons.add_comment_rounded),
         onPressed: () {
           context.push(AppRoute.messageContact);
-
         },
       ),
     );
@@ -167,8 +168,7 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
         itemBuilder: (context, index) {
           final entry = conversationEntryList[index];
           final conversationId = entry.conversation?.conversationId;
-          final isSelected = conversationId != null &&
-              _selectedConversations.contains(conversationId);
+          final isSelected = conversationId != null && _selectedConversations.contains(conversationId);
 
           return _Card(
             conversationEntry: entry,
@@ -191,24 +191,17 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
               } else {
                 context.push(AppRoute.chat, extra: entry);
               }
-
             },
             onLongPressStart: (details) async {
-
-
-              if(conversationEntryList[index].conversation!=null)
-                {
-
-                  if (conversationId == null) return;
-                  setState(() {
-                    _isSelectionMode = true;
-                    _selectedConversations.add(conversationId);
-                    _selectionCount = _selectedConversations.length;
-                  });
-                  AppLogger.i('_selectedConversations {} ${_selectedConversations}');
-                }
-
-
+              if (conversationEntryList[index].conversation != null) {
+                if (conversationId == null) return;
+                setState(() {
+                  _isSelectionMode = true;
+                  _selectedConversations.add(conversationId);
+                  _selectionCount = _selectedConversations.length;
+                });
+                AppLogger.i('_selectedConversations {} ${_selectedConversations}');
+              }
 
               // final action = await _showPopupMenu(context, details);
               //
@@ -262,7 +255,6 @@ class _Card extends StatelessWidget {
   final VoidCallback onTap;
   final bool isSelected;
 
-
   const _Card({
     required this.conversationEntry,
     required this.onLongPressStart,
@@ -288,7 +280,10 @@ class _Card extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(4.0),
                 // child: CircularUserAvatar(imageUrl: _getImageUrl()),
-                child: CircularSelectable(selected: isSelected, child: CircularUserAvatar(imageUrl: _getImageUrl()),),
+                child: CircularSelectable(
+                  selected: isSelected,
+                  child: CircularUserAvatar(imageUrl: _getImageUrl()),
+                ),
               ),
 
               SizedBox(width: 10),

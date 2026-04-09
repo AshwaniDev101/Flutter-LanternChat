@@ -179,6 +179,9 @@ class ChatService {
   }
 
 
+
+
+  // new functions -------------------------
   Future<void> softDeleteMessage({
     required String conversationId,
     required String messageId,

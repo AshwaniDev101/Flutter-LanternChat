@@ -24,7 +24,7 @@ class CircularSelectable extends StatelessWidget {
                 Icon(Icons.circle, color: AppColors.background, size: 28),
                 Icon(
                   Icons.check_circle,
-                  color: Colors.green,
+                  color: AppColors.selectedTileTickColor,
                   // size: 16,
                 ),
               ],

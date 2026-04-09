@@ -1,12 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../models/conversations/conversation.dart';
-import '../../../models/conversations/enums/conversation_type.dart';
 
 class _ServiceConstants {
   static const String conversations = 'conversations';
   static const String lastMessageTime = 'lastMessageTime';
   static const String memberIds = 'memberIds';
-  static const String lastSenderId = 'lastSenderId';
   static const String pairID = 'pairID';
 }
 
@@ -39,32 +37,33 @@ class ConversationService {
     return Conversation.fromMap(data);
   }
 
+  Future<void> restoreConversation({required String conversationId, required String memberUid}) async {
+    await _getConversationsRef().doc(conversationId).update({
+      _ServiceConstants.memberIds: FieldValue.arrayUnion([memberUid]),
+    });
+  }
+
   Future<void> removeUser({required String conversationId, required String memberUid}) async {
     await _getConversationsRef().doc(conversationId).update({
       _ServiceConstants.memberIds: FieldValue.arrayRemove([memberUid]),
     });
   }
 
+  Future<void> removeUserList({required Set<String> conversationIds, required String memberUid}) async {
+    if (conversationIds.isEmpty) return;
+
+    final batch = firestore.batch();
+    for (final id in conversationIds) {
+      final docRef = _getConversationsRef().doc(id);
+      batch.update(docRef, {
+        _ServiceConstants.memberIds: FieldValue.arrayRemove([memberUid]),
+      });
+    }
+    await batch.commit();
+  }
+
   CollectionReference<Map<String, dynamic>> _getConversationsRef() {
     return firestore.collection(_ServiceConstants.conversations);
-  }
-
-  Future<void> softDeleteConversation({
-    required String conversationId,
-    required String userId,
-  }) async {
-    await _getConversationsRef().doc(conversationId).update({
-      'deletedFor.$userId': true,
-    });
-  }
-
-  Future<void> restoreConversation({
-    required String conversationId,
-    required String userId,
-  }) async {
-    await _getConversationsRef().doc(conversationId).update({
-      'deletedFor.$userId': FieldValue.delete(),
-    });
   }
 
   // Future<void> updateLastConversation(String conversationId, Conversation conversation) async {

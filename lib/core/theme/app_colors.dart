@@ -14,6 +14,11 @@ class AppColors {
   // static const Color senderBubble = Color(0xFF4F7FA3);   // derived from secondary
   static const Color receivedBubble = Color(0xFFDDDADA); // subtle neutral
   // static const Color receivedBubble = Color(0xFFE3E7EB); // subtle neutral
+
+  //388E3CFF 388E3CFF
+  static const Color selectedTileTickColor = Color(0xFF6FC753); // subtle neutral
+
+
 }
 
 
