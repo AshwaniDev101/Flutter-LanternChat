@@ -11,20 +11,18 @@ import '../../../../../models/users/contact.dart';
 import '../../../../auth/provider/auth_provider.dart';
 import '../../../../contact/provider/contact_providers.dart';
 
-
 class ChatBubble extends ConsumerWidget {
   final Message message;
-
   final ConversationType conversationType;
 
-  const ChatBubble({required this.conversationType, required this.message, super.key});
+  const ChatBubble({ required this.conversationType, required this.message,   super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final chatTheme = Theme.of(context).extension<ChatTheme>()!;
 
     final currentUser = ref.read(currentUserProvider);
-    final  Map<String, Contact> contactMap = ref.watch(contactsMapProvider);
+    final Map<String, Contact> contactMap = ref.watch(contactsMapProvider);
 
     final isMine = message.senderId == currentUser.uid;
 
@@ -34,10 +32,9 @@ class ChatBubble extends ConsumerWidget {
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-
-            if(contactMap[message.senderId]!=null && conversationType==ConversationType.group)
-              CircularUserAvatar(imageUrl: contactMap[message.senderId]!.photoURL, radius: 20,),
-              SizedBox(width: 8,),
+            if (contactMap[message.senderId] != null && conversationType == ConversationType.group)
+              CircularUserAvatar(imageUrl: contactMap[message.senderId]!.photoURL, radius: 20),
+            SizedBox(width: 8),
 
             ConstrainedBox(
               constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.72),
@@ -57,9 +54,11 @@ class ChatBubble extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-
-                    if(contactMap[message.senderId]!=null)
-                      Text(contactMap[message.senderId]!.name,style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.w500, fontSize: 14),),
+                    if (contactMap[message.senderId] != null)
+                      Text(
+                        contactMap[message.senderId]!.name,
+                        style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.w500, fontSize: 14),
+                      ),
                     Text(
                       message.text ?? "",
                       style: TextStyle(fontSize: 15, height: 1.35, color: isMine ? Colors.black : Colors.black),

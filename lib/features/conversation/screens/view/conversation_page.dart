@@ -10,6 +10,7 @@ import 'package:lanternchat/shared/widgets/online_status.dart';
 
 import '../../../../../core/router/router_provider.dart';
 import '../../../../core/util/logger.dart';
+import '../../../../shared/widgets/circular_selectable.dart';
 import '../../../../shared/widgets/circular_user_avatar.dart';
 import '../../provider/conversation_provider.dart';
 
@@ -26,7 +27,7 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
   bool _isSelectionMode = false;
   int _selectionCount = 0;
 
-  final Set<String> _selectedConversations = {};
+  final Set<String> _selectedConversationIds = {};
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +51,7 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
 
                         _selectionModeReset();
 
-                        AppLogger.i('_selectedConversations {} $_selectedConversations');
+                        AppLogger.i('_selectedConversations {} $_selectedConversationIds');
                       });
                     },
                     icon: Icon(Icons.arrow_back_rounded),
@@ -66,7 +67,7 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
                   _selectionModeReset();
                 }, icon: Icon(Icons.push_pin_outlined)),
                 IconButton(onPressed: () {
-                  conversationService.removeUserList(conversationIds: _selectedConversations, memberUid: currentUser.uid);
+                  conversationService.removeUserList(conversationIds: _selectedConversationIds, memberUid: currentUser.uid);
                   _selectionModeReset();
                 }, icon: Icon(Icons.delete_outline_outlined)),
               ],
@@ -172,7 +173,7 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
         itemBuilder: (context, index) {
           final entry = conversationEntryList[index];
           final conversationId = entry.conversation?.conversationId;
-          final isSelected = conversationId != null && _selectedConversations.contains(conversationId);
+          final isSelected = conversationId != null && _selectedConversationIds.contains(conversationId);
 
           return _Card(
             conversationEntry: entry,
@@ -183,14 +184,14 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
                 if (conversationId == null) return;
 
                 setState(() {
-                  if (_selectedConversations.contains(conversationId)) {
-                    _selectedConversations.remove(conversationId);
+                  if (_selectedConversationIds.contains(conversationId)) {
+                    _selectedConversationIds.remove(conversationId);
                   } else {
-                    _selectedConversations.add(conversationId);
+                    _selectedConversationIds.add(conversationId);
                   }
 
-                  _selectionCount = _selectedConversations.length;
-                  _isSelectionMode = _selectedConversations.isNotEmpty;
+                  _selectionCount = _selectedConversationIds.length;
+                  _isSelectionMode = _selectedConversationIds.isNotEmpty;
                 });
               } else {
                 context.push(AppRoute.chat, extra: entry);
@@ -201,10 +202,10 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
                 if (conversationId == null) return;
                 setState(() {
                   _isSelectionMode = true;
-                  _selectedConversations.add(conversationId);
-                  _selectionCount = _selectedConversations.length;
+                  _selectedConversationIds.add(conversationId);
+                  _selectionCount = _selectedConversationIds.length;
                 });
-                AppLogger.i('_selectedConversations {} ${_selectedConversations}');
+                AppLogger.i('_selectedConversations {} ${_selectedConversationIds}');
               }
 
               // final action = await _showPopupMenu(context, details);
@@ -254,7 +255,7 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
 
   void _selectionModeReset() {
     _isSelectionMode = false;
-    _selectedConversations.clear();
+    _selectedConversationIds.clear();
     _selectionCount = 0;
   }
 }
@@ -276,6 +277,7 @@ class _Card extends StatelessWidget {
   Widget build(BuildContext context) {
     if (conversationEntry.contact != null) {}
 
+    // Todo move onTap and onLongPressStart inside the 'CircularSelectable'
     return GestureDetector(
       onLongPressStart: onLongPressStart,
       child: InkWell(

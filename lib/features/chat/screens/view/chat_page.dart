@@ -11,6 +11,7 @@ import 'package:lanternchat/features/conversation/provider/conversation_provider
 import 'package:lanternchat/models/conversations/conversation.dart';
 import 'package:lanternchat/models/conversations/conversation_entry.dart';
 import 'package:lanternchat/models/messages/seen_message.dart';
+import 'package:lanternchat/shared/widgets/bubble_selectable.dart';
 
 import '../../../../../core/util/logger.dart';
 import '../../../../../models/messages/enums/message_type.dart';
@@ -18,6 +19,7 @@ import '../../../../../models/messages/message.dart';
 import '../../../../../models/messages/message_tile.dart';
 import '../../../../../models/users/app_user.dart';
 import '../../../../../shared/widgets/circular_user_avatar.dart';
+import '../../../../core/theme/app_colors.dart';
 import '../../../../models/users/contact.dart';
 import '../../../auth/provider/auth_provider.dart';
 import '../../data/chat_service.dart';
@@ -163,6 +165,11 @@ class _ChatPageState extends ConsumerState<ChatPage> {
     });
   }
 
+  bool _isSelectionMode = false;
+  int _selectionCount = 0;
+
+  final Set<String> _selectedMessagesIds = {};
+
   @override
   Widget build(BuildContext context) {
     final ChatService chatService = ref.read(chatServiceProvider);
@@ -177,7 +184,45 @@ class _ChatPageState extends ConsumerState<ChatPage> {
     final typingService = ref.read(typingServiceProvider);
 
     return Scaffold(
-      appBar: _appBar(context),
+      appBar: _isSelectionMode
+          ? AppBar(
+              leadingWidth: 100,
+              backgroundColor: AppColors.selectedTileTickColor,
+              leading: Row(
+                children: [
+                  SizedBox(width: 8),
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        _selectionModeReset();
+
+                        AppLogger.i('_selectedConversations {} $_selectedMessagesIds');
+                      });
+                    },
+                    icon: Icon(Icons.arrow_back_rounded),
+                  ),
+                  SizedBox(width: 12),
+                  Text(_selectionCount.toString(), style: TextStyle(fontSize: 18)),
+                ],
+              ),
+
+              actions: [
+                // IconButton(
+                //   onPressed: () {
+                //     _selectionModeReset();
+                //   },
+                //   icon: Icon(Icons.push_pin_outlined),
+                // ),
+                IconButton(
+                  onPressed: () {
+                    // conversationService.removeUserList(conversationIds: _selectedConversations, memberUid: currentUser.uid);
+                    _selectionModeReset();
+                  },
+                  icon: Icon(Icons.delete_outline_outlined),
+                ),
+              ],
+            )
+          : _appBar(context),
       backgroundColor: Colors.grey[200],
       body: Column(
         children: [
@@ -203,18 +248,50 @@ class _ChatPageState extends ConsumerState<ChatPage> {
                     //   '[chat_page] $index ${messageTiles[index].message.text} ${messageTiles[index].message.messageId}  ${messageTiles[index].message.seenBy.values.toString()}',
                     // );
 
-
-
                     // final isSeenByOtherUser = messageTile.message.seenBy.containsKey(
                     //   widget.conversationEntry.contact.uid,
                     // );
 
-                    //
+                    final isSelected = _selectedMessagesIds.contains(messageTile.message.messageId);
 
                     return Column(
                       children: [
-                        if(currentConversation!=null)
-                          ChatBubble(conversationType: currentConversation!.conversationType, message: messageTile.message),
+                        if (currentConversation != null)
+                          BubbleSelectable(
+                            selected: isSelected,
+
+                            onLongPressStart: (details) {
+                              if (messageTile.message.senderId != currentUser.uid) return;
+
+                              setState(() {
+                                _isSelectionMode = true;
+                                _selectedMessagesIds.add(messageTile.message.messageId);
+                                _selectionCount = _selectedMessagesIds.length;
+                              });
+                              AppLogger.i("long press is working ");
+                            },
+
+                            onTap: () {
+                              if (messageTile.message.senderId != currentUser.uid) return;
+                              if (_isSelectionMode) {
+                                setState(() {
+                                  if (_selectedMessagesIds.contains(messageTile.message.messageId)) {
+                                    _selectedMessagesIds.remove(messageTile.message.messageId);
+                                  } else {
+                                    _selectedMessagesIds.add(messageTile.message.messageId);
+                                  }
+
+                                  _selectionCount = _selectedMessagesIds.length;
+                                  _isSelectionMode = _selectedMessagesIds.isNotEmpty;
+                                });
+                              }
+                            },
+
+                            child: ChatBubble(
+                              conversationType: currentConversation!.conversationType,
+                              message: messageTile.message,
+                            ),
+                          ),
                       ],
                     );
                   },
@@ -302,6 +379,12 @@ class _ChatPageState extends ConsumerState<ChatPage> {
         ),
       ],
     );
+  }
+
+  void _selectionModeReset() {
+    _isSelectionMode = false;
+    _selectedMessagesIds.clear();
+    _selectionCount = 0;
   }
 
   String _getImageUrl() {
