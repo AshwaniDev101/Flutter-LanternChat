@@ -53,10 +53,10 @@ class ChatService {
 
       final doc = conversationSnapshot.data();
       if (doc != null) {
-        final convo = Conversation.fromMap(doc);
+        final Conversation convo = Conversation.fromMap(doc);
 
         // incrementing message index
-        final newMessageIndex = convo.lastMessageIndex +1 ;
+        final newMessageIndex = convo.lastMessageIndex +1;
 
         final messageDocRef = conversationDocRef.collection(_ServiceConstants.messages).doc();
 

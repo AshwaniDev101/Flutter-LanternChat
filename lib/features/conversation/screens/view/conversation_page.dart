@@ -47,9 +47,9 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
                   IconButton(
                     onPressed: () {
                       setState(() {
-                        _isSelectionMode = false;
-                        _selectedConversations.clear();
-                        _selectionCount = 0;
+
+                        _selectionModeReset();
+
                         AppLogger.i('_selectedConversations {} $_selectedConversations');
                       });
                     },
@@ -61,9 +61,13 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
               ),
 
               actions: [
-                IconButton(onPressed: () {}, icon: Icon(Icons.push_pin_outlined)),
+                IconButton(onPressed: () {
+
+                  _selectionModeReset();
+                }, icon: Icon(Icons.push_pin_outlined)),
                 IconButton(onPressed: () {
                   conversationService.removeUserList(conversationIds: _selectedConversations, memberUid: currentUser.uid);
+                  _selectionModeReset();
                 }, icon: Icon(Icons.delete_outline_outlined)),
               ],
             )
@@ -246,6 +250,12 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
         await ref.read(conversationServiceProvider).removeUser(conversationId: conversationId, memberUid: memberUid);
         break;
     }
+  }
+
+  void _selectionModeReset() {
+    _isSelectionMode = false;
+    _selectedConversations.clear();
+    _selectionCount = 0;
   }
 }
 

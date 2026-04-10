@@ -7,7 +7,6 @@ import 'package:lanternchat/shared/widgets/circular_user_avatar.dart';
 import 'package:lanternchat/shared/widgets/online_status.dart';
 
 import '../../../../core/theme/providers/theme_mode_provider.dart';
-import '../../../../models/users/user_presence.dart';
 import '../../../auth/provider/auth_provider.dart';
 import '../../../auth/provider/presence_provider.dart';
 

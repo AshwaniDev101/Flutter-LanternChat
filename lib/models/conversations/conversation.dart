@@ -45,6 +45,11 @@ class Conversation {
 
   /// Creates a new conversation summary after a message is sent
   factory Conversation.summary({required Conversation conversation, required Message message}) {
+
+
+    // if user removed himself from a conversation, on sending next text, he ill always add himself back
+    conversation.memberIds.add(message.senderId);
+
     return Conversation(
       conversationId: conversation.conversationId,
       memberIds: conversation.memberIds,
