@@ -23,6 +23,7 @@ class _Field {
 
   static const String text = 'text';
   static const String messageIndex = 'messageIndex';
+  static const String isDeleted = 'isDeleted';
 }
 
 class Message {
@@ -47,6 +48,8 @@ class Message {
 
   final String? text;
 
+  final bool isDeleted;
+
   Message({
     this.messageId='',
     this.messageIndex=0,
@@ -61,6 +64,7 @@ class Message {
     this.editHistory = const [],
     this.replyTo,
     this.reactions = const {},
+    this.isDeleted = false
   });
 
   Map<String, dynamic> toMap() {
@@ -77,6 +81,7 @@ class Message {
       _Field.replyTo: replyTo?.toMap(),
       _Field.reactions: reactions.map((k, v) => MapEntry(k, v.name)),
       _Field.text: text,
+      _Field.isDeleted: isDeleted
     };
   }
 
@@ -106,6 +111,7 @@ class Message {
             (key, value) =>
             MapEntry(key, ReactionType.values.asNameMap()[value] ?? ReactionType.thumbs),
       ),
+      isDeleted: map[_Field.isDeleted] ?? false,
     );
   }
 
@@ -127,6 +133,8 @@ class Message {
     Map<String, ReactionType>? reactions,
 
     String? text,
+
+    bool? isDeleted
   }) {
     return Message(
       messageId: messageId ?? this.messageId,
@@ -146,6 +154,8 @@ class Message {
       reactions: reactions ?? this.reactions,
 
       text: text ?? this.text,
+
+      isDeleted: isDeleted ?? this.isDeleted,
     );
   }
 }

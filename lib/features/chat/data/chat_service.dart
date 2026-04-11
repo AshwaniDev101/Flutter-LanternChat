@@ -194,8 +194,7 @@ class ChatService {
     for(final messageId in selectedMessagesIds)
       {
         batch.update(msgRef.doc(messageId), {
-          'text': '~ message is deleted ~',
-          'editedAt': Timestamp.now(),
+          'isDeleted': true,
         });
       }
 

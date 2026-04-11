@@ -59,6 +59,11 @@ class ChatBubble extends ConsumerWidget {
                         contactMap[message.senderId]!.name,
                         style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.w500, fontSize: 14),
                       ),
+
+                    message.isDeleted? Text(
+                      "deleted",
+                      style: TextStyle(fontSize: 15, height: 1.35, color: Colors.grey.shade800, fontStyle: FontStyle.italic),
+                    ):
                     Text(
                       message.text ?? "",
                       style: TextStyle(fontSize: 15, height: 1.35, color: isMine ? Colors.black : Colors.black),
