@@ -181,6 +181,31 @@ class ChatService {
 
 
 
+  Future<void> removeMessageList({
+    required String conversationId,
+    required Set<String> selectedMessagesIds,
+  }) async {
+
+
+    final batch = firestore.batch();
+    final msgRef = _getMessagesReference(conversationId: conversationId);
+
+
+    for(final messageId in selectedMessagesIds)
+      {
+        batch.update(msgRef.doc(messageId), {
+          'text': '~ message is deleted ~',
+          'editedAt': Timestamp.now(),
+        });
+      }
+
+    await batch.commit();
+
+  }
+
+
+
+
   // new functions -------------------------
   Future<void> softDeleteMessage({
     required String conversationId,

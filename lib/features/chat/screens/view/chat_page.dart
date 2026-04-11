@@ -215,8 +215,17 @@ class _ChatPageState extends ConsumerState<ChatPage> {
                 // ),
                 IconButton(
                   onPressed: () {
-                    // conversationService.removeUserList(conversationIds: _selectedConversations, memberUid: currentUser.uid);
-                    _selectionModeReset();
+                    final conv = widget.conversationEntry.conversation;
+                    if (conv != null) {
+                      chatService.removeMessageList(
+                        conversationId: widget.conversationEntry.conversation!.conversationId,
+                        selectedMessagesIds: _selectedMessagesIds,
+                      );
+                    }
+
+                    setState(() {
+                      _selectionModeReset();
+                    });
                   },
                   icon: Icon(Icons.delete_outline_outlined),
                 ),
