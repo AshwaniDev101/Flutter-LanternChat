@@ -15,14 +15,14 @@ import '../../../../../models/users/contact.dart';
 import '../../../contact/provider/contact_providers.dart';
 import '../../provider/chat_provider.dart';
 
-class GroupSetupPage extends ConsumerStatefulWidget {
-  const GroupSetupPage({super.key});
+class GroupChatSetupPage extends ConsumerStatefulWidget {
+  const GroupChatSetupPage({super.key});
 
   @override
-  ConsumerState<GroupSetupPage> createState() => _GroupSetupPageState();
+  ConsumerState<GroupChatSetupPage> createState() => _GroupChatSetupPageState();
 }
 
-class _GroupSetupPageState extends ConsumerState<GroupSetupPage> {
+class _GroupChatSetupPageState extends ConsumerState<GroupChatSetupPage> {
   final Set<String> selectedContactIds = {};
 
   final titleController = TextEditingController();

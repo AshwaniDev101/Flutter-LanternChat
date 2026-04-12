@@ -13,6 +13,7 @@ import '../../../../core/util/logger.dart';
 import '../../../../shared/widgets/circular_selectable.dart';
 import '../../../../shared/widgets/circular_user_avatar.dart';
 import '../../provider/conversation_provider.dart';
+import '../viewmodel/conversation_viewmodel.dart';
 
 final searchTextProvider = StateProvider<String>((ref) => '');
 
@@ -24,10 +25,10 @@ class ConversationPage extends ConsumerStatefulWidget {
 }
 
 class _ConversationPageState extends ConsumerState<ConversationPage> {
-  bool _isSelectionMode = false;
-  int _selectionCount = 0;
-
-  final Set<String> _selectedConversationIds = {};
+  // bool _isSelectionMode = false;
+  // int _selectionCount = 0;
+  //
+  // final Set<String> _selectedConversationIds = {};
 
   @override
   Widget build(BuildContext context) {
@@ -35,10 +36,35 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
 
     // return a list of contact and conversation link by memberIds
     final conversationSteam = ref.watch(conversationContactMergeSteamProvider(currentUser.uid));
-    final conversationService = ref.watch(conversationServiceProvider);
+    // final conversationService = ref.watch(conversationServiceProvider);
+
+    final selectionState = ref.watch(selectionProvider);
+    final selectionVM = ref.read(selectionProvider.notifier);
+
+    final actionState = ref.watch(conversationActionVMProvider);
+    final conversationActionVM = ref.read(conversationActionVMProvider.notifier);
+
+
+    // ref.listen(conversationActionVMProvider, (prev, next) {
+    //   next.whenOrNull(
+    //     error: (err, _) {
+    //       ScaffoldMessenger.of(context).showSnackBar(
+    //         SnackBar(content: Text(err.toString())),
+    //       );
+    //     },
+    //   );
+    // });
+
+    ref.listen(conversationActionVMProvider, (prev, next) {
+      if (prev?.hasError != next.hasError && next.hasError) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(next.error.toString())),
+        );
+      }
+    });
 
     return Scaffold(
-      appBar: _isSelectionMode
+      appBar: selectionState.isSelectionMode
           ? AppBar(
               leadingWidth: 100,
               backgroundColor: AppColors.selectedTileTickColor,
@@ -46,30 +72,31 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
                 children: [
                   SizedBox(width: 8),
                   IconButton(
-                    onPressed: () {
-                      setState(() {
-
-                        _selectionModeReset();
-
-                        AppLogger.i('_selectedConversations {} $_selectedConversationIds');
-                      });
-                    },
+                      onPressed: () {
+                        selectionVM.resetSelectionMode();
+                      },
                     icon: Icon(Icons.arrow_back_rounded),
                   ),
                   SizedBox(width: 12),
-                  Text(_selectionCount.toString(), style: TextStyle(fontSize: 18)),
+                  Text(selectionState.count.toString(), style: TextStyle(fontSize: 18)),
                 ],
               ),
 
               actions: [
                 IconButton(onPressed: () {
 
-                  _selectionModeReset();
+                  selectionVM.resetSelectionMode();
                 }, icon: Icon(Icons.push_pin_outlined)),
-                IconButton(onPressed: () {
-                  conversationService.removeUserList(conversationIds: _selectedConversationIds, memberUid: currentUser.uid);
-                  _selectionModeReset();
+
+
+                IconButton(onPressed: actionState.isLoading
+                ? null:() async {
+
+                  await conversationActionVM.removeUserList(conversationIds: selectionState.selectedIds, memberUid: currentUser.uid);
+
+                  selectionVM.resetSelectionMode();
                 }, icon: Icon(Icons.delete_outline_outlined)),
+
               ],
             )
           : AppBar(
@@ -87,6 +114,8 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
         padding: const EdgeInsets.symmetric(horizontal: 8),
         child: Column(
           children: [
+            if(actionState.isLoading)
+              LinearProgressIndicator(),
             SizedBox(height: 12),
             _searchBar(ref),
 
@@ -107,7 +136,11 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
                   return name.toLowerCase().contains(searchText.toLowerCase());
                 }).toList();
 
-                return _getConversionList(filteredList, ref);
+                return _getConversionList(
+                  filteredList,
+                  selectionState,
+                  selectionVM,
+                );
               },
               error: (e, t) {
                 print("Error there is an Error $e : $t");
@@ -166,54 +199,45 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
     );
   }
 
-  Widget _getConversionList(List<ConversationEntry> conversationEntryList, WidgetRef ref) {
+   Widget _getConversionList(
+      List<ConversationEntry> conversationEntryList,
+      SelectionState selectionState,
+      SelectionViewModel selectionVM,
+      ) {
+
+
+
     return Expanded(
       child: ListView.builder(
         itemCount: conversationEntryList.length,
         itemBuilder: (context, index) {
           final entry = conversationEntryList[index];
           final conversationId = entry.conversation?.conversationId;
-          final isSelected = conversationId != null && _selectedConversationIds.contains(conversationId);
+
+          final isSelected = conversationId != null && selectionState.selectedIds.contains(conversationId);
 
           return _Card(
             conversationEntry: entry,
 
             isSelected: isSelected,
             onTap: () {
-              if (_isSelectionMode) {
+
+
+              if (selectionState.isSelectionMode) {
                 if (conversationId == null) return;
-
-                setState(() {
-                  if (_selectedConversationIds.contains(conversationId)) {
-                    _selectedConversationIds.remove(conversationId);
-                  } else {
-                    _selectedConversationIds.add(conversationId);
-                  }
-
-                  _selectionCount = _selectedConversationIds.length;
-                  _isSelectionMode = _selectedConversationIds.isNotEmpty;
-                });
+                selectionVM.toggle(conversationId);
               } else {
                 context.push(AppRoute.chat, extra: entry);
               }
-            },
-            onLongPressStart: (details) async {
-              if (conversationEntryList[index].conversation != null) {
-                if (conversationId == null) return;
-                setState(() {
-                  _isSelectionMode = true;
-                  _selectedConversationIds.add(conversationId);
-                  _selectionCount = _selectedConversationIds.length;
-                });
-                AppLogger.i('_selectedConversations {} ${_selectedConversationIds}');
-              }
 
-              // final action = await _showPopupMenu(context, details);
-              //
-              // if (action == null) return;
-              //
-              // await _handleMenuAction(ref: ref, action: action, conversationEntry: conversationEntryList[index]);
             },
+
+
+            onLongPressStart: (_) {
+              if (conversationId == null) return;
+              selectionVM.startSelectionMode(conversationId);
+            },
+
           );
         },
       ),
@@ -253,11 +277,6 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
     }
   }
 
-  void _selectionModeReset() {
-    _isSelectionMode = false;
-    _selectedConversationIds.clear();
-    _selectionCount = 0;
-  }
 }
 
 class _Card extends StatelessWidget {

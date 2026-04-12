@@ -8,7 +8,7 @@ import 'package:lanternchat/models/conversations/conversation_entry.dart';
 
 import '../../features/auth/provider/auth_provider.dart';
 import '../../features/chat/screens/view/chat_page.dart';
-import '../../features/chat/screens/view/group_setup_page.dart';
+import '../../features/chat/screens/view/group_chat_setup_page.dart';
 import '../../features/contact/screens/view/contact_page.dart';
 import '../../features/contact/screens/view/message_contact_page.dart';
 import '../../features/home/screens/view/home_page.dart';
@@ -138,7 +138,7 @@ final goRouterProvider = Provider((ref) {
       GoRoute(
         path: AppRoute.groupSetup,
         builder: (BuildContext context, GoRouterState state) {
-          return GroupSetupPage();
+          return GroupChatSetupPage();
         },
       ),
     ],
