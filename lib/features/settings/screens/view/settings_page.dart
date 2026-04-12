@@ -9,6 +9,7 @@ import 'package:lanternchat/shared/widgets/online_status.dart';
 import '../../../../core/theme/providers/theme_mode_provider.dart';
 import '../../../auth/provider/auth_provider.dart';
 import '../../../auth/provider/presence_provider.dart';
+import '../viewmodel/settings_viewmodel.dart';
 
 class SettingsPage extends ConsumerWidget {
   const SettingsPage({super.key});
@@ -16,7 +17,8 @@ class SettingsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final currentUser = ref.watch(currentUserProvider);
-    final spp = ref.read(sharedPreferencesProvider);
+    // final sharedPreference = ref.read(sharedPreferencesProvider);
+    final settingsViewModel = ref.read(settingsViewModelProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(title: Text("Settings"), centerTitle: true),
@@ -43,7 +45,7 @@ class SettingsPage extends ConsumerWidget {
 
                           ElevatedButton(
                             onPressed: () {
-                              ref.read(authManagerProvider).signOut();
+                              settingsViewModel.logout();
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.redAccent,
@@ -82,14 +84,16 @@ class SettingsPage extends ConsumerWidget {
               ),
               ListItem(icon: Icons.remove_red_eye_outlined, title: "Online Visibility", subtitle: "Hide your online status from others",onTap: (){
 
-                final bool newValue = !(spp.getBool(SharedData.onlineStatus) ?? true);
 
-                spp.setBool(SharedData.onlineStatus, newValue);
-
-                ref.read(presenceServiceProvider).setOnlineStatus(
-                  uid: currentUser.uid,
-                  isOnline: newValue,
-                );
+                settingsViewModel.toggleVisibility(currentUser.uid);
+                // final bool newValue = !(sharedPreference.getBool(SharedData.onlineStatus) ?? true);
+                //
+                // sharedPreference.setBool(SharedData.onlineStatus, newValue);
+                //
+                // ref.read(presenceServiceProvider).setOnlineStatus(
+                //   uid: currentUser.uid,
+                //   isOnline: newValue,
+                // );
 
 
 
@@ -114,26 +118,5 @@ class SettingsPage extends ConsumerWidget {
     );
   }
 
-  // Widget _isOnlineWidget(UserPresence? userPresence) {
-  //
-  //
-  //
-  //   if (userPresence != null && userPresence.isOnline == true) {
-  //     return     Row(
-  //       children: [
-  //         Icon(Icons.circle,size: 12,color: Colors.green,),
-  //         SizedBox(width: 4,),
-  //         Text('Online',style: TextStyle(color:Colors.green, fontSize: 14, fontWeight: FontWeight.w500),)
-  //       ],
-  //     );
-  //   } else {
-  //     return Row(
-  //       children: [
-  //         Icon(Icons.circle,size: 12,color: Colors.red,),
-  //         SizedBox(width: 4,),
-  //         Text('Online',style: TextStyle(color:Colors.red, fontSize: 14, fontWeight: FontWeight.w500),)
-  //       ],
-  //     );
-  //   }
-  // }
+
 }
