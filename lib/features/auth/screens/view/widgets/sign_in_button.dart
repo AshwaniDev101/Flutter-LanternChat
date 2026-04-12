@@ -8,7 +8,7 @@ class SignInButton extends StatelessWidget {
   final String text;
   final Color textColor;
   final Color backgroundColor;
-  final VoidCallback callback;
+  final VoidCallback? callback;
 
   const SignInButton({super.key, required this.imageUrl, required this.text, required this.textColor, required this.backgroundColor, required this.callback, });
 
