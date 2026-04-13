@@ -58,7 +58,7 @@ class _GroupChatSetupPageState extends ConsumerState<GroupChatSetupPage> {
       description: descriptionController.text,
       createdBy: currentUser,
     );
-    // Todo creating an async value provider is great way to process loading state here
+
     String conversationId = await chatService.createGroupChat(groupInfo: groupInfo, memberIds: selectedContactIds);
 
     return ConversationEntry(

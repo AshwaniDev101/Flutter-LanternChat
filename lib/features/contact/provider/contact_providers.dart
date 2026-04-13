@@ -11,26 +11,19 @@ final Provider<ContactService> contactServiceProvider = Provider((ref) {
   return ContactService(firestore: firestore);
 });
 
-// Todo we can get rid of contactStreamProvider since we have contact lookup table
+// It create a provider for the steam
 final StreamProvider<List<Contact>> contactStreamProvider = StreamProvider<List<Contact>>((ref) {
   // final currentUser = ref.watch(firebaseAuthProvider).currentUser;
   final currentUser = ref.watch(currentUserProvider);
 
-  final service = ref.read(contactServiceProvider);
+  final service = ref.watch(contactServiceProvider);
   return service.watchContacts(uid: currentUser.uid);
 });
 
-/// Return a nice Map of contacts
+/// Return a nice Map of contacts, using a steam updates automatically
 final Provider<Map<String, Contact>> contactsMapProvider = Provider<Map<String, Contact>>((ref) {
   final List<Contact> contacts = ref.watch(contactStreamProvider).value ?? [];
 
   return {for (final c in contacts) c.uid: c};
 });
-// final contactsMapProvider = Provider<Map<String, Contact>?>((ref) {
-//   final contactsAsync = ref.watch(contactStreamProvider);
-//
-//   return contactsAsync.valueOrNull?.fold(<String, Contact>{}, (map, contact) {
-//     map?[contact.uid] = contact;
-//     return map;
-//   });
-// });
+

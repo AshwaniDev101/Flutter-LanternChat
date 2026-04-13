@@ -21,7 +21,6 @@ class AppUser {
     required this.photoURL,
   });
 
-  // Todo map already have uid, think how you wanna handle this
   factory AppUser.fromMap(Map<String, dynamic> map) {
     return AppUser(
       uid: map[_Field.uid] as String,

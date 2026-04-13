@@ -296,80 +296,72 @@ class _Card extends StatelessWidget {
   Widget build(BuildContext context) {
     if (conversationEntry.contact != null) {}
 
-    // Todo move onTap and onLongPressStart inside the 'CircularSelectable'
-    return GestureDetector(
-      onLongPressStart: onLongPressStart,
-      child: InkWell(
-        onTap: onTap,
-        // onTap: () {
-        //   context.push(AppRoute.chat, extra: conversationEntry);
-        // },
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-                // child: CircularUserAvatar(imageUrl: _getImageUrl()),
-                child: CircularSelectable(
-                  selected: isSelected,
-                  child: CircularUserAvatar(imageUrl: _getImageUrl()),
-                ),
-              ),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(4.0),
+            // child: CircularUserAvatar(imageUrl: _getImageUrl()),
+            child: CircularSelectable(
+              onTap: onTap,
+              onLongPressStart: onLongPressStart,
+              selected: isSelected,
+              child: CircularUserAvatar(imageUrl: _getImageUrl()),
+            ),
+          ),
 
-              SizedBox(width: 10),
-              Expanded(
-                child: Column(
+          SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              children: [
+                Row(
                   children: [
-                    Row(
-                      children: [
-                        Text(_getName(), style: Theme.of(context).textTheme.titleSmall),
+                    Text(_getName(), style: Theme.of(context).textTheme.titleSmall),
 
-                        if (conversationEntry.contact != null &&
-                            conversationEntry.conversation != null &&
-                            conversationEntry.conversation!.conversationType == ConversationType.group)
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 4),
-                            child: Icon(Icons.group, size: 16, color: AppColors.primary),
-                          ),
+                    if (conversationEntry.contact != null &&
+                        conversationEntry.conversation != null &&
+                        conversationEntry.conversation!.conversationType == ConversationType.group)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        child: Icon(Icons.group, size: 16, color: AppColors.primary),
+                      ),
 
-                        if (conversationEntry.contact != null &&
-                            conversationEntry.conversation != null &&
-                            conversationEntry.conversation!.conversationType == ConversationType.solo)
-                          Padding(
-                            padding: const EdgeInsets.only(left: 4),
-                            child: OnlineUserPresence(
-                              uid: conversationEntry.contact!.uid,
-                              showTextOnly: true,
-                              size: 10,
-                            ),
-                          ),
-                        Spacer(),
-                        Icon(Icons.push_pin_rounded, size: 16),
-                      ],
-                    ),
-
-                    Row(
-                      children: [
-                        if (conversationEntry.conversation != null)
-                          Text(
-                            conversationEntry.conversation!.lastMessagePreview,
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                        Spacer(),
-                        if (conversationEntry.conversation != null)
-                          Text(
-                            TimeFormatHelper.formatMessageDate(conversationEntry.conversation!.lastMessageTime),
-                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.grey),
-                          ),
-                      ],
-                    ),
+                    if (conversationEntry.contact != null &&
+                        conversationEntry.conversation != null &&
+                        conversationEntry.conversation!.conversationType == ConversationType.solo)
+                      Padding(
+                        padding: const EdgeInsets.only(left: 4),
+                        child: OnlineUserPresence(
+                          uid: conversationEntry.contact!.uid,
+                          showTextOnly: true,
+                          size: 10,
+                        ),
+                      ),
+                    Spacer(),
+                    Icon(Icons.push_pin_rounded, size: 16),
                   ],
                 ),
-              ),
-            ],
+
+                Row(
+                  children: [
+                    if (conversationEntry.conversation != null)
+                      Text(
+                        conversationEntry.conversation!.lastMessagePreview,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                    Spacer(),
+                    if (conversationEntry.conversation != null)
+                      Text(
+                        TimeFormatHelper.formatMessageDate(conversationEntry.conversation!.lastMessageTime),
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.grey),
+                      ),
+                  ],
+                ),
+              ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

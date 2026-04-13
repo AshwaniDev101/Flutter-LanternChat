@@ -21,7 +21,7 @@ class _TextAreaState extends ConsumerState<TextArea> {
     // final hasText = textEditingController.text.trim().isNotEmpty;
     // final showSend = keyboardOpen && hasText;
 
-    // Todo think about adding a typo function in which whatever one side type is visible to other side insistently , it to learn the emotion of someone who is typing
+    // Todo [Future Idea] think about adding a typo function in which whatever one side type is visible to other side insistently , it to learn the emotion of someone who is typing
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
