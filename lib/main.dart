@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -30,9 +31,12 @@ void main() async {
   // - It may NOT automatically read the client ID from google-services.json
   // - Without manual initialization, sign-in can fail silently or behave inconsistently
 
-  await GoogleSignIn.instance.initialize(
-    serverClientId: '352733183524-lpcgkaktk59qifrgk1m2glh9h494s26n.apps.googleusercontent.com',
-  );
+
+  if (!kIsWeb) {
+    await GoogleSignIn.instance.initialize(
+      serverClientId: '352733183524-lpcgkaktk59qifrgk1m2glh9h494s26n.apps.googleusercontent.com',
+    );
+  }
 
   // Initializing the SharedPreferences
   final prefs = await SharedPreferences.getInstance();

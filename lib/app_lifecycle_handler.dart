@@ -5,6 +5,7 @@ import 'package:lanternchat/core/services/shared_preference/provider/shared_pref
 import 'package:lanternchat/features/auth/provider/auth_provider.dart';
 
 import 'features/auth/provider/presence_provider.dart';
+import 'models/users/app_user.dart';
 
 class AppLifecycleHandler extends ConsumerStatefulWidget {
   final Widget child;
@@ -44,12 +45,24 @@ class _AppLifecycleHandlerState extends ConsumerState<AppLifecycleHandler> with 
     final spp = ref.read(sharedPreferencesProvider);
     final bool isVisible = spp.getBool(SharedData.onlineStatus) ?? true;
 
-    final currentUser = ref.read(currentUserProvider);
-    final up = ref.read(presenceServiceProvider);
+    final authState = ref.read(authStatusProvider);
 
-    // single source of truth
-    final bool finalStatus = isVisible ? isOnline : false;
-    up.setOnlineStatus(uid: currentUser.uid, isOnline: finalStatus);
+    authState.when(
+      data: (firebaseUser) {
+        if (firebaseUser == null) return;
+
+        final up = ref.read(presenceServiceProvider);
+
+        final finalStatus = isVisible ? isOnline : false;
+
+        up.setOnlineStatus(
+          uid: firebaseUser.uid,
+          isOnline: finalStatus,
+        );
+      },
+      loading: () {},
+      error: (_, __) {},
+    );
   }
 
   @override
