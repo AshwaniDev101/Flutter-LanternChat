@@ -44,24 +44,96 @@ class _HomePageState extends State<HomePage> {
   }
 
   // Web layout
+  double _panelWidth = 400;
+
   Widget _webLayout() {
-    return Row(
-      children: [
-        CustomNavigationBar(
-          currentIndex: _currentIndex,
-          onTap: (index) {
-            setState(() => _currentIndex = index);
-          },
-        ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final maxWidth = constraints.maxWidth;
 
-        const VerticalDivider(width: 1),
+        if (_panelWidth == 400) {
+          _panelWidth = (maxWidth * 0.3).clamp(300, 600);
+        }
 
-        Expanded(
-          child: IndexedStack(index: _currentIndex, children: _pages),
-        ),
-      ],
+        return Row(
+          children: [
+            CustomNavigationBar(
+              currentIndex: _currentIndex,
+              onTap: (index) {
+                setState(() => _currentIndex = index);
+              },
+            ),
+
+            const VerticalDivider(width: 1),
+
+            SizedBox(
+              width: _panelWidth,
+              child: IndexedStack(
+                index: _currentIndex,
+                children: _pages,
+              ),
+            ),
+
+            GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              onHorizontalDragUpdate: (details) {
+                setState(() {
+                  _panelWidth += details.delta.dx;
+
+                  // Clamp width
+                  _panelWidth = _panelWidth.clamp(300, 600);
+                });
+              },
+              child: MouseRegion(
+                cursor: SystemMouseCursors.resizeLeftRight,
+                child: Container(
+                  width: 6,
+                  color: Colors.transparent, // invisible but draggable
+                  child: Center(
+                    child: Container(
+                      width: 2,
+                      height: 40,
+                      color: Colors.grey.shade400,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+
+            Expanded(
+              child: Scaffold(
+                appBar: AppBar(),
+                body: Container(
+                  color: Colors.grey.shade100,
+                  child: Center(
+                    child: Text("Chat Area"),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
+  // Widget _webLayout() {
+  //   return Row(
+  //     children: [
+  //       CustomNavigationBar(
+  //         currentIndex: _currentIndex,
+  //         onTap: (index) {
+  //           setState(() => _currentIndex = index);
+  //         },
+  //       ),
+  //
+  //       const VerticalDivider(width: 1),
+  //
+  //       Expanded(
+  //         child: IndexedStack(index: _currentIndex, children: _pages),
+  //       ),
+  //     ],
+  //   );
+  // }
 
   Widget _bottomBar() {
     return BottomNavigationBar(
