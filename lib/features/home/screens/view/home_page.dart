@@ -154,7 +154,9 @@ class _HomePageState extends State<HomePage> {
                   child: Center(child: Text("Welcome to lantern chat")),
                 )
 
-              ): ChatPage(conversationEntry: _selectedConversation!)
+              ): ChatPage(
+                  key: ValueKey(_selectedConversation!.conversation!.conversationId.toString()),
+                  conversationEntry: _selectedConversation!)
             ),
           ],
         );
