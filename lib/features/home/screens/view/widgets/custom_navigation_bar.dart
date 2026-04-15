@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lanternchat/core/theme/app_colors.dart';
+import 'package:lanternchat/core/theme/custom_theme.dart';
 
 class CustomNavigationBar extends StatelessWidget {
   final int currentIndex;
@@ -20,10 +21,14 @@ class CustomNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    // final chatTheme = Theme.of(context).extension<ChatTheme>()!;
+    final customTheme = Theme.of(context).extension<CustomTheme>()!;
+
     return Container(
       width: 80,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: customTheme.verticalNavBar,
         border: Border(
           right: BorderSide(color: Colors.grey.shade300),
         ),

@@ -141,7 +141,7 @@ class _HomePageState extends State<HomePage> {
                 cursor: SystemMouseCursors.resizeLeftRight,
                 child: Container(
                   width: 4, // slightly bigger = easier grab
-                  color: Colors.grey.shade300,
+                  color: Theme.of(context).colorScheme.outlineVariant
                 ),
               ),
             ),
@@ -149,10 +149,7 @@ class _HomePageState extends State<HomePage> {
             Expanded(
               child:  _selectedConversation==null? Scaffold(
                 appBar: AppBar(),
-                body:Container(
-                  color: Colors.grey.shade100,
-                  child: Center(child: Text("Welcome to lantern chat")),
-                )
+                body:Center(child: Text("Welcome to lantern chat"))
 
               ): ChatPage(
                   key: ValueKey(_selectedConversation!.conversation!.conversationId.toString()),

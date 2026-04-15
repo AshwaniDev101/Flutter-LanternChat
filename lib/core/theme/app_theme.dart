@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:lanternchat/core/theme/custom_theme.dart';
 
 import 'app_colors.dart';
 import 'chat_theme.dart';
@@ -7,19 +8,20 @@ import 'chat_theme.dart';
 class Themes {
   static ThemeData get lightThemeData => ThemeData(
     useMaterial3: true,
-    // colorScheme: ColorScheme.fromSeed(
-    //     seedColor: AppColors.primary
-    // ),
+
     colorScheme: ColorScheme(
       brightness: Brightness.light,
       primary: AppColors.primary,
       onPrimary: Colors.white,
       secondary: AppColors.secondary,
       onSecondary: Colors.white,
-      error: Colors.red,
+      error: Colors.redAccent,
       onError: Colors.white,
-      surface: AppColors.background,
+      surface: AppColors.surface,
       onSurface: Colors.black87,
+
+      outlineVariant: Colors.grey.shade400,
+
     ),
 
     extensions: [
@@ -27,7 +29,10 @@ class Themes {
         senderBubble: AppColors.senderBubble,
         receivedBubble: AppColors.receivedBubble,
         muteColor: AppColors.muteColor,
+        chatBackground: AppColors.chatBackground,
       ),
+
+      CustomTheme(verticalNavBar: AppColors.verticalNavigationBarColor),
     ],
     appBarTheme: AppBarTheme(
       backgroundColor: AppColors.primary,
@@ -54,16 +59,19 @@ class Themes {
       onError: Colors.black,
       surface: DarkAppColors.surface,
       onSurface: Colors.white70,
+        outlineVariant: Colors.blue
     ),
 
-    scaffoldBackgroundColor: DarkAppColors.background,
+
 
     extensions: [
       ChatTheme(
         senderBubble: DarkAppColors.senderBubble,
         receivedBubble: DarkAppColors.receivedBubble,
         muteColor: DarkAppColors.muteColor,
+        chatBackground: DarkAppColors.chatBackground,
       ),
+      CustomTheme(verticalNavBar: DarkAppColors.verticalNavigationBarColor),
     ],
 
     appBarTheme: AppBarTheme(

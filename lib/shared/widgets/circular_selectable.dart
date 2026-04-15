@@ -28,7 +28,7 @@ class ListItemSelectable extends StatelessWidget {
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
-                    Icon(Icons.circle, color: AppColors.background, size: 28),
+                    Icon(Icons.circle, color: AppColors.surface, size: 28),
                     Icon(
                       Icons.check_circle,
                       color: AppColors.selectedTileTickColor,

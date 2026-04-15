@@ -20,6 +20,7 @@ import '../../../../../models/messages/message_tile.dart';
 import '../../../../../models/users/app_user.dart';
 import '../../../../../shared/widgets/circular_user_avatar.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/chat_theme.dart';
 import '../../../../models/users/contact.dart';
 import '../../../auth/provider/auth_provider.dart';
 import '../../data/chat_service.dart';
@@ -183,6 +184,8 @@ class _ChatPageState extends ConsumerState<ChatPage> {
 
     final typingService = ref.read(typingServiceProvider);
 
+    final chatTheme = Theme.of(context).extension<ChatTheme>()!;
+
     return Scaffold(
       appBar: _isSelectionMode
           ? AppBar(
@@ -232,7 +235,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
               ],
             )
           : _appBar(context),
-      backgroundColor: Colors.grey[200],
+      backgroundColor: chatTheme.chatBackground,
       body: Column(
         children: [
           Expanded(
