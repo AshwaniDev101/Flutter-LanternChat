@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:lanternchat/models/conversations/conversation.dart';
+import 'package:lanternchat/models/conversations/enums/conversation_type.dart';
 import 'package:lanternchat/models/users/contact.dart';
 
 class _Field {
@@ -21,6 +23,8 @@ class ConversationEntry {
       conversation: Conversation.fromMap(map[_Field.conversation] as Map<String, dynamic>? ?? {}),
     );
   }
+
+  // static ConversationEntry get none => ConversationEntry(contact: Contact(uid: 'none', name: 'none', email: 'none', photoURL: 'none'), conversation: Conversation(conversationId: 'none', memberIds: {}, conversationType: ConversationType.solo, lastMessagePreview: 'none', lastMessageIndex: 0, lastSenderId: 'none', lastMessageTime: Timestamp.now()));
 
   // Map<String, dynamic> toMap() {
   //   return {

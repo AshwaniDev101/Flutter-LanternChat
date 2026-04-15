@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -18,7 +19,10 @@ import '../viewmodel/conversation_viewmodel.dart';
 final searchTextProvider = StateProvider<String>((ref) => '');
 
 class ConversationPage extends ConsumerStatefulWidget {
-  const ConversationPage({super.key});
+
+
+  final Function(ConversationEntry) onConversationTap;
+  const ConversationPage({super.key, required this.onConversationTap});
 
   @override
   ConsumerState<ConversationPage> createState() => _ConversationPageState();
@@ -227,7 +231,19 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
                 if (conversationId == null) return;
                 selectionVM.toggle(conversationId);
               } else {
-                context.push(AppRoute.chat, extra: entry);
+
+                // passing the tab back to homepage
+                widget.onConversationTap(entry);
+
+                // if using web send conversation entry to home
+                // if(isSkiaWeb) {
+                //   // widget.onPageChange(entry);
+                // }else
+                //   {
+                //     context.push(AppRoute.chat, extra: entry);
+                //   }
+
+
               }
 
             },

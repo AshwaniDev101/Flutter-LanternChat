@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lanternchat/core/theme/app_colors.dart';
+import 'package:lanternchat/features/chat/screens/view/chat_page.dart';
 import 'package:lanternchat/features/contact/screens/view/contact_page.dart';
 import 'package:lanternchat/features/conversation/screens/view/conversation_page.dart';
 import 'package:lanternchat/features/conversation/screens/view/group_page.dart';
@@ -8,6 +10,9 @@ import 'package:lanternchat/features/home/screens/view/widgets/custom_navigation
 import 'package:lanternchat/features/profile/screens/view/profile_page.dart';
 import 'package:lanternchat/features/qr/screens/view/qr_page.dart';
 import 'package:lanternchat/features/settings/screens/view/settings_page.dart';
+import 'package:lanternchat/models/conversations/conversation_entry.dart';
+
+import '../../../../core/router/router_provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -19,14 +24,52 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
 
-  final List<Widget> _pages = [
-    ConversationPage(),
-    ContactPage(),
-    // GroupsPage(),
-    QrCodePage(),
-    // ProfilePage(),
-    SettingsPage(),
-  ];
+  ConversationEntry? _selectedConversation;
+
+  // late final List<Widget> _pages;
+
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //
+  //   _pages = [
+  //     ConversationPage(
+  //       onConversationTap: (entry) {
+  //         if (kIsWeb) {
+  //           setState(() {
+  //             _selectedConversation = entry;
+  //           });
+  //         } else {
+  //           context.push(AppRoute.chat, extra: entry);
+  //         }
+  //       },
+  //     ),
+  //     ContactPage(),
+  //     QrCodePage(),
+  //     SettingsPage(),
+  //   ];
+  // }
+
+  List<Widget> _buildPages() {
+    return [
+      ConversationPage(
+        onConversationTap: (entry) {
+          if (kIsWeb) {
+            setState(() {
+              _selectedConversation = entry;
+            });
+          } else {
+            context.push(AppRoute.chat, extra: entry);
+
+          }
+        },
+      ),
+      ContactPage(),
+      QrCodePage(),
+      SettingsPage(),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,10 +78,12 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(body: isWeb ? _webLayout() : _mobileLayout());
   }
 
+
+
   // Mobile layout
   Widget _mobileLayout() {
     return Scaffold(
-      body: IndexedStack(index: _currentIndex, children: _pages),
+      body: IndexedStack(index: _currentIndex, children: _buildPages()),
       bottomNavigationBar: _bottomBar(),
     );
   }
@@ -71,7 +116,7 @@ class _HomePageState extends State<HomePage> {
             // const VerticalDivider(width: 1),
             SizedBox(
               width: _panelWidth,
-              child: IndexedStack(index: _currentIndex, children: _pages),
+              child: IndexedStack(index: _currentIndex, children: _buildPages()),
             ),
 
             Listener(
@@ -102,13 +147,14 @@ class _HomePageState extends State<HomePage> {
             ),
 
             Expanded(
-              child: Scaffold(
+              child:  _selectedConversation==null? Scaffold(
                 appBar: AppBar(),
-                body: Container(
+                body:Container(
                   color: Colors.grey.shade100,
-                  child: Center(child: Text("Chat Area")),
-                ),
-              ),
+                  child: Center(child: Text("Welcome to lantern chat")),
+                )
+
+              ): ChatPage(conversationEntry: _selectedConversation!)
             ),
           ],
         );
