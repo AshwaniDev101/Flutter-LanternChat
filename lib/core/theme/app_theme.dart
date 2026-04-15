@@ -27,8 +27,15 @@ class Themes {
     extensions: [
       ChatTheme(
         senderBubble: AppColors.senderBubble,
+        senderBubbleTitle: AppColors.senderBubbleTitle,
+        senderBubbleText: AppColors.senderBubbleText,
+        senderBubbleMuteColor: AppColors.senderBubbleMuteColor,
+
         receivedBubble: AppColors.receivedBubble,
-        muteColor: AppColors.muteColor,
+        receivedBubbleTitle: AppColors.receivedBubbleTitle,
+        receivedBubbleText: AppColors.receivedBubbleText,
+        receivedBubbleMuteColor: AppColors.receivedBubbleMuteColor,
+
         chatBackground: AppColors.chatBackground,
       ),
 
@@ -67,8 +74,14 @@ class Themes {
     extensions: [
       ChatTheme(
         senderBubble: DarkAppColors.senderBubble,
+        senderBubbleTitle: DarkAppColors.senderBubbleTitle,
+        senderBubbleText: DarkAppColors.senderBubbleText,
+        senderBubbleMuteColor: DarkAppColors.senderBubbleMuteColor,
         receivedBubble: DarkAppColors.receivedBubble,
-        muteColor: DarkAppColors.muteColor,
+        receivedBubbleTitle: DarkAppColors.receivedBubbleTitle,
+        receivedBubbleText: DarkAppColors.receivedBubbleText,
+        receivedBubbleMuteColor: DarkAppColors.receivedBubbleMuteColor,
+
         chatBackground: DarkAppColors.chatBackground,
       ),
       CustomTheme(verticalNavBar: DarkAppColors.verticalNavigationBarColor),
