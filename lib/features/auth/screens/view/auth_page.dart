@@ -58,16 +58,19 @@ class AuthPage extends ConsumerWidget {
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Column(
                 children: [
-                  SignInButton(
-                    imageUrl: 'assets/icons/buttons/google.png',
-                    text: 'Continue with Google',
-                    textColor: Colors.black,
-                    backgroundColor: Colors.grey[100]!,
-                    callback: authState.isLoading
-                        ? null
-                        : () {
-                            viewModel.googleSignIn();
-                          },
+                  ConstrainedBox(
+                    constraints: BoxConstraints(maxWidth: 300),
+                    child: SignInButton(
+                      imageUrl: 'assets/icons/buttons/google.png',
+                      text: 'Continue with Google',
+                      textColor: Colors.black,
+                      backgroundColor: Colors.grey[100]!,
+                      callback: authState.isLoading
+                          ? null
+                          : () {
+                              viewModel.googleSignIn();
+                            },
+                    ),
                   ),
 
                   if (authState.isLoading)

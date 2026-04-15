@@ -46,13 +46,17 @@ class _HomePageState extends State<HomePage> {
   // Web layout
   double _panelWidth = 400;
 
+  double _startX = 0;
+  double _startWidth = 400;
+  bool _isDragging = false;
+
   Widget _webLayout() {
     return LayoutBuilder(
       builder: (context, constraints) {
         final maxWidth = constraints.maxWidth;
 
         if (_panelWidth == 400) {
-          _panelWidth = (maxWidth * 0.3).clamp(300, 600);
+          _panelWidth = (maxWidth * 0.3).clamp(400, 800);
         }
 
         return Row(
@@ -64,38 +68,35 @@ class _HomePageState extends State<HomePage> {
               },
             ),
 
-            const VerticalDivider(width: 1),
-
+            // const VerticalDivider(width: 1),
             SizedBox(
               width: _panelWidth,
-              child: IndexedStack(
-                index: _currentIndex,
-                children: _pages,
-              ),
+              child: IndexedStack(index: _currentIndex, children: _pages),
             ),
 
-            GestureDetector(
-              behavior: HitTestBehavior.translucent,
-              onHorizontalDragUpdate: (details) {
-                setState(() {
-                  _panelWidth += details.delta.dx;
+            Listener(
+              onPointerDown: (event) {
+                _isDragging = true;
+                _startX = event.position.dx;
+                _startWidth = _panelWidth;
+              },
+              onPointerMove: (event) {
+                if (!_isDragging) return;
 
-                  // Clamp width
-                  _panelWidth = _panelWidth.clamp(300, 600);
+                final delta = event.position.dx - _startX;
+
+                setState(() {
+                  _panelWidth = (_startWidth + delta).clamp(400, 800);
                 });
+              },
+              onPointerUp: (_) {
+                _isDragging = false;
               },
               child: MouseRegion(
                 cursor: SystemMouseCursors.resizeLeftRight,
                 child: Container(
-                  width: 6,
-                  color: Colors.transparent, // invisible but draggable
-                  child: Center(
-                    child: Container(
-                      width: 2,
-                      height: 40,
-                      color: Colors.grey.shade400,
-                    ),
-                  ),
+                  width: 4, // slightly bigger = easier grab
+                  color: Colors.grey.shade300,
                 ),
               ),
             ),
@@ -105,9 +106,7 @@ class _HomePageState extends State<HomePage> {
                 appBar: AppBar(),
                 body: Container(
                   color: Colors.grey.shade100,
-                  child: Center(
-                    child: Text("Chat Area"),
-                  ),
+                  child: Center(child: Text("Chat Area")),
                 ),
               ),
             ),
@@ -116,6 +115,7 @@ class _HomePageState extends State<HomePage> {
       },
     );
   }
+
   // Widget _webLayout() {
   //   return Row(
   //     children: [

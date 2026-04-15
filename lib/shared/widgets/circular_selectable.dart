@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 import '../../core/theme/app_colors.dart';
 
-class CircularSelectable extends StatelessWidget {
+class ListItemSelectable extends StatelessWidget {
   final Widget child;
   final bool selected;
 
   final VoidCallback onTap;
   final void Function(LongPressStartDetails details) onLongPressStart;
 
-  const CircularSelectable({required this.child, required this.selected, super.key, required this.onLongPressStart, required this.onTap});
+  const ListItemSelectable({required this.child, required this.selected, super.key, required this.onLongPressStart, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +23,8 @@ class CircularSelectable extends StatelessWidget {
 
             if (selected)
               Positioned(
-                bottom: -2,
-                right: -2,
+                bottom: 10,
+                left: 40,
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
