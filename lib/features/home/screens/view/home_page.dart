@@ -140,7 +140,7 @@ class _HomePageState extends State<HomePage> {
               child: MouseRegion(
                 cursor: SystemMouseCursors.resizeLeftRight,
                 child: Container(
-                  width: 4, // slightly bigger = easier grab
+                  width: 1,
                   color: Theme.of(context).colorScheme.outlineVariant
                 ),
               ),

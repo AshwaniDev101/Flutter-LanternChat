@@ -66,7 +66,7 @@ class Themes {
       onError: Colors.black,
       surface: DarkAppColors.surface,
       onSurface: Colors.white70,
-        outlineVariant: Colors.blue
+        outlineVariant: Colors.grey
     ),
 
 

@@ -1,12 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lanternchat/core/helpers/id_helper.dart';
-import 'package:lanternchat/features/auth/provider/presence_provider.dart';
 import 'package:lanternchat/features/chat/screens/view/widgets/chat_bubble.dart';
 import 'package:lanternchat/features/chat/screens/view/widgets/text_area.dart';
 import 'package:lanternchat/features/chat/screens/view/widgets/typing_indicator.dart';
-import 'package:lanternchat/features/contact/provider/contact_providers.dart';
 import 'package:lanternchat/features/conversation/provider/conversation_provider.dart';
 import 'package:lanternchat/models/conversations/conversation.dart';
 import 'package:lanternchat/models/conversations/conversation_entry.dart';
@@ -21,7 +20,6 @@ import '../../../../../models/users/app_user.dart';
 import '../../../../../shared/widgets/circular_user_avatar.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/chat_theme.dart';
-import '../../../../models/users/contact.dart';
 import '../../../auth/provider/auth_provider.dart';
 import '../../data/chat_service.dart';
 import '../../provider/chat_provider.dart';
@@ -188,53 +186,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
 
     return Scaffold(
       appBar: _isSelectionMode
-          ? AppBar(
-              leadingWidth: 100,
-              backgroundColor: AppColors.selectedTileTickColor,
-              leading: Row(
-                children: [
-                  SizedBox(width: 8),
-                  IconButton(
-                    onPressed: () {
-                      setState(() {
-                        _selectionModeReset();
-
-                        AppLogger.i('_selectedConversations {} $_selectedMessagesIds');
-                      });
-                    },
-                    icon: Icon(Icons.arrow_back_rounded),
-                  ),
-                  SizedBox(width: 12),
-                  Text(_selectionCount.toString(), style: TextStyle(fontSize: 18)),
-                ],
-              ),
-
-              actions: [
-                // IconButton(
-                //   onPressed: () {
-                //     _selectionModeReset();
-                //   },
-                //   icon: Icon(Icons.push_pin_outlined),
-                // ),
-                IconButton(
-                  onPressed: () {
-                    final conv = widget.conversationEntry.conversation;
-                    if (conv != null) {
-                      chatService.removeMessageList(
-                        conversationId: widget.conversationEntry.conversation!.conversationId,
-                        selectedMessagesIds: _selectedMessagesIds,
-                      );
-                    }
-
-                    setState(() {
-                      _selectionModeReset();
-                    });
-                  },
-                  icon: Icon(Icons.delete_outline_outlined),
-                ),
-              ],
-            )
-          : _appBar(context),
+          ? _appBarSelectionMode(context, chatService) : _appBar(context),
       backgroundColor: chatTheme.chatBackground,
       body: Column(
         children: [
@@ -361,37 +313,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
     );
   }
 
-  // Page App bar
-  AppBar _appBar(BuildContext context) {
-    return AppBar(
-      // leadingWidth: 40, // reduces default 56 width
-      titleSpacing: 4, // removes extra gap before title
-      title: Row(
-        children: [
-          CircularUserAvatar(imageUrl: _getImageUrl(), radius: 20),
-          SizedBox(width: 8),
-          Text(
-            _getName(),
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.white),
-            softWrap: false,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ],
-      ),
 
-      actions: [
-        // IconButton(onPressed: () {}, icon: Icon(Icons.videocam_outlined)),
-        // IconButton(onPressed: () {}, icon: Icon(Icons.call_outlined)),
-        PopupMenuButton(
-          itemBuilder: (context) {
-            return ChatPagePopupMenu.values.map((value) {
-              return PopupMenuItem(value: value, child: Text(value.action));
-            }).toList();
-          },
-        ),
-      ],
-    );
-  }
 
   void _selectionModeReset() {
     _isSelectionMode = false;
@@ -421,5 +343,91 @@ class _ChatPageState extends ConsumerState<ChatPage> {
     } else {
       return 'O_O user';
     }
+  }
+
+
+  // Page App bar
+  AppBar _appBar(BuildContext context) {
+    return AppBar(
+      // leadingWidth: 40, // reduces default 56 width
+      titleSpacing: 4, // removes extra gap before title
+      title: Row(
+        children: [
+
+          if(isSkiaWeb)
+            SizedBox(width: 20,),
+          CircularUserAvatar(imageUrl: _getImageUrl(), radius: 20),
+          SizedBox(width: 8),
+          Text(
+            _getName(),
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.white),
+            softWrap: false,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
+      ),
+
+      actions: [
+        // IconButton(onPressed: () {}, icon: Icon(Icons.videocam_outlined)),
+        // IconButton(onPressed: () {}, icon: Icon(Icons.call_outlined)),
+        PopupMenuButton(
+          itemBuilder: (context) {
+            return ChatPagePopupMenu.values.map((value) {
+              return PopupMenuItem(value: value, child: Text(value.action));
+            }).toList();
+          },
+        ),
+      ],
+    );
+  }
+
+  AppBar _appBarSelectionMode(BuildContext context,ChatService chatService) {
+
+    return AppBar(
+      leadingWidth: 100,
+      backgroundColor: AppColors.selectedTileTickColor,
+      leading: Row(
+        children: [
+          SizedBox(width: 8),
+          IconButton(
+            onPressed: () {
+              setState(() {
+                _selectionModeReset();
+
+                AppLogger.i('_selectedConversations {} $_selectedMessagesIds');
+              });
+            },
+            icon: Icon(Icons.arrow_back_rounded),
+          ),
+          SizedBox(width: 12),
+          Text(_selectionCount.toString(), style: TextStyle(fontSize: 18)),
+        ],
+      ),
+
+      actions: [
+        // IconButton(
+        //   onPressed: () {
+        //     _selectionModeReset();
+        //   },
+        //   icon: Icon(Icons.push_pin_outlined),
+        // ),
+        IconButton(
+          onPressed: () {
+            final conv = widget.conversationEntry.conversation;
+            if (conv != null) {
+              chatService.removeMessageList(
+                conversationId: widget.conversationEntry.conversation!.conversationId,
+                selectedMessagesIds: _selectedMessagesIds,
+              );
+            }
+
+            setState(() {
+              _selectionModeReset();
+            });
+          },
+          icon: Icon(Icons.delete_outline_outlined),
+        ),
+      ],
+    );
   }
 }
