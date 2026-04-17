@@ -36,27 +36,27 @@ LanternChat employs a **Feature-First MVVM (Model-View-ViewModel)** architecture
 
 | Chats | Chat Window | Contacts |
 |------|------------|----------|
-| <img src="screenshots/android/light/all_chats_lightmode.jpg" width="250"> | <img src="screenshots/android/light/chat_window.jpg" width="250"> | <img src="screenshots/android/light/contacts.jpg" width="250"> |
+| <img src="docs/screenshots/android/light/all_chats_lightmode.jpg" width="250"> | <img src="docs/screenshots/android/light/chat_window.jpg" width="250"> | <img src="docs/screenshots/android/light/contacts.jpg" width="250"> |
 
 | Create Group | QR Code | Select Contact |
 |-------------|--------|----------------|
-| <img src="screenshots/android/light/create_group.jpg" width="250"> | <img src="screenshots/android/light/qr_code_page.jpg" width="250"> | <img src="screenshots/android/light/select_contact.jpg" width="250"> |
+| <img src="docs/screenshots/android/light/create_group.jpg" width="250"> | <img src="docs/screenshots/android/light/qr_code_page.jpg" width="250"> | <img src="docs/screenshots/android/light/select_contact.jpg" width="250"> |
 
 | Settings |
 |---------|
-| <img src="screenshots/android/light/settings_page_light.jpg" width="250"> |
+| <img src="docs/screenshots/android/light/settings_page_light.jpg" width="250"> |
 
 
 ## 🌙 Mobile - Dark Mode
 
 | Chats | Settings |
 |------|----------|
-| <img src="screenshots/android/dark/all_chats_darkmode.jpg" width="250"> | <img src="screenshots/android/dark/settings_page.jpg" width="250"> |
+| <img src="docs/screenshots/android/dark/all_chats_darkmode.jpg" width="250"> | <img src="docs/screenshots/android/dark/settings_page.jpg" width="250"> |
 
 ## 💻 Web Mode
 
 <p align="center">
-  <img src="screenshots/web/web_mode.jpg" width="700">
+  <img src="docs/screenshots/web/web_mode.jpg" width="700">
 </p>
 
 
