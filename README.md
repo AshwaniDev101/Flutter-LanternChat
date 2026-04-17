@@ -32,6 +32,33 @@ This project serves as a comprehensive portfolio piece, showcasing professional 
 
 LanternChat employs a **Feature-First MVVM (Model-View-ViewModel)** architecture. Each feature is self-contained with its own data layer, view models, and UI components, ensuring excellent separation of concerns, testability, and scalability.
 
+## 📱 Mobile - Light Mode
+
+| Chats | Chat Window | Contacts |
+|------|------------|----------|
+| <img src="screenshots/android/light/all_chats_lightmode.jpg" width="250"> | <img src="screenshots/android/light/chat_window.jpg" width="250"> | <img src="screenshots/android/light/contacts.jpg" width="250"> |
+
+| Create Group | QR Code | Select Contact |
+|-------------|--------|----------------|
+| <img src="screenshots/android/light/create_group.jpg" width="250"> | <img src="screenshots/android/light/qr_code_page.jpg" width="250"> | <img src="screenshots/android/light/select_contact.jpg" width="250"> |
+
+| Settings |
+|---------|
+| <img src="screenshots/android/light/settings_page_light.jpg" width="250"> |
+
+
+## 🌙 Mobile - Dark Mode
+
+| Chats | Settings |
+|------|----------|
+| <img src="screenshots/android/dark/all_chats_darkmode.jpg" width="250"> | <img src="screenshots/android/dark/settings_page.jpg" width="250"> |
+
+## 💻 Web Mode
+
+<p align="center">
+  <img src="screenshots/web/web_mode.jpg" width="700">
+</p>
+
 
 ## 🤍 Key Highlights
 
