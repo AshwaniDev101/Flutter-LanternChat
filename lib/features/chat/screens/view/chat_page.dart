@@ -370,13 +370,13 @@ class _ChatPageState extends ConsumerState<ChatPage> {
       actions: [
         // IconButton(onPressed: () {}, icon: Icon(Icons.videocam_outlined)),
         // IconButton(onPressed: () {}, icon: Icon(Icons.call_outlined)),
-        PopupMenuButton(
-          itemBuilder: (context) {
-            return ChatPagePopupMenu.values.map((value) {
-              return PopupMenuItem(value: value, child: Text(value.action));
-            }).toList();
-          },
-        ),
+        // PopupMenuButton(
+        //   itemBuilder: (context) {
+        //     return ChatPagePopupMenu.values.map((value) {
+        //       return PopupMenuItem(value: value, child: Text(value.action));
+        //     }).toList();
+        //   },
+        // ),
       ],
     );
   }

@@ -45,7 +45,14 @@ class Themes {
         chatBackground: AppColors.chatBackground,
       ),
 
-      CustomTheme(verticalNavBar: AppColors.verticalNavigationBarColor),
+      CustomTheme(
+        verticalNavBar: AppColors.verticalNavigationBarColor,
+        verticalIconColor: AppColors.verticalIconColor,
+        verticalTextColor: AppColors.verticalTextColor,
+        verticalSelectedBackgroundColor: AppColors.verticalSelectedBackgroundColor,
+        verticalSelectedIconColor: AppColors.verticalSelectedIconColor,
+        verticalSelectedTextColor: AppColors.verticalSelectedTextColor,
+      ),
     ],
     appBarTheme: AppBarTheme(
       backgroundColor: AppColors.primary,
@@ -95,7 +102,14 @@ class Themes {
         // chat background
         chatBackground: DarkAppColors.chatBackground,
       ),
-      CustomTheme(verticalNavBar: DarkAppColors.verticalNavigationBarColor),
+      CustomTheme(
+        verticalNavBar: DarkAppColors.verticalNavigationBarColor,
+        verticalIconColor: DarkAppColors.verticalIconColor,
+        verticalTextColor: DarkAppColors.verticalTextColor,
+        verticalSelectedBackgroundColor: DarkAppColors.verticalSelectedBackgroundColor,
+        verticalSelectedIconColor: DarkAppColors.verticalSelectedIconColor,
+        verticalSelectedTextColor: DarkAppColors.verticalSelectedTextColor,
+      ),
     ],
 
     appBarTheme: AppBarTheme(

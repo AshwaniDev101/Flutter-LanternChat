@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lanternchat/core/theme/app_colors.dart';
 import 'package:lanternchat/core/theme/custom_theme.dart';
 
 class CustomNavigationBar extends StatelessWidget {
@@ -21,8 +20,6 @@ class CustomNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    // final chatTheme = Theme.of(context).extension<ChatTheme>()!;
     final customTheme = Theme.of(context).extension<CustomTheme>()!;
 
     return Container(
@@ -30,11 +27,10 @@ class CustomNavigationBar extends StatelessWidget {
       decoration: BoxDecoration(
         color: customTheme.verticalNavBar,
         border: Border(
-          right: BorderSide(color: Colors.grey.shade300),
+          right: BorderSide(color: customTheme.verticalTextColor.withValues(alpha: 0.1)),
         ),
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
         children: List.generate(items.length, (index) {
           final item = items[index];
           final isSelected = index == currentIndex;
@@ -74,10 +70,12 @@ class NavigationBarIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final customTheme = Theme.of(context).extension<CustomTheme>()!;
+
     return InkWell(
       onTap: onTap,
-      hoverColor: Colors.red,
       borderRadius: BorderRadius.circular(12),
+      hoverColor: customTheme.verticalSelectedBackgroundColor.withValues(alpha: 0.3),
       child: Padding(
         padding: const EdgeInsets.all(4.0),
         child: Container(
@@ -85,21 +83,27 @@ class NavigationBarIcon extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 10),
           width: double.infinity,
           decoration: BoxDecoration(
-            color: selected ? Colors.blue.shade50 : Colors.transparent,
+            color: selected
+                ? customTheme.verticalSelectedBackgroundColor
+                : Colors.transparent,
             borderRadius: BorderRadius.circular(12),
           ),
           child: Column(
             children: [
               Icon(
                 iconData,
-                color: selected ? AppColors.primary : AppColors.muteColor,
+                color: selected
+                    ? customTheme.verticalSelectedIconColor
+                    : customTheme.verticalIconColor,
               ),
               const SizedBox(height: 4),
               Text(
                 label,
                 style: TextStyle(
                   fontSize: 11,
-                  color: selected ? AppColors.primary : AppColors.muteColor,
+                  color: selected
+                      ? customTheme.verticalSelectedTextColor
+                      : customTheme.verticalTextColor,
                 ),
               ),
             ],

@@ -16,11 +16,20 @@ class AppColors {
 
   // UI Elements
   static const Color selectedTileTickColor = Color(0xFF10B981);
-  static const Color verticalNavigationBarColor = Color(0xFF1E2937);
+
+  // verticalNavigationBar
+  static const Color verticalNavigationBarColor = Color(0xFFF1F5F9);
+
+  static const Color verticalIconColor = Color(0xFF64748B);
+  static const Color verticalTextColor = Color(0xFF64748B);
+
+  static const Color verticalSelectedBackgroundColor = Color(0xFFE0F2FE);
+  static const Color verticalSelectedIconColor = Color(0xFF0284C7);
+  static const Color verticalSelectedTextColor = Color(0xFF0284C7);
 
   // Chat - Sender (Soft Teal Theme)
   static const Color senderBubble = Color(0xFF98BDD5);
-  static const Color senderBubbleTitle = Color(0xFF3B82A6);
+  static const Color senderBubbleTitle = Color(0xFFBCBCBC);
   static const Color senderBubbleText = Color(0xFF334155);
   static const Color senderBubbleMuteColor = Color(0xFF504D4D);
   static const Color senderBubbleDeleted = Color(0xFF504D4D);
@@ -45,7 +54,16 @@ class DarkAppColors {
 
   // UI Elements
   static const Color selectedTileTickColor = Color(0xFF34D399);
-  static const Color verticalNavigationBarColor = Color(0xFF1A2333);
+
+  // verticalNavigationBar
+  static const Color verticalNavigationBarColor = Color(0xFF0F172A);
+
+  static const Color verticalIconColor = Color(0xFF94A3B8);
+  static const Color verticalTextColor = Color(0xFF94A3B8);
+
+  static const Color verticalSelectedBackgroundColor = Color(0xFF1E293B);
+  static const Color verticalSelectedIconColor = Color(0xFF38BDF8);
+  static const Color verticalSelectedTextColor = Color(0xFF38BDF8);
 
   // Chat - Sender (Soft Vibrant)
   static const Color senderBubble = Color(0xFF2E7A9E);
