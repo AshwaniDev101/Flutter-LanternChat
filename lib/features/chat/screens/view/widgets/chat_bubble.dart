@@ -57,16 +57,16 @@ class ChatBubble extends ConsumerWidget {
                     if (contactMap[message.senderId] != null)
                       Text(
                         contactMap[message.senderId]!.name,
-                        style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.w500, fontSize: 14),
+                        style: TextStyle(color: isMine ? chatTheme.senderBubbleTitle: chatTheme.receivedBubbleTitle, fontWeight: FontWeight.w500, fontSize: 14),
                       ),
 
                     message.isDeleted? Text(
                       "deleted",
-                      style: TextStyle(fontSize: 15, height: 1.35, color: Colors.grey.shade800, fontStyle: FontStyle.italic),
+                      style: TextStyle(fontSize: 15, height: 1.35, color: isMine ? chatTheme.senderBubbleDeleted : chatTheme.receivedBubbleDeleted, fontStyle: FontStyle.italic),
                     ):
                     Text(
                       message.text ?? "",
-                      style: TextStyle(fontSize: 15, height: 1.35, color: isMine ? Colors.black : Colors.black),
+                      style: TextStyle(fontSize: 15, height: 1.35, color: isMine ? chatTheme.senderBubbleText : chatTheme.receivedBubbleText),
                     ),
 
                     const SizedBox(height: 4),
@@ -78,7 +78,7 @@ class ChatBubble extends ConsumerWidget {
                           _formatTime(message.createdAt),
                           style: Theme.of(
                             context,
-                          ).textTheme.bodySmall?.copyWith(color: Colors.blueGrey.shade800, fontSize: 11),
+                          ).textTheme.bodySmall?.copyWith(color: isMine ? chatTheme.senderBubbleMuteColor: chatTheme.receivedBubbleMuteColor, fontSize: 11),
                         ),
 
                         if (isMine) ...[
