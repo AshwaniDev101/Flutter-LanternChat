@@ -66,12 +66,12 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
               ),
 
               actions: [
-                IconButton(
-                  onPressed: () {
-                    selectionVM.resetSelectionMode();
-                  },
-                  icon: Icon(Icons.push_pin_outlined),
-                ),
+                // IconButton(
+                //   onPressed: () {
+                //     selectionVM.resetSelectionMode();
+                //   },
+                //   icon: Icon(Icons.push_pin_outlined),
+                // ),
 
                 IconButton(
                   onPressed: actionState.isLoading
@@ -221,38 +221,6 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
     );
   }
 
-  Future<String?> _showPopupMenu(BuildContext context, LongPressStartDetails details) {
-    const horizontalOffset = 100.0;
-    const verticalOffset = 8.0;
-
-    return showMenu<String>(
-      context: context,
-      position: RelativeRect.fromLTRB(
-        details.globalPosition.dx - horizontalOffset,
-        details.globalPosition.dy - verticalOffset,
-        details.globalPosition.dx,
-        details.globalPosition.dy,
-      ),
-      items: const [PopupMenuItem(value: 'delete', child: Text('Delete'))],
-    );
-  }
-
-  Future<void> _handleMenuAction({
-    required WidgetRef ref,
-    required String action,
-    required ConversationEntry conversationEntry,
-  }) async {
-    switch (action) {
-      case 'delete':
-        final conversationId = conversationEntry.conversation?.conversationId;
-        final memberUid = ref.watch(currentUserProvider).uid;
-
-        if (conversationId == null) return;
-
-        await ref.read(conversationServiceProvider).removeUser(conversationId: conversationId, memberUid: memberUid);
-        break;
-    }
-  }
 }
 
 class _Card extends StatelessWidget {
@@ -309,7 +277,15 @@ class _Card extends StatelessWidget {
                         ),
 
                       Spacer(),
-                      Icon(Icons.push_pin_rounded, size: 16),
+                      Text(
+                        TimeFormatHelper.formatMessageDate(
+                            conversationEntry.conversation!.lastMessageTime),
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium
+                            ?.copyWith(color: Colors.grey),
+                      ),
+
                     ],
                   ),
 
@@ -323,14 +299,8 @@ class _Card extends StatelessWidget {
                           ),
                         ),
                         SizedBox(width: 8),
-                        Text(
-                          TimeFormatHelper.formatMessageDate(
-                              conversationEntry.conversation!.lastMessageTime),
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium
-                              ?.copyWith(color: Colors.grey),
-                        ),
+                        // Icon(Icons.push_pin_rounded, size: 16),
+
                       ],
                     ),
                 ],

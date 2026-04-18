@@ -35,7 +35,7 @@ class _TextAreaState extends ConsumerState<TextArea> {
               ),
               child: Row(
                 children: [
-                  IconButton(onPressed: () {}, icon: Icon(Icons.emoji_emotions_outlined)),
+                  // IconButton(onPressed: () {}, icon: Icon(Icons.emoji_emotions_outlined)),
                   Expanded(
                     child: TextField(
                       controller: textEditingController,
@@ -44,8 +44,8 @@ class _TextAreaState extends ConsumerState<TextArea> {
                       decoration: InputDecoration(hintText: "Type a message", border: InputBorder.none),
                     ),
                   ),
-                  IconButton(onPressed: () {}, icon: Icon(Icons.attachment)),
-                  IconButton(onPressed: () {}, icon: Icon(Icons.camera_alt_outlined)),
+                  // IconButton(onPressed: () {}, icon: Icon(Icons.attachment)),
+                  // IconButton(onPressed: () {}, icon: Icon(Icons.camera_alt_outlined)),
                 ],
               ),
             ),
