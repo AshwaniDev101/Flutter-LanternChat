@@ -76,31 +76,34 @@ class NavigationBarIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      hoverColor: Colors.grey.shade200,
+      hoverColor: Colors.red,
       borderRadius: BorderRadius.circular(12),
-      child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 8),
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: selected ? Colors.blue.shade50 : Colors.transparent,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Column(
-          children: [
-            Icon(
-              iconData,
-              color: selected ? AppColors.primary : AppColors.muteColor,
-            ),
-            const SizedBox(height: 4),
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: 11,
+      child: Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: Container(
+          margin: const EdgeInsets.symmetric(vertical: 8),
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: selected ? Colors.blue.shade50 : Colors.transparent,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Column(
+            children: [
+              Icon(
+                iconData,
                 color: selected ? AppColors.primary : AppColors.muteColor,
               ),
-            ),
-          ],
+              const SizedBox(height: 4),
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: 11,
+                  color: selected ? AppColors.primary : AppColors.muteColor,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

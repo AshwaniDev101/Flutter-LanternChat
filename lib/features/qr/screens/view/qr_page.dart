@@ -50,14 +50,19 @@ class QrCodePage extends ConsumerWidget {
                 alignment: Alignment.topCenter,
                 children: [
                   Card(
+
+                    color: Colors.white,
+
                     child: Padding(
                       padding: EdgeInsets.fromLTRB(20, 20 + avtarRadius, 20, 20),
                       child: Column(
                         children: [
                           // SizedBox(height: avtarRadius,),
-                          Text(currentUser.name, style: Theme.of(context).textTheme.titleMedium),
-                          Text("LanternChat Contact", style: Theme.of(context).textTheme.bodySmall),
-                          SizedBox(
+                          Text(currentUser.name, style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.grey.shade800)),
+                          Text("LanternChat Contact", style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.grey.shade800)),
+                          // SizedBox(height: 10,),
+                          Container(
+                            color: Colors.white,
                             height: 200,
                             width: 200,
                             child: QrImageView(data: "${ConstantString.appName}/${currentUser.uid}"),

@@ -5,9 +5,7 @@ import 'package:lanternchat/core/theme/app_colors.dart';
 import 'package:lanternchat/features/chat/screens/view/chat_page.dart';
 import 'package:lanternchat/features/contact/screens/view/contact_page.dart';
 import 'package:lanternchat/features/conversation/screens/view/conversation_page.dart';
-import 'package:lanternchat/features/conversation/screens/view/group_page.dart';
 import 'package:lanternchat/features/home/screens/view/widgets/custom_navigation_bar.dart';
-import 'package:lanternchat/features/profile/screens/view/profile_page.dart';
 import 'package:lanternchat/features/qr/screens/view/qr_page.dart';
 import 'package:lanternchat/features/settings/screens/view/settings_page.dart';
 import 'package:lanternchat/models/conversations/conversation_entry.dart';
@@ -26,30 +24,6 @@ class _HomePageState extends State<HomePage> {
 
   ConversationEntry? _selectedConversation;
 
-  // late final List<Widget> _pages;
-
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //
-  //   _pages = [
-  //     ConversationPage(
-  //       onConversationTap: (entry) {
-  //         if (kIsWeb) {
-  //           setState(() {
-  //             _selectedConversation = entry;
-  //           });
-  //         } else {
-  //           context.push(AppRoute.chat, extra: entry);
-  //         }
-  //       },
-  //     ),
-  //     ContactPage(),
-  //     QrCodePage(),
-  //     SettingsPage(),
-  //   ];
-  // }
 
   List<Widget> _buildPages() {
     return [
@@ -89,10 +63,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   // Web layout
-  double _panelWidth = 400;
+  double _panelWidth = 300;
 
   double _startX = 0;
-  double _startWidth = 400;
+  double _startWidth = 300;
   bool _isDragging = false;
 
   Widget _webLayout() {
@@ -100,8 +74,8 @@ class _HomePageState extends State<HomePage> {
       builder: (context, constraints) {
         final maxWidth = constraints.maxWidth;
 
-        if (_panelWidth == 400) {
-          _panelWidth = (maxWidth * 0.3).clamp(400, 800);
+        if (_panelWidth == 300) {
+          _panelWidth = (maxWidth * 0.2).clamp(300, 800);
         }
 
         return Row(
@@ -131,7 +105,7 @@ class _HomePageState extends State<HomePage> {
                 final delta = event.position.dx - _startX;
 
                 setState(() {
-                  _panelWidth = (_startWidth + delta).clamp(400, 800);
+                  _panelWidth = (_startWidth + delta).clamp(300, 800);
                 });
               },
               onPointerUp: (_) {
@@ -149,7 +123,7 @@ class _HomePageState extends State<HomePage> {
             Expanded(
               child:  _selectedConversation==null? Scaffold(
                 appBar: AppBar(),
-                body:Center(child: Text("Welcome to lantern chat"))
+                body:Center(child: Text("Welcome to lantern chat", style: TextStyle(fontSize: 18, color: Colors.grey),))
 
               ): ChatPage(
                   key: ValueKey(_selectedConversation!.conversation!.conversationId.toString()),
@@ -161,24 +135,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // Widget _webLayout() {
-  //   return Row(
-  //     children: [
-  //       CustomNavigationBar(
-  //         currentIndex: _currentIndex,
-  //         onTap: (index) {
-  //           setState(() => _currentIndex = index);
-  //         },
-  //       ),
-  //
-  //       const VerticalDivider(width: 1),
-  //
-  //       Expanded(
-  //         child: IndexedStack(index: _currentIndex, children: _pages),
-  //       ),
-  //     ],
-  //   );
-  // }
 
   Widget _bottomBar() {
     return BottomNavigationBar(

@@ -10,7 +10,6 @@ import 'package:lanternchat/models/conversations/enums/conversation_type.dart';
 import 'package:lanternchat/shared/widgets/online_status.dart';
 
 import '../../../../../core/router/router_provider.dart';
-import '../../../../core/util/logger.dart';
 import '../../../../shared/widgets/circular_selectable.dart';
 import '../../../../shared/widgets/circular_user_avatar.dart';
 import '../../provider/conversation_provider.dart';
@@ -19,9 +18,8 @@ import '../viewmodel/conversation_viewmodel.dart';
 final searchTextProvider = StateProvider<String>((ref) => '');
 
 class ConversationPage extends ConsumerStatefulWidget {
-
-
   final Function(ConversationEntry) onConversationTap;
+
   const ConversationPage({super.key, required this.onConversationTap});
 
   @override
@@ -29,18 +27,12 @@ class ConversationPage extends ConsumerStatefulWidget {
 }
 
 class _ConversationPageState extends ConsumerState<ConversationPage> {
-  // bool _isSelectionMode = false;
-  // int _selectionCount = 0;
-  //
-  // final Set<String> _selectedConversationIds = {};
-
   @override
   Widget build(BuildContext context) {
     final currentUser = ref.watch(currentUserProvider);
 
     // return a list of contact and conversation link by memberIds
     final conversationSteam = ref.watch(conversationContactMergeSteamProvider(currentUser.uid));
-    // final conversationService = ref.watch(conversationServiceProvider);
 
     final selectionState = ref.watch(selectionProvider);
     final selectionVM = ref.read(selectionProvider.notifier);
@@ -48,22 +40,9 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
     final actionState = ref.watch(conversationActionVMProvider);
     final conversationActionVM = ref.read(conversationActionVMProvider.notifier);
 
-
-    // ref.listen(conversationActionVMProvider, (prev, next) {
-    //   next.whenOrNull(
-    //     error: (err, _) {
-    //       ScaffoldMessenger.of(context).showSnackBar(
-    //         SnackBar(content: Text(err.toString())),
-    //       );
-    //     },
-    //   );
-    // });
-
     ref.listen(conversationActionVMProvider, (prev, next) {
       if (prev?.hasError != next.hasError && next.hasError) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(next.error.toString())),
-        );
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(next.error.toString())));
       }
     });
 
@@ -76,9 +55,9 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
                 children: [
                   SizedBox(width: 8),
                   IconButton(
-                      onPressed: () {
-                        selectionVM.resetSelectionMode();
-                      },
+                    onPressed: () {
+                      selectionVM.resetSelectionMode();
+                    },
                     icon: Icon(Icons.arrow_back_rounded),
                   ),
                   SizedBox(width: 12),
@@ -87,20 +66,26 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
               ),
 
               actions: [
-                IconButton(onPressed: () {
+                IconButton(
+                  onPressed: () {
+                    selectionVM.resetSelectionMode();
+                  },
+                  icon: Icon(Icons.push_pin_outlined),
+                ),
 
-                  selectionVM.resetSelectionMode();
-                }, icon: Icon(Icons.push_pin_outlined)),
+                IconButton(
+                  onPressed: actionState.isLoading
+                      ? null
+                      : () async {
+                          await conversationActionVM.removeUserList(
+                            conversationIds: selectionState.selectedIds,
+                            memberUid: currentUser.uid,
+                          );
 
-
-                IconButton(onPressed: actionState.isLoading
-                ? null:() async {
-
-                  await conversationActionVM.removeUserList(conversationIds: selectionState.selectedIds, memberUid: currentUser.uid);
-
-                  selectionVM.resetSelectionMode();
-                }, icon: Icon(Icons.delete_outline_outlined)),
-
+                          selectionVM.resetSelectionMode();
+                        },
+                  icon: Icon(Icons.delete_outline_outlined),
+                ),
               ],
             )
           : AppBar(
@@ -118,8 +103,7 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
         padding: const EdgeInsets.symmetric(horizontal: 8),
         child: Column(
           children: [
-            if(actionState.isLoading)
-              LinearProgressIndicator(),
+            if (actionState.isLoading) LinearProgressIndicator(),
             SizedBox(height: 12),
             _searchBar(ref),
 
@@ -140,11 +124,7 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
                   return name.toLowerCase().contains(searchText.toLowerCase());
                 }).toList();
 
-                return _getConversionList(
-                  filteredList,
-                  selectionState,
-                  selectionVM,
-                );
+                return _getConversionList(filteredList, selectionState, selectionVM);
               },
               error: (e, t) {
                 print("Error there is an Error $e : $t");
@@ -203,14 +183,11 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
     );
   }
 
-   Widget _getConversionList(
-      List<ConversationEntry> conversationEntryList,
-      SelectionState selectionState,
-      SelectionViewModel selectionVM,
-      ) {
-
-
-
+  Widget _getConversionList(
+    List<ConversationEntry> conversationEntryList,
+    SelectionState selectionState,
+    SelectionViewModel selectionVM,
+  ) {
     return Expanded(
       child: ListView.builder(
         itemCount: conversationEntryList.length,
@@ -225,35 +202,19 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
 
             isSelected: isSelected,
             onTap: () {
-
-
               if (selectionState.isSelectionMode) {
                 if (conversationId == null) return;
                 selectionVM.toggle(conversationId);
               } else {
-
                 // passing the tab back to homepage
                 widget.onConversationTap(entry);
-
-                // if using web send conversation entry to home
-                // if(isSkiaWeb) {
-                //   // widget.onPageChange(entry);
-                // }else
-                //   {
-                //     context.push(AppRoute.chat, extra: entry);
-                //   }
-
-
               }
-
             },
-
 
             onLongPressStart: (_) {
               if (conversationId == null) return;
               selectionVM.startSelectionMode(conversationId);
             },
-
           );
         },
       ),
@@ -292,7 +253,6 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
         break;
     }
   }
-
 }
 
 class _Card extends StatelessWidget {
@@ -327,13 +287,14 @@ class _Card extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.all(4.0),
-              // child: CircularUserAvatar(imageUrl: _getImageUrl()),
               child: CircularUserAvatar(imageUrl: _getImageUrl()),
             ),
 
             SizedBox(width: 10),
+
             Expanded(
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
@@ -347,42 +308,64 @@ class _Card extends StatelessWidget {
                           child: Icon(Icons.group, size: 16, color: AppColors.primary),
                         ),
 
-                      if (conversationEntry.contact != null &&
-                          conversationEntry.conversation != null &&
-                          conversationEntry.conversation!.conversationType == ConversationType.solo)
-                        Padding(
-                          padding: const EdgeInsets.only(left: 4),
-                          child: OnlineUserPresence(
-                            uid: conversationEntry.contact!.uid,
-                            showTextOnly: true,
-                            size: 10,
-                          ),
-                        ),
                       Spacer(),
                       Icon(Icons.push_pin_rounded, size: 16),
                     ],
                   ),
 
-                  Row(
-                    children: [
-                      if (conversationEntry.conversation != null)
-                        Text(
-                          conversationEntry.conversation!.lastMessagePreview,
-                          style: Theme.of(context).textTheme.bodyMedium,
+                  if (conversationEntry.conversation != null)
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            conversationEntry.conversation!.lastMessagePreview,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
-                      Spacer(),
-                      if (conversationEntry.conversation != null)
+                        SizedBox(width: 8),
                         Text(
-                          TimeFormatHelper.formatMessageDate(conversationEntry.conversation!.lastMessageTime),
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.grey),
+                          TimeFormatHelper.formatMessageDate(
+                              conversationEntry.conversation!.lastMessageTime),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(color: Colors.grey),
                         ),
-                    ],
-                  ),
+                      ],
+                    ),
                 ],
               ),
             ),
+
+            SizedBox(width: 10,),
+
+            // PopupMenuButton<String>(
+            //
+            //   iconColor: Colors.blueGrey,
+            //   // Menu backgroun color
+            //   // color: Colors.red,
+            //   onSelected: (value) {
+            //     if (value == 'select') {
+            //
+            //
+            //
+            //     }
+            //   },
+            //   itemBuilder: (context) => const [
+            //     PopupMenuItem(
+            //       value: 'select',
+            //       child: Row(
+            //         children: [
+            //           Icon(Icons.check_box_outlined, size: 18),
+            //           SizedBox(width: 8),
+            //           Text('Select'),
+            //         ],
+            //       ),
+            //     ),
+            //   ],
+            // )
           ],
-        ),
+        )
       ),
     );
   }
